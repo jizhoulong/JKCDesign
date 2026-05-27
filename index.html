@@ -1636,6 +1636,8 @@ async function cloudify() {
     formData.append('signature', signature.sig);
     formData.append('public_id', DATA_NAME);
     formData.append('resource_type', 'raw');
+    formData.append('type', 'upload');
+    formData.append('invalidate', 'true');
     const res = await fetch('https://api.cloudinary.com/v1_1/' + CLOUD_NAME + '/raw/upload', {
       method: 'POST', body: formData
     });
@@ -1647,13 +1649,9 @@ async function cloudify() {
 
 async function cloudifyLoad() {
   try {
-    const ts = Math.floor(Date.now() / 1000);
-    const sigStr = 'public_id=' + DATA_NAME + '&resource_type=raw&timestamp=' + ts + API_SECRET;
-    const sig = await sha1Hex(sigStr);
-    const url = 'https://api.cloudinary.com/v1_1/' + CLOUD_NAME + '/raw/upload/' + DATA_NAME + '?_t=' + ts;
-    const res = await fetch(url, {
-      headers: { 'X-Requested-With': 'XMLHttpRequest' }
-    });
+    // 尝试用 res.cloudinary.com 公开读取 raw 文件
+    const url = 'https://res.cloudinary.com/' + CLOUD_NAME + '/raw/upload/' + DATA_NAME + '.json?_t=' + Date.now();
+    const res = await fetch(url);
     if (!res.ok) return false;
     const remote = await res.json();
     if (!remote || Object.keys(remote).length === 0) return false;
