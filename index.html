@@ -682,7 +682,7 @@ async function runDetect(id) {
   if (!tab||!tab.designImg||!tab.devImg) return;
   tab.result = null; tab.selectedIdx = -1;
   renderMain(id);
-  const s = document.querySelector(`#ub_${id} .status`);
+  const s = document.querySelector('#ub_' + id + ' .status');
   if (s) s.textContent = '⏳ 检测中…';
   try {
     tab.result = await window.vgDetect(tab.designImg, tab.devImg);
@@ -2493,7 +2493,7 @@ async function omnipotentDetect(id) {
   const tab = tabs.get(id);
   if (!tab || !tab.designImg || !tab.devImg) return;
   
-  const s = document.querySelector(`#ub_${id} .status`);
+  const s = document.querySelector('#ub_' + id + ' .status');
   if (s) s.textContent = '⏳ 全能检测中…';
   
   try {
