@@ -1679,19 +1679,7 @@ async function cloudifyLoad() {
       if (!rec || !rec.name || typeof rec.isGroup === 'undefined') { valid = false; break; }
     }
     if (!valid) { console.warn('cloud data format invalid, ignoring'); return false; }
-    // 检查 IDB 是否有数据
-    try {
-      const db = await openDB();
-      const tx = db.transaction(STORE_NAME, 'readonly');
-      const store = tx.objectStore(STORE_NAME);
-      const all = await new Promise((resolve, reject) => {
-        const req = store.getAll();
-        req.onsuccess = () => resolve(req.result);
-        req.onerror = () => reject(req.error);
-      });
-      if (all && all.length > 0) return false;
-    } catch(e) {}
-    // IDB 无数据，从云端恢复
+    // 从云端恢复（云端数据优先于 IDB）
     tabs.clear();
     let maxId = 0;
     for (const [id, rec] of Object.entries(remote)) {
@@ -1765,10 +1753,12 @@ function hideTabPreview() {
   const vl = document.getElementById('versionLabel');
   if (vl) vl.textContent = VERSION;
   await loadDevPool(); // 先加载研发人员名单池
-  const cloudRestored = await cloudifyLoad();
-  if (cloudRestored) setCloudStatus('☁️ 已连接', 'ok');
-  let restored = cloudRestored;
-  if (!restored) restored = await loadTabs();
+  let restored = await cloudifyLoad();
+  if (restored) {
+    setCloudStatus('☁️ 已连接', 'ok');
+  } else {
+    restored = await loadTabs();
+  }
   if (restored) {
     // 恢复后默认激活"默认板块"（排除数据面板）
     let defaultKey = null;
