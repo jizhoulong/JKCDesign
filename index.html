@@ -1637,7 +1637,7 @@ async function cloudifyPush() {
     const data = {};
     for (const [id, tab] of tabs) {
       data[id] = {
-        name: tab.name, isGroup: tab.isGroup, children: tab.children,
+        id: id, name: tab.name, isGroup: tab.isGroup, children: tab.children,
         designImg: tab.designImg, devImg: tab.devImg,
         result: tab.result ? { diffOverlay: tab.result.diffOverlay, textLines: tab.result.textLines, buttons: tab.result.buttons, issues: tab.result.issues, btnDebug: tab.result.btnDebug } : null,
         overlayOpacity: tab.overlayOpacity, developer: tab.developer || ''
@@ -1695,6 +1695,7 @@ async function cloudifyLoad() {
     tabs.clear();
     let maxId = 0;
     for (const [id, rec] of Object.entries(remote)) {
+      if (!rec.id) rec.id = id;
       tabs.set(id, rec);
       const num = parseInt(id.replace('tab_', ''), 10);
       if (num > maxId) maxId = num;
