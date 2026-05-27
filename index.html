@@ -120,7 +120,15 @@ html, body { height: 100%; overflow: hidden; font-family: -apple-system, BlinkMa
 .modal-overlay img { max-width: 90vw; max-height: 90vh; object-fit: contain; border-radius: 14px; box-shadow: 0 8px 40px rgba(0,0,0,.3); }
 
 /* ===== iOS 风格滚动条 ===== */
-.tabbar-version { text-align: center; padding: 8px 12px; font-size: 11px; color: rgba(255,255,255,0.6); border-top: 1px solid #2c2c2e; flex-shrink: 0; }
+.tabbar-version { text-align: center; padding: 6px 12px; font-size: 11px; color: rgba(255,255,255,0.6); flex-shrink: 0; }
+.tabbar-footer { border-top: 1px solid #2c2c2e; padding: 6px 10px; display: flex; align-items: center; gap: 6px; flex-shrink: 0; }
+.cloud-status { font-size: 10px; color: rgba(255,255,255,0.45); flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.cloud-status.ok { color: #30d158; }
+.cloud-status.err { color: #ff453a; }
+.cloud-status.syncing { color: #ff9f0a; }
+.cloud-btn { font-size: 10px; padding: 3px 8px; border: 1px solid rgba(255,255,255,0.15); border-radius: 4px; background: transparent; color: rgba(255,255,255,0.6); cursor: pointer; white-space: nowrap; transition: all .1s; }
+.cloud-btn:hover { background: rgba(255,255,255,0.08); color: #fff; }
+.cloud-btn:active { background: rgba(255,255,255,0.15); }
 .tab-list::-webkit-scrollbar,
 .issue-list-wrap::-webkit-scrollbar,
 .compare-4::-webkit-scrollbar { width: 4px; height: 4px; }
@@ -146,6 +154,11 @@ input, select, textarea { font-family: -apple-system, BlinkMacSystemFont, 'SF Pr
     </div>
     <div class="tab-list" id="tabList"></div>
     <div class="tabbar-version" id="versionLabel">v?</div>
+    <div class="tabbar-footer">
+      <span class="cloud-status" id="cloudStatus">☁️ --</span>
+      <button class="cloud-btn" onclick="cloudifyPull()">📥 拉取</button>
+      <button class="cloud-btn" onclick="cloudify()">📤 推送</button>
+    </div>
   </div>
   <div class="main" id="mainArea"></div>
 </div>
@@ -1611,6 +1624,38 @@ function autoCloudify() {
   pendingCloudSync = setTimeout(cloudify, 3000);
 }
 
+function setCloudStatus(text, type) {
+  const el = document.getElementById('cloudStatus');
+  if (!el) return;
+  el.textContent = text;
+  el.className = 'cloud-status' + (type ? ' ' + type : '');
+}
+
+async function cloudifyPull() {
+  setCloudStatus('☁️ 拉取中…', 'syncing');
+  const restored = await cloudifyLoad();
+  if (restored) {
+    // 重新渲染
+    let defaultKey = null;
+    for (const [id, tab] of tabs) {
+      if (tab.isGroup && tab.name !== '数据面板') { defaultKey = id; break; }
+    }
+    if (!defaultKey) defaultKey = tabs.keys().next().value;
+    if (defaultKey) {
+      activeTabId = defaultKey;
+      renderTabList();
+      renderMain(defaultKey);
+    }
+    setCloudStatus('☁️ 已同步 ✔', 'ok');
+  } else {
+    setCloudStatus('☁️ 拉取失败', 'err');
+  }
+  setTimeout(() => {
+    const el = document.getElementById('cloudStatus');
+    if (el) { el.textContent = '☁️ 已连接'; el.className = 'cloud-status ok'; }
+  }, 4000);
+}
+
 function buildCloudData() {
   const data = {};
   for (const [id, tab] of tabs) {
@@ -1626,6 +1671,7 @@ function buildCloudData() {
 
 async function cloudify() {
   try {
+    setCloudStatus('☁️ 推送中…', 'syncing');
     const data = buildCloudData();
     const json = JSON.stringify(data);
     const signature = await generateSignature('raw_upload');
@@ -1642,8 +1688,10 @@ async function cloudify() {
       method: 'POST', body: formData
     });
     if (!res.ok) console.warn('cloudify upload failed:', await res.text());
+    else setCloudStatus('☁️ 已同步 ✔', 'ok');
   } catch(e) {
     console.warn('cloudify error:', e);
+    setCloudStatus('☁️ 推送失败', 'err');
   }
 }
 
@@ -1729,6 +1777,7 @@ function hideTabPreview() {
   await loadDevPool(); // 先加载研发人员名单池
   // 先尝试从云端恢复（仅在 IDB 无数据时）
   const cloudRestored = await cloudifyLoad();
+  if (cloudRestored) setCloudStatus('☁️ 已连接', 'ok');
   let restored = cloudRestored;
   if (!restored) restored = await loadTabs();
   if (restored) {
