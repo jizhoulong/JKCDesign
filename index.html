@@ -1614,8 +1614,8 @@ function autoSave() {
 
 // ===== Cloudinary 同步（部分更新，减少请求） =====
 const CLOUD_NAME = 'dxm3bwnzi';
-const API_KEY = '283427793492962';
-const API_SECRET = 'N7Xmv4VJ55111w2korfFunk7VRY';
+const API_KEY = '713313811327755';
+const API_SECRET = 'QIBVvLSSePJW5-1UVYECknvBLBQ';
 const DATA_NAME = 'visionguard_data';
 // 同步间隔
 let pendingCloudSync = null;
@@ -1674,7 +1674,7 @@ async function cloudify() {
     setCloudStatus('☁️ 推送中…', 'syncing');
     const data = buildCloudData();
     const json = JSON.stringify(data);
-    const signature = await generateSignature('raw_upload');
+    const signature = await generateSignature();
     const formData = new FormData();
     formData.append('file', new Blob([json], { type: 'application/json' }), 'data.json');
     formData.append('api_key', API_KEY);
@@ -1740,9 +1740,10 @@ function sha1Hex(str) {
     .then(buf => Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join(''));
 }
 
-async function generateSignature(type) {
+async function generateSignature() {
   const timestamp = Math.floor(Date.now() / 1000);
-  const str = 'public_id=' + DATA_NAME + '&resource_type=raw&timestamp=' + timestamp + API_SECRET;
+  // Cloudinary 签名规范：不含 api_key，resource_type 不参与签名
+  const str = 'public_id=' + DATA_NAME + '&timestamp=' + timestamp + API_SECRET;
   const sig = await sha1Hex(str);
   return { timestamp: timestamp + '', sig };
 }
