@@ -1672,11 +1672,21 @@ async function cloudifyPush() {
 
 async function cloudifyLoad() {
   try {
-    const url = 'https://res.cloudinary.com/' + CLOUD_NAME + '/raw/upload/' + DATA_NAME + '.json?_t=' + Date.now();
-    const res = await fetch(url);
-    if (!res.ok) return false;
-    const remote = await res.json();
-    if (!remote || typeof remote !== 'object' || Object.keys(remote).length === 0) return false;
+    // 重试机制：最多尝试 3 次，间隔 1 秒，绕过 CDN 缓存
+    let remote = null;
+    for (let attempt = 0; attempt < 3; attempt++) {
+      const url = 'https://res.cloudinary.com/' + CLOUD_NAME + '/raw/upload/' + DATA_NAME + '.json?_cb=' + Date.now() + '_' + attempt;
+      const res = await fetch(url, { cache: 'no-cache' });
+      if (res.ok) {
+        try {
+          const d = await res.json();
+          if (d && typeof d === 'object' && Object.keys(d).length > 0) { remote = d; break; }
+        } catch(e) {}
+      }
+      if (attempt < 2) await new Promise(r => setTimeout(r, 1000));
+    }
+    if (!remote) return false;
+    // 校验数据格式
     // 校验数据格式：每个条目必须有 name 和 isGroup 字段
     let valid = true;
     for (const [id, rec] of Object.entries(remote)) {
@@ -1737,11 +1747,20 @@ let cloudPollTimer = null;
 
 async function cloudPollOnce() {
   try {
-    const url = 'https://res.cloudinary.com/' + CLOUD_NAME + '/raw/upload/' + DATA_NAME + '.json?_t=' + Date.now();
-    const res = await fetch(url);
-    if (!res.ok) return;
-    const remote = await res.json();
-    if (!remote || typeof remote !== 'object') return;
+    // 重试 2 次，绕过 CDN 缓存
+    let remote = null;
+    for (let attempt = 0; attempt < 2; attempt++) {
+      const url = 'https://res.cloudinary.com/' + CLOUD_NAME + '/raw/upload/' + DATA_NAME + '.json?_cb=' + Date.now() + '_' + attempt;
+      const res = await fetch(url, { cache: 'no-cache' });
+      if (res.ok) {
+        try {
+          const d = await res.json();
+          if (d && typeof d === 'object') { remote = d; break; }
+        } catch(e) {}
+      }
+      if (attempt < 1) await new Promise(r => setTimeout(r, 500));
+    }
+    if (!remote) return;
     const remoteVersion = remote._cloudVersion || 0;
     // 首次：记录版本号
     if (cloudVersion === null) {
