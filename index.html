@@ -39,18 +39,18 @@ html, body { height: 100%; overflow: hidden; font-family: 'Google Sans', 'Roboto
 .tab-list .tab-item .inline-edit { flex: 1; background: #FFFFFF; border: 1px solid #1A73E8; border-radius: 4px; color: #202124; font-size: 14px; padding: 4px 8px; outline: none; min-width: 0; font-family: 'Google Sans', sans-serif; }
 .tab-list .sub-page-wrap { padding-left: 20px; border-left: 2px solid transparent; }
 
-/* ===== 云端与离线备份面板 ===== */
-.cloud-panel { background: #FFFFFF; border-top: 1px solid #DADCE0; padding: 14px 20px; flex-shrink: 0; }
-.cloud-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+/* ===== 云端控制面板 ===== */
+.cloud-panel { background: #FFFFFF; border-top: 1px solid #DADCE0; padding: 16px 24px; flex-shrink: 0; }
+.cloud-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
 .cloud-status { font-size: 13px; font-weight: 500; font-family: 'Google Sans', sans-serif; display: flex; align-items: center; gap: 6px; padding: 4px 10px; border-radius: 16px; background: #F1F3F4; color: #5F6368; }
 .cloud-status.ok { background: #E6F4EA; color: #137333; }
 .cloud-status.syncing { background: #FEF7E0; color: #B06000; }
 .cloud-status.err { background: #FCE8E6; color: #C5221F; }
-.cloud-btns { display: flex; gap: 6px; margin-bottom: 6px; }
-.cloud-btn { flex: 1; padding: 6px; font-size: 11px; font-weight: 500; font-family: 'Google Sans', sans-serif; border: 1px solid #DADCE0; border-radius: 4px; cursor: pointer; transition: all 0.2s; background: #FFFFFF; color: #3C4043; text-align: center; }
-.cloud-btn:hover { background: #F8F9FA; box-shadow: 0 1px 2px 0 rgba(60,64,67,0.1); }
-.btn-push { background: #1A73E8; color: #FFFFFF; border: none; }
-.btn-push:hover { background: #1B66C9; color: #FFFFFF; }
+.cloud-settings-btn { width: 28px; height: 28px; border: none; border-radius: 50%; background: transparent; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 14px; transition: background 0.2s; }
+.cloud-settings-btn:hover { background: #F1F3F4; }
+.cloud-btns { display: flex; gap: 8px; }
+.cloud-btn { flex: 1; padding: 8px; font-size: 12px; font-weight: 500; font-family: 'Google Sans', sans-serif; border: 1px solid #DADCE0; border-radius: 4px; cursor: pointer; transition: all 0.2s; background: #FFFFFF; color: #3C4043; }
+.cloud-btn:hover { background: #F8F9FA; box-shadow: 0 1px 2px 0 rgba(60,64,67,0.3); }
 
 /* ===== 主内容工作区 ===== */
 .main { flex: 1; display: flex; flex-direction: column; min-width: 0; background: #F8F9FA; }
@@ -99,19 +99,26 @@ html, body { height: 100%; overflow: hidden; font-family: 'Google Sans', 'Roboto
 .issue-table .preview-img { height: 28px; width: auto; max-width: 140px; object-fit: contain; border: 1px solid #DADCE0; border-radius: 4px; background: #F8F9FA; cursor: zoom-in; display: block; }
 .issue-table .marker { position: absolute; border: 2.5px solid #EA4335; border-radius: 4px; pointer-events: none; z-index: 2; box-shadow: 0 0 0 1px rgba(255,255,255,0.8); }
 
-/* 缺陷被忽略后的样式 */
-.issue-table tr.closed-issue { opacity: 0.55; background: #F8F9FA !important; }
-.issue-table tr.closed-issue td { color: #9AA0A6 !important; text-decoration: line-through; }
-.issue-table tr.closed-issue .preview-img { filter: grayscale(100%); opacity: 0.7; pointer-events: none; }
-.issue-table tr.closed-issue .tag { background: #E8EAED !important; color: #80868B !important; text-decoration: none; }
-.btn-toggle-issue { padding: 4px 10px; border: 1px solid #DADCE0; border-radius: 12px; background: #FFFFFF; color: #5F6368; font-size: 12px; font-weight: 500; cursor: pointer; text-decoration: none !important; transition: all 0.2s; box-shadow: 0 1px 2px rgba(0,0,0,0.05); }
-.btn-toggle-issue:hover { background: #F1F3F4; color: #202124; }
-.closed-issue .btn-toggle-issue { color: #1A73E8; border-color: #1A73E8; background: #E8F0FE; }
-
 .tag { display: inline-flex; align-items: center; justify-content: center; font-size: 11px; padding: 4px 8px; border-radius: 12px; font-weight: 600; }
 .tag-P0 { background: #FCE8E6; color: #C5221F; }
 .tag-P1 { background: #FEF7E0; color: #B06000; }
 .tag-P2 { background: #E8F0FE; color: #1A73E8; }
+
+.no-issues { display: flex; align-items: center; justify-content: center; flex: 1; color: #137333; font-size: 14px; font-weight: 500; background: #E6F4EA; margin: 24px; border-radius: 8px; border: 1px dashed #34A853; }
+.loading-state { display: flex; align-items: center; justify-content: center; height: 100%; color: #80868B; font-size: 14px; font-weight: 500; }
+
+/* ===== 全局看板与板块汇总视图 ===== */
+.dashboard-wrap { padding: 24px; overflow-y: auto; flex: 1; }
+.card-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 24px; }
+.stat-card { background: #FFFFFF; border: 1px solid #DADCE0; border-radius: 8px; padding: 20px; box-shadow: 0 1px 2px 0 rgba(60,64,67,0.1); display: flex; flex-direction: column; justify-content: center; position: relative; overflow: hidden;}
+.stat-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px; }
+.stat-card.card-p0::before { background: #C5221F; }
+.stat-card.card-p1::before { background: #F29900; }
+.stat-card.card-p2::before { background: #1A73E8; }
+.stat-card.card-pages::before { background: #137333; }
+
+.stat-card .val { font-size: 36px; font-weight: 500; font-family: 'Google Sans', sans-serif; line-height: 1.2;}
+.stat-card .lbl { font-size: 13px; color: #5F6368; margin-top: 4px; font-weight: 500; }
 
 .group-table { width: 100%; border-collapse: separate; border-spacing: 0; background: #FFFFFF; border: 1px solid #DADCE0; border-radius: 8px; overflow: hidden; box-shadow: 0 1px 2px 0 rgba(60,64,67,0.1); margin-bottom: 24px;}
 .group-table th { background: #F8F9FA; padding: 12px 16px; font-size: 12px; font-weight: 500; color: #5F6368; border-bottom: 1px solid #DADCE0; text-align: left; }
@@ -123,20 +130,31 @@ html, body { height: 100%; overflow: hidden; font-family: 'Google Sans', 'Roboto
 .group-table .thumb-box img { width: 100%; height: 100%; object-fit: contain; }
 .group-table .thumb-box .empty { font-size: 11px; color: #9AA0A6; }
 
-/* 看板大屏 */
-.dashboard-wrap { padding: 24px; overflow-y: auto; flex: 1; }
-.card-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 24px; }
-.stat-card { background: #FFFFFF; border: 1px solid #DADCE0; border-radius: 8px; padding: 20px; box-shadow: 0 1px 2px 0 rgba(60,64,67,0.1); display: flex; flex-direction: column; justify-content: center; position: relative; overflow: hidden;}
-.stat-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px; }
-.stat-card.card-p0::before { background: #C5221F; }
-.stat-card.card-p1::before { background: #F29900; }
-.stat-card.card-p2::before { background: #1A73E8; }
-.stat-card.card-pages::before { background: #137333; }
-.stat-card .val { font-size: 36px; font-weight: 500; font-family: 'Google Sans', sans-serif; line-height: 1.2;}
-.stat-card .lbl { font-size: 13px; color: #5F6368; margin-top: 4px; font-weight: 500; }
+/* Modals */
+.modal-overlay { display: none; position: fixed; inset: 0; z-index: 1000; background: rgba(32,33,36,0.9); cursor: zoom-out; backdrop-filter: blur(5px); }
+.modal-overlay.open { display: flex; align-items: center; justify-content: center; }
+.modal-overlay img { max-width: 90vw; max-height: 90vh; object-fit: contain; border-radius: 8px; box-shadow: 0 12px 24px rgba(0,0,0,0.5); background: #fff; }
 
-.no-issues { display: flex; align-items: center; justify-content: center; flex: 1; color: #137333; font-size: 14px; font-weight: 500; background: #E6F4EA; margin: 24px; border-radius: 8px; border: 1px dashed #34A853; }
-.loading-state { display: flex; align-items: center; justify-content: center; height: 100%; color: #80868B; font-size: 14px; font-weight: 500; }
+/* Settings Modal */
+.settings-modal { display: none; position: fixed; inset: 0; z-index: 2000; background: rgba(32,33,36,0.6); align-items: center; justify-content: center; backdrop-filter: blur(2px); }
+.settings-modal.open { display: flex; }
+.settings-content { background: #FFF; width: 400px; border-radius: 8px; box-shadow: 0 12px 24px rgba(0,0,0,0.2); overflow: hidden; }
+.settings-header { padding: 16px 24px; border-bottom: 1px solid #DADCE0; font-size: 16px; font-weight: 500; font-family: 'Google Sans', sans-serif; display: flex; justify-content: space-between; align-items: center;}
+.settings-body { padding: 24px; display: flex; flex-direction: column; gap: 16px; }
+.settings-group label { display: block; font-size: 12px; font-weight: 500; color: #5F6368; margin-bottom: 6px; }
+.settings-group input { width: 100%; padding: 10px 12px; border: 1px solid #DADCE0; border-radius: 4px; font-size: 14px; color: #202124; outline: none; font-family: monospace;}
+.settings-group input:focus { border-color: #1A73E8; }
+.settings-footer { padding: 16px 24px; border-top: 1px solid #DADCE0; display: flex; justify-content: flex-end; gap: 12px; background: #F8F9FA;}
+.settings-footer button { padding: 8px 24px; border-radius: 4px; font-size: 14px; font-weight: 500; cursor: pointer; border: none; }
+.btn-cancel { background: transparent; color: #5F6368; }
+.btn-cancel:hover { background: #E8EAED; }
+.btn-save { background: #1A73E8; color: #FFF; }
+.btn-save:hover { background: #1B66C9; }
+
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: #DADCE0; border-radius: 4px; border: 2px solid #fff; }
+::-webkit-scrollbar-thumb:hover { background: #BDC1C6; }
 </style>
 </head>
 <body>
@@ -149,7 +167,7 @@ html, body { height: 100%; overflow: hidden; font-family: 'Google Sans', 'Roboto
       </h3>
     </div>
     <div class="tabbar-actions">
-      <button class="btn-add-group" onclick="addTab('新走查模块',{isGroup:true})">
+      <button class="btn-add-group" onclick="addTab('新测试模块',{isGroup:true})">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg> 新建走查模块
       </button>
     </div>
@@ -159,16 +177,11 @@ html, body { height: 100%; overflow: hidden; font-family: 'Google Sans', 'Roboto
     <div class="cloud-panel">
         <div class="cloud-header">
             <span id="cloudStatusText" class="cloud-status">☁️ 初始化...</span>
-            <button onclick="openCloudSettings()" style="border:none;background:transparent;cursor:pointer;font-size:16px;" title="配置云端密钥">⚙️</button>
-        </div>
-        <div class="cloud-btns" style="margin-bottom: 6px;">
-            <button onclick="manualCloudPull()" class="cloud-btn">强制拉取</button>
-            <button onclick="manualCloudPush()" class="cloud-btn btn-push">立即同步</button>
+            <button onclick="openCloudSettings()" class="cloud-settings-btn" title="配置图床密钥">⚙️</button>
         </div>
         <div class="cloud-btns">
-            <button onclick="exportLocalBackup()" class="cloud-btn" style="font-size:11px; padding: 6px;">📥 导出备份</button>
-            <button onclick="document.getElementById('importBackupFile').click()" class="cloud-btn" style="font-size:11px; padding: 6px;">📤 导入备份</button>
-            <input type="file" id="importBackupFile" accept=".json" style="display:none;" onchange="importLocalBackup(event)">
+            <button onclick="manualCloudPull()" class="cloud-btn">强制拉取</button>
+            <button onclick="manualCloudPush()" class="cloud-btn btn-push">立即同步</button>
         </div>
     </div>
   </div>
@@ -177,52 +190,85 @@ html, body { height: 100%; overflow: hidden; font-family: 'Google Sans', 'Roboto
 
 <div class="modal-overlay" id="modalOverlay" onclick="closeModal()"><img id="modalImg"></div>
 
-<div class="modal-overlay" id="settingsModal" style="z-index:2000; align-items:center; justify-content:center;">
-    <div style="background:#FFF; width:420px; border-radius:8px; box-shadow:0 12px 24px rgba(0,0,0,0.2); overflow:hidden; cursor:default;">
-        <div style="padding:16px 24px; border-bottom:1px solid #DADCE0; font-size:16px; font-weight:500; font-family:'Google Sans',sans-serif; display:flex; justify-content:space-between; align-items:center;">
+<div class="settings-modal" id="settingsModal">
+    <div class="settings-content">
+        <div class="settings-header">
             <span>配置 Cloudinary 云端环境</span>
             <span style="cursor:pointer; color:#5F6368;" onclick="closeCloudSettings()">✕</span>
         </div>
-        <div style="padding:24px; display:flex; flex-direction:column; gap:16px;">
-            <div style="display:flex; flex-direction:column; gap:6px;">
-                <label style="font-size:12px;font-weight:500;color:#5F6368;">Cloud Name</label>
-                <input type="text" id="cfgCloudName" style="padding:10px;border:1px solid #DADCE0;border-radius:4px;font-family:monospace;outline:none;">
+        <div class="settings-body">
+            <div style="font-size:12px; color:#B06000; background:#FEF7E0; padding:8px 12px; border-radius:4px;">
+                警告：由于 JSON 包含 Base64 图片，数据体积可能很大。云端同步会消耗较多网络带宽，请耐心等待同步完成。
             </div>
-            <div style="display:flex; flex-direction:column; gap:6px;">
-                <label style="font-size:12px;font-weight:500;color:#5F6368;">API Key</label>
-                <input type="text" id="cfgApiKey" style="padding:10px;border:1px solid #DADCE0;border-radius:4px;font-family:monospace;outline:none;">
+            <div class="settings-group">
+                <label>Cloud Name</label>
+                <input type="text" id="cfgCloudName">
             </div>
-            <div style="display:flex; flex-direction:column; gap:6px;">
-                <label style="font-size:12px;font-weight:500;color:#5F6368;">API Secret</label>
-                <input type="password" id="cfgApiSecret" style="padding:10px;border:1px solid #DADCE0;border-radius:4px;font-family:monospace;outline:none;">
+            <div class="settings-group">
+                <label>API Key</label>
+                <input type="text" id="cfgApiKey">
             </div>
-            <div style="display:flex; flex-direction:column; gap:6px;">
-                <label style="font-size:12px;font-weight:500;color:#5F6368;">存储文件名 (Data ID)</label>
-                <input type="text" id="cfgDataName" style="padding:10px;border:1px solid #DADCE0;border-radius:4px;font-family:monospace;outline:none;">
+            <div class="settings-group">
+                <label>API Secret</label>
+                <input type="password" id="cfgApiSecret">
+            </div>
+            <div class="settings-group">
+                <label>存储文件名 (Data ID)</label>
+                <input type="text" id="cfgDataName">
             </div>
         </div>
-        <div style="padding:16px 24px; border-top:1px solid #DADCE0; display:flex; justify-content:flex-end; gap:12px; background:#F8F9FA;">
-            <button onclick="closeCloudSettings()" style="padding:8px 24px;border:none;background:transparent;cursor:pointer;color:#5F6368;">取消</button>
-            <button onclick="saveCloudSettings()" style="padding:8px 24px;border:none;background:#1A73E8;color:#fff;border-radius:4px;cursor:pointer;">保存并重载</button>
+        <div class="settings-footer">
+            <button class="btn-cancel" onclick="closeCloudSettings()">取消</button>
+            <button class="btn-save" onclick="saveCloudSettings()">保存配置并重载</button>
         </div>
     </div>
 </div>
 
 <script>
 // ====================================================================
-// VisionGuard Detection Engine v9 — 底层核心机器视觉分析引擎 (高精度无损版)
+// VisionGuard Detection Engine v9 — 底层核心机器视觉分析引擎
 // ====================================================================
-(function(){function e(r,g,b){return'#'+[r,g,b].map(v=>Math.max(0,Math.min(255,Math.round(v))).toString(16).padStart(2,'0')).join('').toUpperCase()}function d(r1,g1,b1,r2,g2,b2){return Math.sqrt(Math.pow(r1-r2,2)+Math.pow(g1-g2,2)+Math.pow(b1-b2,2))/Math.sqrt(Math.pow(255,2)*3)}function l(r,g,b){return.299*r+.587*g+.114*b}function loadCanvas(url){return new Promise(resolve=>{const img=new Image;if(!url.startsWith('data:'))img.crossOrigin='anonymous';img.onload=()=>{const c=document.createElement('canvas');c.width=img.width;c.height=img.height;const ctx=c.getContext('2d');ctx.drawImage(img,0,0);resolve({w:img.width,h:img.height,data:ctx.getImageData(0,0,img.width,img.height),ctx,canvas:c})};img.onerror=()=>resolve({w:0,h:0,data:null});img.src=url})}function alignImages(d,v){const dd=d.data.data,vd=v.data.data,vW=v.w,vH=v.h;function s(ox,oy,tdx,tdy){const rw=Math.min(40,d.w-ox),rh=Math.min(40,d.h-oy);let s=0,n=0;for(let y=oy;y<oy+rh;y+=4)for(let x=ox;x<ox+rw;x+=4){const py=y+tdy,px=x+tdx;if(py<0||px<0||py>=vH||px>=vW)continue;const piD=(y*d.w+x)*4,piV=(py*vW+px)*4;s+=Math.abs(dd[piD]-vd[piV])+Math.abs(dd[piD+1]-vd[piV+1])+Math.abs(dd[piD+2]-vd[piV+2]);n++}return n>0?s/n:1/0}let bDx=0,bDy=0,bS=1/0;for(let dy=-12;dy<=12;dy+=2)for(let dx=-12;dx<=12;dx+=2){let t=0,c=0;for(const[ox,oy]of[[0,0],[Math.max(0,d.w-60),0],[0,Math.max(0,d.h-60)]]){const sc=s(ox,oy,dx,dy);if(sc<1/0){t+=sc;c++}}const avg=c>0?t/c:1/0;if(avg<bS){bS=avg;bDx=dx;bDy=dy}}for(let dy=-1;dy<=1;dy++)for(let dx=-1;dx<=1;dx++){let t=0,c=0;for(const[ox,oy]of[[0,0],[Math.max(0,d.w-60),0],[0,Math.max(0,d.h-60)]]){const sc=s(ox,oy,bDx+dx,bDy+dy);if(sc<1/0){t+=sc;c++}}const avg=c>0?t/c:1/0;if(avg<bS){bS=avg;bDx+=dx;bDy+=dy}}return{dx:bDx,dy:bDy}}function enhanceContrast(imgData,iW,iH){const data=new Uint8ClampedArray(imgData),ts=64,tx=Math.ceil(iW/ts),ty=Math.ceil(iH/ts);for(let by=0;by<ty;by++)for(let bx=0;bx<tx;bx++){const x1=bx*ts,y1=by*ts,x2=Math.min(x1+ts,iW),y2=Math.min(y1+ts,iH),hist=new Int32Array(256);for(let y=y1;y<y2;y++)for(let x=x1;x<x2;x++){const pi=(y*iW+x)*4;hist[Math.round(l(imgData[pi],imgData[pi+1],imgData[pi+2]))]++}const tp=(x2-x1)*(y2-y1),lim=Math.max(3,tp*.01);let ex=0;for(let i=0;i<256;i++){if(hist[i]>lim){ex+=hist[i]-lim;hist[i]=lim}}const rd=Math.floor(ex/256);for(let i=0;i<256;i++)hist[i]+=rd;const cdf=new Int32Array(256);cdf[0]=hist[0];for(let i=1;i<256;i++)cdf[i]=cdf[i-1]+hist[i];const cdfMin=cdf[0],cdfR=cdf[255]-cdfMin;for(let y=y1;y<y2;y++)for(let x=x1;x<x2;x++){const pi=(y*iW+x)*4,lu=Math.round(l(imgData[pi],imgData[pi+1],imgData[pi+2])),mp=cdfR>0?Math.round((cdf[lu]-cdfMin)*255/cdfR):lu,nl=lu+(mp-lu)*.7*Math.min(2,Math.max(1,cdfR>0?255/cdfR:1));data[pi]=data[pi+1]=data[pi+2]=Math.max(0,Math.min(255,nl))}}let mL=255,xL=0;for(let i=0;i<data.length;i+=4){const lv=data[i];if(lv<mL)mL=lv;if(lv>xL)xL=lv}const rg=xL-mL;if(rg>10)for(let i=0;i<data.length;i+=4){data[i]=(data[i]-mL)*255/rg;data[i+1]=data[i+2]=data[i]}return data}function clusterDiffs(d,v,w,h,al){const dd=d.data.data,vd=v.data.data,vW=v.w,vH=v.h,dm=new Uint8Array(w*h);for(let y=0;y<h;y++)for(let x=0;x<w;x++){const vy=y+al.dy,vx=x+al.dx;if(vx<0||vx>=vW||vy<0||vy>=vH)continue;const piD=(y*w+x)*4,piV=(vy*vW+vx)*4;if(Math.abs(dd[piD]-vd[piV])+Math.abs(dd[piD+1]-vd[piV+1])+Math.abs(dd[piD+2]-vd[piV+2])>30)dm[y*w+x]=1}const bs=8,bw=Math.ceil(w/bs),bh=Math.ceil(h/bs),bm=new Uint8Array(bw*bh);for(let by=0;by<bh;by++)for(let bx=0;bx<bw;bx++){let dc=0,tp=0;for(let dy=0;dy<bs&&by*bs+dy<h;dy++)for(let dx=0;dx<bs&&bx*bs+dx<w;dx++){tp++;if(dm[(by*bs+dy)*w+(bx*bs+dx)])dc++}if(dc>tp*.03)bm[by*bw+bx]=1}const vis=new Uint8Array(bw*bh),clusters=[];for(let by=0;by<bh;by++)for(let bx=0;bx<bw;bx++){const idx=by*bw+bx;if(!bm[idx]||vis[idx])continue;const q=[[bx,by]];vis[idx]=1;let mnX=bx,mxX=bx,mnY=by,mxY=by;while(q.length){const cp=q.shift();const cx=cp[0],cy=cp[1];mnX=Math.min(mnX,cx);mxX=Math.max(mxX,cx);mnY=Math.min(mnY,cy);mxY=Math.max(mxY,cy);for(let dy=-1;dy<=1;dy++)for(let dx=-1;dx<=1;dx++){const nx=cx+dx,ny=cy+dy;if(nx<0||nx>=bw||ny<0||ny>=bh)continue;const ni=ny*bw+nx;if(bm[ni]&&!vis[ni]){vis[ni]=1;q.push([nx,ny])}}}clusters.push({x:mnX*bs,y:mnY*bs,w:Math.min((mxX-mnX+1)*bs,w-mnX*bs),h:Math.min((mxY-mnY+1)*bs,h-mnY*bs)})}return clusters}function classifyRegionType(id,ld,rx,ry,rw,rh,iW,iH){if(rw<6||rh<6)return'noise';const cs=new Set;let te=0,he=0,ve=0,tp=0,ls=0;const lh=new Int32Array(256);for(let y=ry;y<ry+rh;y++)for(let x=rx;x<rx+rw;x++){tp++;const pi=(y*iW+x)*4,lu=Math.round(l(id[pi],id[pi+1],id[pi+2]));ls+=lu;lh[lu]++;cs.add(((id[pi]>>3)<<3)+','+((id[pi+1]>>3)<<3)+','+((id[pi+2]>>3)<<3))}const cr=cs.size/tp;for(let y=ry+1;y<ry+rh-1;y++)for(let x=rx+1;x<rx+rw-1;x++){const lv=ld[y*iW+x],hg=Math.abs(lv-ld[y*iW+x-1])+Math.abs(lv-ld[y*iW+x+1]),vg=Math.abs(lv-ld[(y-1)*iW+x])+Math.abs(lv-ld[(y+1)*iW+x]);he+=hg;ve+=vg}const ed=Math.min(100,(he+ve)/tp),hv=Math.min(10,he/Math.max(ve,.001));let mn=255,mx=0;for(let i=0;i<256;i++)if(lh[i]>0){if(i<mn)mn=i;if(i>mx)mx=i}const lr=mx-mn;if(cr>.12&&ed>5&&lr>80)return'image';if(cr<.03&&ed<2&&lr<50&&rh>12)return'button_bg';if(ed<.3&&cs.size<5&&rh>12&&rw>24)return'button_bg';if(cr<.04&&ed<4&&rh>10&&rw>20){if(rw*.4<rh&&rh<rw*2.5)return'button_bg'}if(rw<60&&rh<60&&ed>1.5){if(hv>.6&&hv<1.8){if(rw*.3<rh&&rh<rw*3)return'icon'}}if(cr<.06&&ed>.8&&hv>.8){if(hv>1.3&&rh>5&&rw>rh*.4&&rh<rw*3)return'text';if(lr>40&&ed>3&&rh>4&&rh<60)return'text'}if(rw<15&&rh>4&&rh<25&&ed>.5){if(rw*.3<rh&&rh<rw*3)return'text'}if(ed>2&&cr<.08&&rh>4&&rh<40)return'text';if(ed>1&&rw<80&&rh<80&&cr<.1){if(hv>.5&&hv<2)return'icon'}return'unknown'}function mserDetectInRegion(ld,iW,iH,rx,ry,rw,rh){const g=new Uint8Array(rw*rh);for(let y=ry+1;y<ry+rh-1;y++)for(let x=rx+1;x<rx+rw-1;x++){const idx=(y-ry)*rw+(x-rx),gx=Math.abs(ld[y*iW+x+1]-ld[y*iW+x-1]),gy=Math.abs(ld[(y+1)*iW+x]-ld[(y-1)*iW+x]);g[idx]=Math.min(255,Math.round(Math.sqrt(gx*gx*.6+gy*gy*.4)))}const bn=new Uint8Array(rw*rh),h=new Uint32Array(256);let tp=0;for(let i=0;i<rw*rh;i++){const v=g[i];if(v>5){h[v]++;tp++}}let s=0;for(let i=0;i<256;i++)s+=i*h[i];let sB=0,wB=0,wF=0,mV=0,oT=12;for(let t=0;t<256;t++){wB+=h[t];if(!wB)continue;wF=tp-wB;if(!wF)break;sB+=t*h[t];const mB=sB/wB,mF=(s-sB)/wF,bV=wB*wF*(mB-mF)*(mB-mF);if(bV>mV){mV=bV;oT=t}}const bT=Math.max(oT,10,Math.min(oT*1.5,120));for(let i=0;i<rw*rh;i++)bn[i]=g[i]>=bT?255:0;const mo=new Uint8Array(rw*rh);for(let y=0;y<rh;y++)for(let x=0;x<rw;x++){let mV=bn[y*rw+x];if(x>0&&bn[y*rw+x-1]>mV)mV=bn[y*rw+x-1];if(x<rw-1&&bn[y*rw+x+1]>mV)mV=bn[y*rw+x+1];mo[y*rw+x]=mV}const vs=new Uint8Array(rw*rh),cs=[];for(let y=0;y<rh;y++)for(let x=0;x<rw;x++){const idx=y*rw+x;if(mo[idx]!==255||vs[idx])continue;const q=[idx];vs[idx]=1;let mn=x,mx=x,mnY=y,mxY=y,cnt=0;while(q.length){const ci=q.shift();cnt++;const cx=ci%rw,cy=Math.floor(ci/rw);if(cx<mn)mn=cx;if(cx>mx)mx=cx;if(cy<mnY)mnY=cy;if(cy>mxY)mxY=cy;for(let dy=-1;dy<=1;dy++)for(let dx=-1;dx<=1;dx++){if(!dx&&!dy)continue;const nx=cx+dx,ny=cy+dy;if(nx<0||nx>=rw||ny<0||ny>=rh)continue;const ni=ny*rw+nx;if(vs[ni]||mo[ni]!==255)continue;vs[ni]=1;q.push(ni)}}}const bw=mx-mn+1,bh=mxY-mnY+1;if(bw<5||bh<4||cnt<6)continue;const r=bw/Math.max(bh,1);if(r<.4||r>20)continue;if(cnt/(bw*bh)<.02||cnt/(bw*bh)>.95)continue;let ep=0;for(let sy=mnY;sy<=mxY;sy++)for(let sx=mn;sx<=mx;sx++)if(bn[sy*rw+sx]===255)ep++;if(ep/(bw*bh)<.01)continue;cs.push({x:mn+rx,y:mnY+ry,w:bw,h:bh,cnt,density:ep/(bw*bh),ratio:r})}if(!cs.length)return[];for(let i=0;i<cs.length;i++){const c=cs[i],lY=c.y-ry,lH=c.h;let t=lY;for(let y=lY;y<lY+lH;y++){let he=!1;for(let sx=c.x-rx;sx<c.x-rx+c.w;sx+=2)if(bn[y*rw+sx]===255){he=!0;break}if(he){t=y;break}}let b=lY+lH-1;for(let y=lY+lH-1;y>=t;y--){let he=!1;for(let sx=c.x-rx;sx<c.x-rx+c.w;sx+=2)if(bn[y*rw+sx]===255){he=!0;break}if(he){b=y;break}}const nh=b-t+1;if(nh>=4){c.y=t+ry;c.h=nh}}if(!cs.length)return[];const sH=[...cs].sort((a,b)=>a.h-b.h),mI=Math.floor(cs.length/2),bH=Math.max(sH[mI].h,10),st=[...cs].sort((a,b)=>(a.y+a.h/2)-(b.y+b.h/2)),yT=bH*1.0,rows=[];for(let i=0; i<st.length; i++){const c=st[i],cy=c.y+c.h/2;let f=!1;for(let ri=rows.length-1;ri>=0;ri--){const r=rows[ri];let sss=0;for(let k=0;k<r.comps.length;k++)sss+=r.comps[k].y+r.comps[k].h/2;const mY=sss/r.comps.length;if(Math.abs(cy-mY)<=yT){r.comps.push(c);f=!0;break}}if(!f)rows.push({comps:[c]})}const ln=[];for(let i=0; i<rows.length; i++){const r=rows[i];if(r.comps.length<1)continue;let mn=9999,mx=0,mnY=9999,mxY=0;for(let k=0;k<r.comps.length;k++){const c=r.comps[k];if(c.x<mn)mn=c.x;if(c.x+c.w>mx)mx=c.x+c.w;if(c.y<mnY)mnY=c.y;if(c.y+c.h>mxY)mxY=c.y+c.h}ln.push({x:mn,y:mnY,w:mx-mn,h:mxY-mnY,comps:r.comps.length})}ln.sort((a,b)=>a.y-b.y);for(let i=0;i<ln.length;i++)for(let j=i+1;j<ln.length;j++){const vo=Math.min(ln[i].y+ln[i].h,ln[j].y+ln[j].h)-Math.max(ln[i].y,ln[j].y);if(vo>Math.min(ln[i].h,ln[j].h)*.5&&vo>4){ln[i].x=Math.min(ln[i].x,ln[j].x);ln[i].y=Math.min(ln[i].y,ln[j].y);const x2=Math.max(ln[i].x+ln[i].w,ln[j].x+ln[j].w),y2=Math.max(ln[i].y+ln[i].h,ln[j].y+ln[j].h);ln[i].w=x2-ln[i].x;ln[i].h=y2-ln[i].y;ln[i].comps+=ln[j].comps;ln.splice(j,1);j--}}const out=[];for(let i=0; i<ln.length; i++){const l=ln[i];if(l.w<20||l.h<8)continue;if(l.comps<2&&l.h<20&&l.w<40)continue;if(l.w/l.h>30&&l.h<8)continue;out.push(l)}return out}function sSIR(d,tx,ty,tw,th,iW,iH){const s=[];for(let py=ty;py<ty+th;py+=2)for(let px=tx;px<tx+tw;px+=2){const pi=(py*iW+px)*4;let mG=0;for(let dy=-2;dy<=2;dy++)for(let dx=-2;dx<=2;dx++){const nx=px+dx,ny=py+dy;if(nx<0||nx>=iW||ny<0||ny>=iH)continue;const ni=(ny*iW+nx)*4,gv=Math.abs(d[pi]-d[ni])+Math.abs(d[pi+1]-d[ni+1])+Math.abs(d[pi+2]-d[ni+2]);if(gv>mG)mG=gv}if(mG>15)s.push({r:d[pi],g:d[pi+1],b:d[pi+2]})}if(s.length<3)return null;s.sort((a,b)=>l(a.r,a.g,a.b)-l(b.r,b.g,b.b));const n=Math.min(5,s.length);let sr=0,sg=0,sb=0;for(let i=0;i<n;i++){sr+=s[i].r;sg+=s[i].g;sb+=s[i].b}return{r:sr/n,g:sg/n,b:sb/n,count:s.length}}function dualTrackAnalyze(cl,dO,vO,w,h,al,dL,vL){const x1=cl.x,y1=cl.y,x2=Math.min(x1+cl.w,w),y2=Math.min(y1+cl.h,h),cw=x2-x1,ch=y2-y1;if(cw<6||ch<6)return null;const dd=dO.data.data,vd=vO.data?vO.data.data:null,vW=vO.w,vH=vO.h,res=[],regs=[];const ss=Math.max(4,Math.floor(Math.min(cw,ch)/6));for(let sy=y1;sy<y2;sy+=ss)for(let sx=x1;sx<x2;sx+=ss){const sz=Math.min(ss*2,x2-sx,y2-sy);if(sz<8)continue;const tp=classifyRegionType(dd,dL,sx,sy,sz,sz,dO.w,dO.h);let mr=!1;for(let i=0; i<regs.length; i++){const r=regs[i];if(r.type!==tp)continue;if(Math.max(0,Math.min(sy+sz,r.y+r.h)-Math.max(sy,r.y))>0&&Math.abs(sx-(r.x+r.w))<ss*2){r.x=Math.min(r.x,sx);r.y=Math.min(r.y,sy);r.w=Math.max(r.x+r.w,sx+sz)-r.x;r.h=Math.max(r.y+r.h,sy+sz)-r.y;mr=!0;break}}if(!mr)regs.push({type:tp,x:sx,y:sy,w:sz,h:sz})}for(let i=0; i<regs.length; i++){const r=regs[i];
-  // ⚡ 强行穿透机制：当发生大面积背景噪声（noise）即背景全错时，不再阻断中断，文字探测器强行下潜深挖内部文案细节！
-  if (r.type === 'noise_disabled') continue; 
-  const dL2=mserDetectInRegion(dL,dO.w,dO.h,r.x,r.y,r.w,r.h),vL2=vd?mserDetectInRegion(vL,vO.w,vO.h,r.x+al.dx,r.y+al.dy,r.w,r.h):[];for(let j=0;j<dL2.length;j++){const dl=dL2[j];let bV=null,bD=Infinity;for(let k=0;k<vL2.length;k++){const vl=vL2[k],vd2=Math.abs(dl.y-(vl.y-al.dy));if(vd2<dl.h&&vd2<bD){bD=vd2;bV=vl}}if(!bV)continue;const vxD=bV.x-al.dx,vyD=bV.y-al.dy,dC=sSIR(dd,dl.x,dl.y,dl.w,dl.h,dO.w,dO.h),vC=vd?sSIR(vd,bV.x,bV.y,bV.w,bV.h,vO.w,vO.h):null;if(dC&&vC&&dC.count>=3&&vC.count>=3){const de=d(dC.r,dC.g,dC.b,vC.r,vC.g,vC.b);if(de>.05)res.push({type:'font',priority:de>.2?'P0':de>.12?'P1':'P2',desc:'文字颜色偏差',detail:'设计: '+e(Math.round(dC.r),Math.round(dC.g),Math.round(dC.b))+' → 还原: '+e(Math.round(vC.r),Math.round(vC.g),Math.round(vC.b))+' (ΔE='+Math.round(de*100)+'%)',design:e(Math.round(dC.r),Math.round(dC.g),Math.round(dC.b)),actual:e(Math.round(vC.r),Math.round(vC.g),Math.round(vC.b)),pxDiff:Math.round(de*100)+'%'})}const hB=Math.abs(vxD-dl.x),vB=Math.abs(vyD-dl.y);if(hB>=2||vB>=2){const p=[];hB>=2&&p.push('水平偏差'+hB+'px');vB>=2&&p.push('垂直偏差'+vB+'px');res.push({type:'position',priority:hB>=4||vB>=4?'P1':'P2',desc:'文字位置偏移',detail:p.join('，'),design:'('+dl.x+','+dl.y+')',actual:'('+vxD+','+vyD+')',pxDiff:p.join('，')})}if(Math.abs(bV.w-dl.w)>=3||Math.abs(bV.h-dl.h)>=3)res.push({type:'size',priority:Math.abs(bV.w-dl.w)>=6||Math.abs(bV.h-dl.h)>=6?'P1':'P2',desc:'文字大小偏差',detail:'设计 '+dl.w+'×'+dl.h+'px → 还原 '+bV.w+'×'+bV.h+'px',design:dl.w+'×'+dl.h+'px',actual:bV.w+'×'+bV.h+'px',pxDiff:'水平 '+Math.abs(bV.w-dl.w)+'px, 垂直 '+Math.abs(bV.h-dl.h)+'px'})}}if(!res.length){let dR=0,dG=0,dB=0,vR=0,vG=0,vB=0,cnt=0;for(let y=y1;y<y2;y+=2)for(let x=x1;x<x2;x+=2){const pi=(y*w+x)*4;(dR+=dd[pi]),(dG+=dd[pi+1]),(dB+=dd[pi+2]);const vy=y+al.dy,vx=x+al.dx;if(vy>=0&&vy<vH&&vx>=0&&vx<vW){const piV=(vy*vW+vx)*4;(vR+=vd[piV]),(vG+=vd[piV+1]),(vB+=vd[piV+2]);cnt++}}if(cnt>0){const de=d(dR/cnt,dG/cnt,dB/cnt,vR/cnt,vG/cnt,vB/cnt);if(de>.04)res.push({type:'color',priority:'P2',desc:'颜色偏差',detail:'ΔE='+Math.round(de*100)+'%',design:e(Math.round(dR/cnt),Math.round(dG/cnt),Math.round(dB/cnt)),actual:e(Math.round(vR/cnt),Math.round(vG/cnt),Math.round(vB/cnt)),pxDiff:Math.round(de*100)+'%'})}}}return res.length?res:null}function cropIssueImages(d,v,w,h,al,is){const mgX=Math.ceil(Math.max(is.w,10)),mgY=Math.ceil(Math.max(is.h,10)),cx=Math.max(0,is.x-mgX),cy=Math.max(0,is.y-mgY),cw=Math.min(is.w+mgX*2,w-cx),ch=Math.min(is.h+mgY*2,h-cy),ds=document.createElement('canvas');ds.width=cw;ds.height=ch;ds.getContext('2d').drawImage(d.canvas,cx,cy,cw,ch,0,0,cw,ch);const dv=document.createElement('canvas');dv.width=cw;dv.height=ch;dv.getContext('2d').drawImage(v.canvas,cx-al.dx,cy-al.dy,cw,ch,0,0,cw,ch);const rx=is.x-cx,ry=is.y-cy,rw=is.w,rh=is.h;const c1=ds.getContext('2d');c1.strokeStyle='#ef4444';c1.lineWidth=2;c1.strokeRect(rx,ry,rw,rh);c1.lineWidth=3;c1.strokeRect(rx,ry,rw,rh);const c2=dv.getContext('2d');c2.strokeStyle='#ef4444';c2.lineWidth=2;c2.strokeRect(rx,ry,rw,rh);c2.lineWidth=3;c2.strokeRect(rx,ry,rw,rh);const gap=6,lh=22,out=document.createElement('canvas');out.width=cw*2+gap;out.height=ch+lh;const ctx=out.getContext('2d');ctx.fillStyle='#f8fafc';ctx.fillRect(0,0,out.width,out.height);ctx.drawImage(ds,0,0,cw,ch,0,lh,cw,ch);ctx.drawImage(dv,0,0,cw,ch,cw+gap,lh,cw,ch);ctx.fillStyle='#6b7280';ctx.font='12px sans-serif';ctx.textAlign='center';ctx.fillText('🎨 设计稿',cw/2,15);ctx.fillText('🛠 还原稿',cw+gap+cw/2,15);return out.toDataURL('image/png')}function generateDiffOverlay(d,v,w,h,al){const c=document.createElement('canvas');c.width=w;c.height=h;const ctx=c.getContext('2d');ctx.drawImage(d.canvas,0,0,w,h);const id=ctx.getImageData(0,0,w,h),o=id.data,dd=d.data.data,vd=v.data.data;for(let y=0;y<h;y++)for(let x=0;x<w;x++){const vy=y+al.dy,vx=x+al.dx;if(vx<0||vx>=v.w||vy<0||vy>=v.h)continue;const piD=(y*w+x)*4,piV=(vy*v.w+vx)*4;if(Math.abs(dd[piD]-vd[piV])+Math.abs(dd[piD+1]-vd[piV+1])+Math.abs(dd[piD+2]-vd[piV+2])>80){o[(y*w+x)*4]=255;o[(y*w+x)*4+1]=0;o[(y*w+x)*4+2]=0;o[(y*w+x)*4+3]=255}}ctx.putImageData(id,0,0);return c.toDataURL('image/png')}async function vgDetect(designUrl,devUrl){try{const[d,v]=await Promise.all([loadCanvas(designUrl),loadCanvas(devUrl)]);if(!d.data||!v.data)return{issues:[],align:{dx:0,dy:0},cropUrls:[],diffOverlay:null};const w=Math.min(d.w,v.w),h=Math.min(d.h,v.h);if(w<10||h<10)return{issues:[],align:{dx:0,dy:0},cropUrls:[],diffOverlay:null};const al=alignImages(d,v),dEn=enhanceContrast(d.data.data,d.data.width,d.data.height),vEn=enhanceContrast(v.data.data,v.data.width,v.data.height),dLum=new Uint8Array(d.w*d.h),vLum=new Uint8Array(v.w*v.h);for(let i=0;i<d.w*d.h;i++)dLum[i]=dEn[i*4];for(let i=0;i<v.w*v.h;i++)vLum[i]=vEn[i*4];const textLines=[];try{const raw=mserDetectInRegion(dLum,d.w,d.h,0,0,d.w,d.h);for(const l of raw)if(l.w>20&&l.h>6)textLines.push({x:l.x,y:l.y,w:l.w,h:l.h,comps:l.comps||1})}catch(e){}const cls=clusterDiffs(d,v,w,h,al),issues=[];for(const c of cls){const list=dualTrackAnalyze(c,d,v,w,h,al,dLum,vLum);if(list)for(let j=0;j<list.length;j++)issues.push({x:c.x,y:c.y,w:c.w,h:c.h,category:list[j].type,priority:list[j].priority,description:list[j].desc,detail:list[j].detail})}const merged=[];for(let i=0;i<issues.length;i++){const is=issues[i];let dup=!1;for(let j=0;j<merged.length;j++){const m=merged[j];if(m.category===is.category&&Math.hypot(is.x-m.x,is.y-m.y)<24){dup=!0;break}}if(!dup)merged.push(is)}const final=[];for(let i=0;i<merged.length;i++){const is=merged[i];let ad=!1;for(let j=0;j<final.length;j++){const g=final[j];if(g.category!==is.category)continue;var gx2=Math.max(g.x+g.w,is.x+is.w),gy2=Math.max(g.y+g.h,is.y+is.h),ix=Math.max(g.x,is.x),iy=Math.max(g.y,is.y),ix2=Math.min(g.x+g.w,is.x+is.w),iy2=Math.min(g.y+g.h,is.y+is.h);if(ix<ix2&&iy<iy2){var ov=(ix2-ix)*(iy2-iy),tu=g.w*g.h+is.w*is.h-ov;if(tu>0&&ov/tu>.15){g.x=Math.min(g.x,is.x);g.y=Math.min(g.y,is.y);g.w=gx2-g.x;g.h=gy2-g.y;g.regionCount=(g.regionCount||1)+1;if(g.regionCount===2)g.description=is.category==='font'?'文字/字体差异':is.category==='position'?'位置偏差':is.category==='size'?'尺寸偏差':'颜色偏差';ad=!0;break}}}if(!ad){is.regionCount=1;final.push(is)}}for(let i=0;i<final.length;i++)final[i].regionIndex=i+1;const po={P0:0,P1:1,P2:2,P3:3},sorted=final.sort((a,b)=>(po[a.priority]!==undefined?po[a.priority]:99)-(po[b.priority]!==undefined?po[b.priority]:99)),cropUrls=sorted.map(is=>{try{return cropIssueImages(d,v,w,h,al,is)}catch(e){return null}}),diffOverlay=generateDiffOverlay(d,v,w,h,al);return{issues:sorted,align:al,cropUrls,diffOverlay}}catch(e){return{issues:[],align:{dx:0,dy:0},cropUrls:[],diffOverlay:null}}}window.vgDetect=vgDetect;})();
+(function(){function e(r,g,b){return'#'+[r,g,b].map(v=>Math.max(0,Math.min(255,Math.round(v))).toString(16).padStart(2,'0')).join('').toUpperCase()}function d(r1,g1,b1,r2,g2,b2){return Math.sqrt(Math.pow(r1-r2,2)+Math.pow(g1-g2,2)+Math.pow(b1-b2,2))/Math.sqrt(Math.pow(255,2)*3)}function l(r,g,b){return.299*r+.587*g+.114*b}function loadCanvas(url){return new Promise(resolve=>{const img=new Image;if(!url.startsWith('data:'))img.crossOrigin='anonymous';img.onload=()=>{const c=document.createElement('canvas');c.width=img.width;c.height=img.height;const ctx=c.getContext('2d');ctx.drawImage(img,0,0);resolve({w:img.width,h:img.height,data:ctx.getImageData(0,0,img.width,img.height),ctx,canvas:c})};img.onerror=()=>resolve({w:0,h:0,data:null});img.src=url})}function alignImages(d,v){const dd=d.data.data,vd=v.data.data,vW=v.w,vH=v.h;function s(ox,oy,tdx,tdy){const rw=Math.min(40,d.w-ox),rh=Math.min(40,d.h-oy);let s=0,n=0;for(let y=oy;y<oy+rh;y+=4)for(let x=ox;x<ox+rw;x+=4){const py=y+tdy,px=x+tdx;if(py<0||px<0||py>=vH||px>=vW)continue;const piD=(y*d.w+x)*4,piV=(py*vW+px)*4;s+=Math.abs(dd[piD]-vd[piV])+Math.abs(dd[piD+1]-vd[piV+1])+Math.abs(dd[piD+2]-vd[piV+2]);n++}return n>0?s/n:1/0}let bDx=0,bDy=0,bS=1/0;for(let dy=-12;dy<=12;dy+=2)for(let dx=-12;dx<=12;dx+=2){let t=0,c=0;for(const[ox,oy]of[[0,0],[Math.max(0,d.w-60),0],[0,Math.max(0,d.h-60)]]){const sc=s(ox,oy,dx,dy);if(sc<1/0){t+=sc;c++}}const avg=c>0?t/c:1/0;if(avg<bS){bS=avg;bDx=dx;bDy=dy}}for(let dy=-1;dy<=1;dy++)for(let dx=-1;dx<=1;dx++){let t=0,c=0;for(const[ox,oy]of[[0,0],[Math.max(0,d.w-60),0],[0,Math.max(0,d.h-60)]]){const sc=s(ox,oy,bDx+dx,bDy+dy);if(sc<1/0){t+=sc;c++}}const avg=c>0?t/c:1/0;if(avg<bS){bS=avg;bDx+=dx;bDy+=dy}}return{dx:bDx,dy:bDy}}function enhanceContrast(imgData,iW,iH){const data=new Uint8ClampedArray(imgData),ts=64,tx=Math.ceil(iW/ts),ty=Math.ceil(iH/ts);for(let by=0;by<ty;by++)for(let bx=0;bx<tx;bx++){const x1=bx*ts,y1=by*ts,x2=Math.min(x1+ts,iW),y2=Math.min(y1+ts,iH),hist=new Int32Array(256);for(let y=y1;y<y2;y++)for(let x=x1;x<x2;x++){const pi=(y*iW+x)*4;hist[Math.round(l(imgData[pi],imgData[pi+1],imgData[pi+2]))]++}const tp=(x2-x1)*(y2-y1),lim=Math.max(3,tp*.01);let ex=0;for(let i=0;i<256;i++){if(hist[i]>lim){ex+=hist[i]-lim;hist[i]=lim}}const rd=Math.floor(ex/256);for(let i=0;i<256;i++)hist[i]+=rd;const cdf=new Int32Array(256);cdf[0]=hist[0];for(let i=1;i<256;i++)cdf[i]=cdf[i-1]+hist[i];const cdfMin=cdf[0],cdfR=cdf[255]-cdfMin;for(let y=y1;y<y2;y++)for(let x=x1;x<x2;x++){const pi=(y*iW+x)*4,lu=Math.round(l(imgData[pi],imgData[pi+1],imgData[pi+2])),mp=cdfR>0?Math.round((cdf[lu]-cdfMin)*255/cdfR):lu,nl=lu+(mp-lu)*.7*Math.min(2,Math.max(1,cdfR>0?255/cdfR:1));data[pi]=data[pi+1]=data[pi+2]=Math.max(0,Math.min(255,nl))}}let mL=255,xL=0;for(let i=0;i<data.length;i+=4){const lv=data[i];if(lv<mL)mL=lv;if(lv>xL)xL=lv}const rg=xL-mL;if(rg>10)for(let i=0;i<data.length;i+=4){data[i]=(data[i]-mL)*255/rg;data[i+1]=data[i+2]=data[i]}return data}function clusterDiffs(d,v,w,h,al){const dd=d.data.data,vd=v.data.data,vW=v.w,vH=v.h,dm=new Uint8Array(w*h);for(let y=0;y<h;y++)for(let x=0;x<w;x++){const vy=y+al.dy,vx=x+al.dx;if(vx<0||vx>=vW||vy<0||vy>=vH)continue;const piD=(y*w+x)*4,piV=(vy*vW+vx)*4;if(Math.abs(dd[piD]-vd[piV])+Math.abs(dd[piD+1]-vd[piV+1])+Math.abs(dd[piD+2]-vd[piV+2])>30)dm[y*w+x]=1}const bs=8,bw=Math.ceil(w/bs),bh=Math.ceil(h/bs),bm=new Uint8Array(bw*bh);for(let by=0;by<bh;by++)for(let bx=0;bx<bw;bx++){let dc=0,tp=0;for(let dy=0;dy<bs&&by*bs+dy<h;dy++)for(let dx=0;dx<bs&&bx*bs+dx<w;dx++){tp++;if(dm[(by*bs+dy)*w+(bx*bs+dx)])dc++}if(dc>tp*.03)bm[by*bw+bx]=1}const vis=new Uint8Array(bw*bh),clusters=[];for(let by=0;by<bh;by++)for(let bx=0;bx<bw;bx++){const idx=by*bw+bx;if(!bm[idx]||vis[idx])continue;const q=[[bx,by]];vis[idx]=1;let mnX=bx,mxX=bx,mnY=by,mxY=by;while(q.length){const[cx,cy]=q.shift();mnX=Math.min(mnX,cx);mxX=Math.max(mxX,cx);mnY=Math.min(mnY,cy);mxY=Math.max(mxY,cy);for(let dy=-1;dy<=1;dy++)for(let dx=-1;dx<=1;dx++){const nx=cx+dx,ny=cy+dy;if(nx<0||nx>=bw||ny<0||ny>=bh)continue;const ni=ny*bw+nx;if(bm[ni]&&!vis[ni]){vis[ni]=1;q.push([nx,ny])}}}clusters.push({x:mnX*bs,y:mnY*bs,w:Math.min((mxX-mnX+1)*bs,w-mnX*bs),h:Math.min((mxY-mnY+1)*bs,h-mnY*bs)})}return clusters}function classifyRegionType(id,ld,rx,ry,rw,rh,iW,iH){if(rw<6||rh<6)return'noise';const cs=new Set;let te=0,he=0,ve=0,tp=0,ls=0;const lh=new Int32Array(256);for(let y=ry;y<ry+rh;y++)for(let x=rx;x<rx+rw;x++){tp++;const pi=(y*iW+x)*4,lu=Math.round(l(id[pi],id[pi+1],id[pi+2]));ls+=lu;lh[lu]++;cs.add(((id[pi]>>3)<<3)+','+((id[pi+1]>>3)<<3)+','+((id[pi+2]>>3)<<3))}const cr=cs.size/tp;for(let y=ry+1;y<ry+rh-1;y++)for(let x=rx+1;x<rx+rw-1;x++){const lv=ld[y*iW+x],hg=Math.abs(lv-ld[y*iW+x-1])+Math.abs(lv-ld[y*iW+x+1]),vg=Math.abs(lv-ld[(y-1)*iW+x])+Math.abs(lv-ld[(y+1)*iW+x]);he+=hg;ve+=vg}const ed=Math.min(100,(he+ve)/tp),hv=Math.min(10,he/Math.max(ve,.001));let mn=255,mx=0;for(let i=0;i<256;i++)if(lh[i]>0){if(i<mn)mn=i;if(i>mx)mx=i}const lr=mx-mn;if(cr>.12&&ed>5&&lr>80)return'image';if(cr<.03&&ed<2&&lr<50&&rh>12)return'button_bg';if(ed<.3&&cs.size<5&&rh>12&&rw>24)return'button_bg';if(cr<.04&&ed<4&&rh>10&&rw>20){if(rw*.4<rh&&rh<rw*2.5)return'button_bg'}if(rw<60&&rh<60&&ed>1.5){if(hv>.6&&hv<1.8){if(rw*.3<rh&&rh<rw*3)return'icon'}}if(cr<.06&&ed>.8&&hv>.8){if(hv>1.3&&rh>5&&rw>rh*.4&&rh<rw*3)return'text';if(lr>40&&ed>3&&rh>4&&rh<60)return'text'}if(rw<15&&rh>4&&rh<25&&ed>.5){if(rw*.3<rh&&rh<rw*3)return'text'}if(ed>2&&cr<.08&&rh>4&&rh<40)return'text';if(ed>1&&rw<80&&rh<80&&cr<.1){if(hv>.5&&hv<2)return'icon'}return'unknown'}function mserDetectInRegion(ld,iW,iH,rx,ry,rw,rh){const g=new Uint8Array(rw*rh);for(let y=ry+1;y<ry+rh-1;y++)for(let x=rx+1;x<rx+rw-1;x++){const idx=(y-ry)*rw+(x-rx),gx=Math.abs(ld[y*iW+x+1]-ld[y*iW+x-1]),gy=Math.abs(ld[(y+1)*iW+x]-ld[(y-1)*iW+x]);g[idx]=Math.min(255,Math.round(Math.sqrt(gx*gx*.6+gy*gy*.4)))}const bn=new Uint8Array(rw*rh),h=new Uint32Array(256);let tp=0;for(let i=0;i<rw*rh;i++){const v=g[i];if(v>5){h[v]++;tp++}}let s=0;for(let i=0;i<256;i++)s+=i*h[i];let sB=0,wB=0,wF=0,mV=0,oT=12;for(let t=0;t<256;t++){wB+=h[t];if(!wB)continue;wF=tp-wB;if(!wF)break;sB+=t*h[t];const mB=sB/wB,mF=(s-sB)/wF,bV=wB*wF*(mB-mF)*(mB-mF);if(bV>mV){mV=bV;oT=t}}const bT=Math.max(oT,10,Math.min(oT*1.5,120));for(let i=0;i<rw*rh;i++)bn[i]=g[i]>=bT?255:0;const mo=new Uint8Array(rw*rh);for(let y=0;y<rh;y++)for(let x=0;x<rw;x++){let mV=bn[y*rw+x];if(x>0&&bn[y*rw+x-1]>mV)mV=bn[y*rw+x-1];if(x<rw-1&&bn[y*rw+x+1]>mV)mV=bn[y*rw+x+1];mo[y*rw+x]=mV}const vs=new Uint8Array(rw*rh),cs=[];for(let y=0;y<rh;y++)for(let x=0;x<rw;x++){const idx=y*rw+x;if(mo[idx]!==255||vs[idx])continue;const q=[idx];vs[idx]=1;let mn=x,mx=x,mnY=y,mxY=y,cnt=0;while(q.length){const ci=q.shift();cnt++;const cx=ci%rw,cy=Math.floor(ci/rw);if(cx<mn)mn=cx;if(cx>mx)mx=cx;if(cy<mnY)mnY=cy;if(cy>mxY)mxY=cy;for(let dy=-1;dy<=1;dy++)for(let dx=-1;dx<=1;dx++){if(!dx&&!dy)continue;const nx=cx+dx,ny=cy+dy;if(nx<0||nx>=rw||ny<0||ny>=rh)continue;const ni=ny*rw+nx;if(vs[ni]||mo[ni]!==255)continue;vs[ni]=1;q.push(ni)}}const bw=mx-mn+1,bh=mxY-mnY+1;if(bw<5||bh<4||cnt<6)continue;const r=bw/Math.max(bh,1);if(r<.4||r>20)continue;if(cnt/(bw*bh)<.02||cnt/(bw*bh)>.95)continue;let ep=0;for(let sy=mnY;sy<=mxY;sy++)for(let sx=mn;sx<=mx;sx++)if(bn[sy*rw+sx]===255)ep++;if(ep/(bw*bh)<.01)continue;cs.push({x:mn+rx,y:mnY+ry,w:bw,h:bh,cnt,density:ep/(bw*bh),ratio:r})}if(!cs.length)return[];for(const c of cs){const lY=c.y-ry,lH=c.h;let t=lY;for(let y=lY;y<lY+lH;y++){let he=!1;for(let sx=c.x-rx;sx<c.x-rx+c.w;sx+=2)if(bn[y*rw+sx]===255){he=!0;break}if(he){t=y;break}}let b=lY+lH-1;for(let y=lY+lH-1;y>=t;y--){let he=!1;for(let sx=c.x-rx;sx<c.x-rx+c.w;sx+=2)if(bn[y*rw+sx]===255){he=!0;break}if(he){b=y;break}}const nh=b-t+1;if(nh>=4){c.y=t+ry;c.h=nh}}if(!cs.length)return[];const sH=[...cs].sort((a,b)=>a.h-b.h),mI=Math.floor(cs.length/2),bH=Math.max(sH[mI].h,10),st=[...cs].sort((a,b)=>(a.y+a.h/2)-(b.y+b.h/2)),yT=bH*1.0,rows=[];for(const c of st){const cy=c.y+c.h/2;let f=!1;for(let ri=rows.length-1;ri>=0;ri--){const r=rows[ri],mY=r.comps.reduce((s,cc)=>s+cc.y+cc.h/2,0)/r.comps.length;if(Math.abs(cy-mY)<=yT){r.comps.push(c);f=!0;break}}if(!f)rows.push({comps:[c]})}const ln=[];for(const r of rows){if(r.comps.length<1)continue;const mn=Math.min(...r.comps.map(c=>c.x)),mx=Math.max(...r.comps.map(c=>c.x+c.w)),mnY=Math.min(...r.comps.map(c=>c.y)),mxY=Math.max(...r.comps.map(c=>c.y+c.h));ln.push({x:mn,y:mnY,w:mx-mn,h:mxY-mnY,comps:r.comps.length})}ln.sort((a,b)=>a.y-b.y);for(let i=0;i<ln.length;i++)for(let j=i+1;j<ln.length;j++){const vo=Math.min(ln[i].y+ln[i].h,ln[j].y+ln[j].h)-Math.max(ln[i].y,ln[j].y);if(vo>Math.min(ln[i].h,ln[j].h)*.5&&vo>4){ln[i].x=Math.min(ln[i].x,ln[j].x);ln[i].y=Math.min(ln[i].y,ln[j].y);const x2=Math.max(ln[i].x+ln[i].w,ln[j].x+ln[j].w),y2=Math.max(ln[i].y+ln[i].h,ln[j].y+ln[j].h);ln[i].w=x2-ln[i].x;ln[i].h=y2-ln[i].y;ln[i].comps+=ln[j].comps;ln.splice(j,1);j--}}return ln.filter(l=>{if(l.w<20||l.h<8)return!1;if(l.comps<2&&l.h<20&&l.w<40)return!1;if(l.w/l.h>30&&l.h<8)return!1;return!0})}function detectContainers(id,iW,iH){const vs=new Uint8Array(iW*iH),cs=[];for(let y=8;y<iH-8;y+=4)for(let x=8;x<iW-8;x+=4){const i=y*iW+x;if(vs[i])continue;const pi=i*4,cr=id[pi],cg=id[pi+1],cb=id[pi+2],mC=Math.max(cr,cg,cb),mn=Math.min(cr,cg,cb),st=mC>30?mC-mn:0;if(st<10)continue;const lv=l(cr,cg,cb);if(lv>200||lv<20)continue;vs[i]=1;const q=[[x,y]];let mnX=x,mxX=x,mnY=y,mxY=y,pc=0;while(q.length){const[cx,cy]=q.shift();pc++;if(cx<mnX)mnX=cx;if(cx>mxX)mxX=cx;if(cy<mnY)mnY=cy;if(cy>mxY)mxY=cy;for(let dy=-4;dy<=4;dy+=4)for(let dx=-4;dx<=4;dx+=4){const nx=cx+dx,ny=cy+dy;if(nx<0||nx>=iW||ny<0||ny>=iH)continue;const ni=ny*iW+nx;if(vs[ni])continue;const npi=ni*4;if(Math.abs(id[npi]-cr)+Math.abs(id[npi+1]-cg)+Math.abs(id[npi+2]-cb)>60)continue;vs[ni]=1;q.push([nx,ny])}}const bw=mxX-mnX+1,bh=mxY-mnY+1;if(bw<20||bw>300||bh<15||bh>150)continue;const r=bw/Math.max(bh,1);if(r<.3||r>5)continue;if(pc/(bw*bh)<.03||pc/(bw*bh)>.6)continue;cs.push({x:mnX,y:mnY,w:bw,h:bh})}return cs}function dualTrackAnalyze(cl,dO,vO,w,h,al,dL,vL){const x1=cl.x,y1=cl.y,x2=Math.min(x1+cl.w,w),y2=Math.min(y1+cl.h,h),cw=x2-x1,ch=y2-y1;if(cw<6||ch<6)return null;const dd=dO.data.data,vd=vO.data?vO.data.data:null,vW=vO.w,vH=vO.h,res=[],regs=[];const ss=Math.max(4,Math.floor(Math.min(cw,ch)/6));for(let sy=y1;sy<y2;sy+=ss)for(let sx=x1;sx<x2;sx+=ss){const sz=Math.min(ss*2,x2-sx,y2-sy);if(sz<8)continue;const tp=classifyRegionType(dd,dL,sx,sy,sz,sz,w,h);let mr=!1;for(const r of regs){if(r.type!==tp)continue;if(Math.max(0,Math.min(sy+sz,r.y+r.h)-Math.max(sy,r.y))>0&&Math.abs(sx-(r.x+r.w))<ss*2){r.x=Math.min(r.x,sx);r.y=Math.min(r.y,sy);r.w=Math.max(r.x+r.w,sx+sz)-r.x;r.h=Math.max(r.y+r.h,sy+sz)-r.y;mr=!0;break}}if(!mr)regs.push({type:tp,x:sx,y:sy,w:sz,h:sz})}for(const r of regs){if(r.type!=='text'&&r.type!=='unknown')continue;const dL2=mserDetectInRegion(dL,w,h,r.x,r.y,r.w,r.h),vL2=vd?mserDetectInRegion(vL,vW,vH,r.x+al.dx,r.y+al.dy,r.w,r.h):[];for(const dl of dL2){let bV=null,bD=Infinity;for(const vl of vL2){const vd2=Math.abs(dl.y-(vl.y-al.dy));if(vd2<dl.h&&vd2<bD){bD=vd2;bV=vl}}if(!bV)continue;const vxD=bV.x-al.dx,vyD=bV.y-al.dy,dC=sSIR(dd,dl.x,dl.y,dl.w,dl.h,w,h),vC=vd?sSIR(vd,bV.x,bV.y,bV.w,bV.h,vW,vH):null;if(dC&&vC&&dC.count>=3&&vC.count>=3){const de=d(dC.r,dC.g,dC.b,vC.r,vC.g,vC.b);if(de>.05)res.push({type:'font',priority:de>.2?'P0':de>.12?'P1':'P2',desc:'文字颜色偏差',detail:'设计: '+e(Math.round(dC.r),Math.round(dC.g),Math.round(dC.b))+' → 还原: '+e(Math.round(vC.r),Math.round(vC.g),Math.round(vC.b))+' (ΔE='+Math.round(de*100)+'%)',design:e(Math.round(dC.r),Math.round(dC.g),Math.round(dC.b)),actual:e(Math.round(vC.r),Math.round(vC.g),Math.round(vC.b)),pxDiff:Math.round(de*100)+'%'})}const hB=Math.abs(vxD-dl.x),vB=Math.abs(vyD-dl.y);if(hB>=2||vB>=2){const p=[];hB>=2&&p.push('水平偏差'+hB+'px');vB>=2&&p.push('垂直偏差'+vB+'px');res.push({type:'position',priority:hB>=4||vB>=4?'P1':'P2',desc:'文字位置偏移',detail:p.join('，'),design:'('+dl.x+','+dl.y+')',actual:'('+vxD+','+vyD+')',pxDiff:p.join('，')})}if(Math.abs(bV.w-dl.w)>=3||Math.abs(bV.h-dl.h)>=3)res.push({type:'size',priority:Math.abs(bV.w-dl.w)>=6||Math.abs(bV.h-dl.h)>=6?'P1':'P2',desc:'文字大小偏差',detail:'设计 '+dl.w+'×'+dl.h+'px → 还原 '+bV.w+'×'+bV.h+'px',design:dl.w+'×'+dl.h+'px',actual:bV.w+'×'+bV.h+'px',pxDiff:'水平 '+Math.abs(bV.w-dl.w)+'px, 垂直 '+Math.abs(bV.h-dl.h)+'px'})}}const dCs=detectContainers(dd,w,h);for(const dc of dCs){if(Math.max(dc.x,x1)-Math.min(dc.x+dc.w,x2)>0||Math.max(dc.y,y1)-Math.min(dc.y+dc.h,y2)>0)continue;let bV=null,bVC=0;for(const vc of detectContainers(vd,vW,vH)){const vov=Math.min(vc.x+vc.w,dc.x+al.dx+dc.w)-Math.max(vc.x,dc.x+al.dx),vov2=Math.min(vc.y+vc.h,dc.y+al.dy+dc.h)-Math.max(vc.y,dc.y+al.dy);if(vov>0&&vov2>0){const c2=(vov*vov2)/(dc.w*dc.h);if(c2>bVC){bVC=c2;bV=vc}}}if(!bV||bVC<.3)continue;const vcxR=bV.x-al.dx,vcyR=bV.y-al.dy,hB=Math.round(Math.abs(vcxR-dc.x)),vB=Math.round(Math.abs(vcyR-dc.y));if(hB>=2||vB>=2)res.push({type:'position',priority:hB>=5||vB>=5?'P1':'P2',desc:'按钮容器位置偏移',detail:'水平偏差 '+hB+'px, 垂直偏差 '+vB+'px',design:'('+dc.x+','+dc.y+') '+dc.w+'×'+dc.h+'px',actual:'('+bV.x+','+bV.y+') '+bV.w+'×'+bV.h+'px',pxDiff:'水平 '+hB+'px, 垂直 '+vB+'px'});if(Math.abs(bV.w-dc.w)>=3||Math.abs(bV.h-dc.h)>=3)res.push({type:'size',priority:Math.abs(bV.w-dc.w)>=6||Math.abs(bV.h-dc.h)>=6?'P1':'P2',desc:'按钮容器大小偏差',detail:'设计 '+dc.w+'×'+dc.h+'px → 还原 '+bV.w+'×'+bV.h+'px',design:dc.w+'×'+dc.h+'px',actual:bV.w+'×'+bV.h+'px',pxDiff:'水平 '+Math.abs(bV.w-dc.w)+'px, 垂直 '+Math.abs(bV.h-dc.h)+'px'});const dIn=mserDetectInRegion(dL,w,h,dc.x,dc.y,dc.w,dc.h),vIn=mserDetectInRegion(vL,vW,vH,bV.x,bV.y,bV.w,bV.h);for(const dil of dIn){let bV2=null,bD2=1/0;for(const vil of vIn){const dd2=Math.abs(dil.y-(vil.y-al.dy));if(dd2<dil.h*.8&&dd2<bD2){bD2=dd2;bV2=vil}}if(!bV2)continue;const dC2=sSIR(dd,dil.x+dc.x,dil.y+dc.y,dil.w,dil.h,w,h),vC2=vd?sSIR(vd,bV2.x+bV.x+al.dx,bV2.y+bV.y+al.dy,bV2.w,bV2.h,vW,vH):null;if(dC2&&vC2){const de2=d(dC2.r,dC2.g,dC2.b,vC2.r,vC2.g,vC2.b);if(de2>.05)res.push({type:'font',priority:de2>.2?'P0':de2>.12?'P1':'P2',desc:'容器内文字颜色偏差',detail:'设计: '+e(Math.round(dC2.r),Math.round(dC2.g),Math.round(dC2.b))+' → 还原: '+e(Math.round(vC2.r),Math.round(vC2.g),Math.round(vC2.b))+' (ΔE='+Math.round(de2*100)+'%)',design:e(Math.round(dC2.r),Math.round(dC2.g),Math.round(dC2.b)),actual:e(Math.round(vC2.r),Math.round(vC2.g),Math.round(vC2.b)),pxDiff:Math.round(de2*100)+'%'})}const hB2=Math.abs(bV2.x-dil.x),vB2=Math.abs(bV2.y-dil.y);if(hB2>=2||vB2>=2)res.push({type:'position',priority:hB2>=4||vB2>=4?'P1':'P2',desc:'容器内文字位置偏移',detail:(hB2>=2?'水平'+hB2+'px ':'')+(vB2>=2?'垂直'+vB2+'px':''),design:'('+dil.x+','+dil.y+')',actual:'('+bV2.x+','+bV2.y+')',pxDiff:(hB2>=2?'水平偏差'+hB2+'px ':'')+(vB2>=2?'垂直偏差'+vB2+'px':'')});if(Math.abs(bV2.w-dil.w)>=3||Math.abs(bV2.h-dil.h)>=3)res.push({type:'size',priority:'P2',desc:'容器内文字大小偏差',detail:'设计 '+dil.w+'×'+dil.h+'px → 还原 '+bV2.w+'×'+bV2.h+'px',design:dil.w+'×'+dil.h+'px',actual:bV2.w+'×'+bV2.h+'px',pxDiff:'水平 '+Math.abs(bV2.w-dil.w)+'px, 垂直 '+Math.abs(bV2.h-dil.h)+'px'})}}if(!res.length){let dR=0,dG=0,dB=0,vR=0,vG=0,vB=0,cnt=0;for(let y=y1;y<y2;y+=2)for(let x=x1;x<x2;x+=2){const pi=(y*w+x)*4;(dR+=dd[pi]),(dG+=dd[pi+1]),(dB+=dd[pi+2]);const vy=y+al.dy,vx=x+al.dx;if(vy>=0&&vy<vH&&vx>=0&&vx<vW){const piV=(vy*vW+vx)*4;(vR+=vd[piV]),(vG+=vd[piV+1]),(vB+=vd[piV+2]);cnt++}}if(cnt>0){const de=d(dR/cnt,dG/cnt,dB/cnt,vR/cnt,vG/cnt,vB/cnt);de>.04&&res.push({type:'color',priority:'P2',desc:'颜色偏差',detail:'ΔE='+Math.round(de*100)+'%',design:e(Math.round(dR/cnt),Math.round(dG/cnt),Math.round(dB/cnt)),actual:e(Math.round(vR/cnt),Math.round(vG/cnt),Math.round(vB/cnt)),pxDiff:Math.round(de*100)+'%'})}}return res.length?res:null}function cropIssueImages(d,v,w,h,al,is){const mgX=Math.ceil(Math.max(is.w,10)),mgY=Math.ceil(Math.max(is.h,10)),cx=Math.max(0,is.x-mgX),cy=Math.max(0,is.y-mgY),cw=Math.min(is.w+mgX*2,w-cx),ch=Math.min(is.h+mgY*2,h-cy),ds=document.createElement('canvas');ds.width=cw;ds.height=ch;ds.getContext('2d').drawImage(d.canvas,cx,cy,cw,ch,0,0,cw,ch);const dv=document.createElement('canvas');dv.width=cw;dv.height=ch;dv.getContext('2d').drawImage(v.canvas,cx-al.dx,cy-al.dy,cw,ch,0,0,cw,ch);const rx=is.x-cx,ry=is.y-cy,rw=is.w,rh=is.h;[ds,dv].forEach(c=>{const ctx=c.getContext('2d');ctx.strokeStyle='#ef4444';ctx.lineWidth=2;ctx.strokeRect(rx,ry,rw,rh);ctx.lineWidth=3;ctx.strokeRect(rx,ry,rw,rh)});const gap=6,lh=22,out=document.createElement('canvas');out.width=cw*2+gap;out.height=ch+lh;const ctx=out.getContext('2d');ctx.fillStyle='#f8fafc';ctx.fillRect(0,0,out.width,out.height);ctx.drawImage(ds,0,0,cw,ch,0,lh,cw,ch);ctx.drawImage(dv,0,0,cw,ch,cw+gap,lh,cw,ch);ctx.fillStyle='#6b7280';ctx.font='12px sans-serif';ctx.textAlign='center';ctx.fillText('🎨 设计稿',cw/2,15);ctx.fillText('🛠 还原稿',cw+gap+cw/2,15);return out.toDataURL('image/png')}function generateDiffOverlay(d,v,w,h,al){const c=document.createElement('canvas');c.width=w;c.height=h;const ctx=c.getContext('2d');ctx.drawImage(d.canvas,0,0,w,h);const id=ctx.getImageData(0,0,w,h),o=id.data,dd=d.data.data,vd=v.data.data;for(let y=0;y<h;y++)for(let x=0;x<w;x++){const vy=y+al.dy,vx=x+al.dx;if(vx<0||vx>=v.w||vy<0||vy>=v.h)continue;const piD=(y*w+x)*4,piV=(vy*v.w+vx)*4;if(Math.abs(dd[piD]-vd[piV])+Math.abs(dd[piD+1]-vd[piV+1])+Math.abs(dd[piD+2]-vd[piV+2])>80){o[(y*w+x)*4]=255;o[(y*w+x)*4+1]=0;o[(y*w+x)*4+2]=0;o[(y*w+x)*4+3]=255}}ctx.putImageData(id,0,0);return c.toDataURL('image/png')}async function vgDetect(designUrl,devUrl){try{const[d,v]=await Promise.all([loadCanvas(designUrl),loadCanvas(devUrl)]);if(!d.data||!v.data)return{issues:[],align:{dx:0,dy:0},cropUrls:[],diffOverlay:null};const w=Math.min(d.w,v.w),h=Math.min(d.h,v.h);if(w<10||h<10)return{issues:[],align:{dx:0,dy:0},cropUrls:[],diffOverlay:null};const al=alignImages(d,v),dEn=enhanceContrast(d.data.data,d.data.width,d.data.height),vEn=enhanceContrast(v.data.data,v.data.width,v.data.height),dLum=new Uint8Array(d.w*d.h),vLum=new Uint8Array(v.w*v.h);for(let i=0;i<d.w*d.h;i++)dLum[i]=dEn[i*4];for(let i=0;i<v.w*v.h;i++)vLum[i]=vEn[i*4];const textLines=[];try{const raw=mserDetectInRegion(dLum,d.w,d.h,0,0,d.w,d.h);for(const l of raw)if(l.w>20&&l.h>6)textLines.push({x:l.x,y:l.y,w:l.w,h:l.h,comps:l.comps||1})}catch(e){}const cls=clusterDiffs(d,v,w,h,al),issues=[];for(const c of cls){const list=dualTrackAnalyze(c,d,v,w,h,al,dLum,vLum);if(list)for(const is of list)issues.push({x:c.x,y:c.y,w:c.w,h:c.h,category:is.type,priority:is.priority,description:is.desc,detail:is.detail,designValue:is.design||'',actualValue:is.actual||'',pxDiff:is.pxDiff||''})}const merged=[];for(const is of issues){let dup=!1;for(const m of merged)if(m.category===is.category&&Math.hypot(is.x-m.x,is.y-m.y)<24){dup=!0;break}dup||merged.push(is)}const final=[];for(const is of merged){let ad=!1;for(const g of final){if(g.category!==is.category)continue;var gx2=Math.max(g.x+g.w,is.x+is.w),gy2=Math.max(g.y+g.h,is.y+is.h),ix=Math.max(g.x,is.x),iy=Math.max(g.y,is.y),ix2=Math.min(g.x+g.w,is.x+is.w),iy2=Math.min(g.y+g.h,is.y+is.h);if(ix<ix2&&iy<iy2){var ov=(ix2-ix)*(iy2-iy),tu=g.w*g.h+is.w*is.h-ov;if(tu>0&&ov/tu>.15){g.x=Math.min(g.x,is.x);g.y=Math.min(g.y,is.y);g.w=gx2-g.x;g.h=gy2-g.y;g.regionCount=(g.regionCount||1)+1;if(g.regionCount===2)g.description=is.category==='font'?'文字/字体差异':is.category==='position'?'位置偏差':is.category==='size'?'尺寸偏差':'颜色偏差';ad=!0;break}}}ad||(is.regionCount=1,final.push(is))}final.forEach((is,i)=>is.regionIndex=i+1);const po={P0:0,P1:1,P2:2,P3:3},sorted=final.sort((a,b)=> (po[a.priority] !== undefined ? po[a.priority] : 99) - (po[b.priority] !== undefined ? po[b.priority] : 99)),cropUrls=sorted.map(is=>{try{return cropIssueImages(d,v,w,h,al,is)}catch(e){return null}}),diffOverlay=generateDiffOverlay(d,v,w,h,al);return{issues:sorted,align:al,cropUrls,diffOverlay}}catch(e){return{issues:[],align:{dx:0,dy:0},cropUrls:[],diffOverlay:null}}}window.vgDetect=vgDetect;})();
 </script>
 
 <script>
 // ====================================================================
-// 🚀 核心逻辑驱动系统 (离线优先秒开级)
+// 🔧 全局云端配置中心
 // ====================================================================
-let activeTabId = 'dashboard';
+let cloudConfig = JSON.parse(localStorage.getItem('vgCloudConfig')) || {
+    cloudName: 'dxm3bwnzi',
+    apiKey: '713313811327755',
+    apiSecret: 'QIBVvLSSePJW5-1UVYECknvBLBQ',
+    dataName: 'vg528_prod'
+};
+
+function openCloudSettings() {
+    document.getElementById('cfgCloudName').value = cloudConfig.cloudName;
+    document.getElementById('cfgApiKey').value = cloudConfig.apiKey;
+    document.getElementById('cfgApiSecret').value = cloudConfig.apiSecret;
+    document.getElementById('cfgDataName').value = cloudConfig.dataName;
+    document.getElementById('settingsModal').classList.add('open');
+}
+
+function closeCloudSettings() {
+    document.getElementById('settingsModal').classList.remove('open');
+}
+
+function saveCloudSettings() {
+    cloudConfig.cloudName = document.getElementById('cfgCloudName').value.trim();
+    cloudConfig.apiKey = document.getElementById('cfgApiKey').value.trim();
+    cloudConfig.apiSecret = document.getElementById('cfgApiSecret').value.trim();
+    cloudConfig.dataName = document.getElementById('cfgDataName').value.trim();
+    localStorage.setItem('vgCloudConfig', JSON.stringify(cloudConfig));
+    closeCloudSettings();
+    location.reload(); // 重新加载以应用新配置
+}
+
+// ====================================================================
+// 🚀 状态管理与初始化
+// ====================================================================
+let tabIdCounter = 1;
+let activeTabId = 'dashboard'; // 默认锁死看板
 const tabs = new Map();
 const collapsedGroups = new Set(); 
 let devPool = []; 
@@ -235,25 +281,30 @@ function addTab(name, opts) {
   return id;
 }
 
+// 删除 Tab（拦截看板删除）
 function removeTab(id) {
   if (id === 'dashboard') return;
   const tab = tabs.get(id); if (tabs.size <= 1 || !tab) return;
   if (tab.isGroup && tab.children.length > 0) { 
     for (let i=0; i<tab.children.length; i++) tabs.delete(tab.children[i]); 
   }
-  tabs.delete(id); if (activeTabId === id) activateTab('dashboard'); 
+  tabs.delete(id); 
+  if (activeTabId === id) activateTab('dashboard'); // 删除后默认跳回看板
   renderTabList(); autoSave();
 }
 
+// 重命名 Tab（拦截看板重命名）
 function renameTab(id, n) { 
   if (id === 'dashboard') return;
-  const t=tabs.get(id); if(t) { t.name = n || t.name; renderTabList(); } 
+  const t=tabs.get(id); 
+  if(t) { t.name = n || t.name; renderTabList(); } 
 }
 
 function removeDesignImg(id) { const t=tabs.get(id); if(!t)return; t.designImg = null; t.result = null; renderMain(id); }
 function removeDevImg(id) { const t=tabs.get(id); if(!t)return; t.devImg = null; t.result = null; renderMain(id); }
 function activateTab(id) { activeTabId = id; renderTabList(); renderMain(id); }
 
+// 添加子页面（拦截在看板下添加）
 function addChildTab(groupId) {
   if (groupId === 'dashboard') return;
   const g = tabs.get(groupId); if (!g) return;
@@ -262,34 +313,50 @@ function addChildTab(groupId) {
   g.children.push(cid); renderTabList(); activateTab(cid);
 }
 
-// ===== 左侧导航栏渲染 =====
+// ===== 左侧栏结构化渲染 =====
 function renderTabList() {
   const list = document.getElementById('tabList'); list.innerHTML = '';
+  const groups = [], leafTabs = []; const childrenSet = new Set();
   
-  // 顶级锁死：置顶全局看板大屏幕
+  for (const [key, t] of tabs) { 
+    if (t.isGroup) { for (let i = 0; i < t.children.length; i++) childrenSet.add(t.children[i]); } 
+  }
+  for (const [key, tab] of tabs) { 
+    if (tab.isGroup && tab.id !== 'dashboard') groups.push(tab); 
+    else if (!childrenSet.has(tab.id) && tab.id !== 'dashboard') leafTabs.push(tab); 
+  }
+
+  // 1. 强力插入：固定的绝对顶级“数据看板”
   const dbItem = document.createElement('div');
   dbItem.className = 'tab-item' + (activeTabId === 'dashboard' ? ' active' : '');
-  dbItem.innerHTML = '<span style="width:16px;display:inline-block;"></span><span class="tab-icon">📊</span><span class="tab-name" style="font-weight:700;color:#1A73E8;">数据看板</span>';
-  dbItem.onclick = function() { activateTab('dashboard'); };
+  dbItem.innerHTML = `<span style="width:16px;display:inline-block;"></span><span class="tab-icon">📊</span><span class="tab-name" style="font-weight:700;color:#1A73E8;">数据看板</span>`;
+  dbItem.onclick = () => activateTab('dashboard');
   list.appendChild(dbItem);
 
-  const groups = [], leafTabs = []; const childrenSet = new Set();
-  tabs.forEach(t => { if (t.isGroup && t.id !== 'dashboard') { for (let i = 0; i < t.children.length; i++) childrenSet.add(t.children[i]); } });
-  tabs.forEach(tab => { if (tab.isGroup && tab.id !== 'dashboard') groups.push(tab); else if (!childrenSet.has(tab.id) && tab.id !== 'dashboard') leafTabs.push(tab); });
-
   for (let idx = 0; idx < groups.length; idx++) {
-    const g = groups[idx]; const isCollapsed = collapsedGroups.has(g.id);
+    const g = groups[idx];
+    const isCollapsed = collapsedGroups.has(g.id);
+    
+    // 渲染板块自身
     list.appendChild(createTabItem(g, true, isCollapsed));
     
     const childWrap = document.createElement('div'); childWrap.className = 'sub-page-wrap';
     if (isCollapsed) childWrap.style.display = 'none';
-    for (let cidx = 0; cidx < g.children.length; cidx++) { const ct = tabs.get(g.children[cidx]); if (ct) childWrap.appendChild(createTabItem(ct, false)); }
+    
+    for (let cidx = 0; cidx < g.children.length; cidx++) { 
+        const ct = tabs.get(g.children[cidx]); 
+        if (ct) childWrap.appendChild(createTabItem(ct, false)); 
+    }
     
     const addBtn = document.createElement('div');
     addBtn.style.cssText = 'padding:8px 16px; font-size:13px; color:#1A73E8; cursor:pointer; font-weight:500; font-family:"Google Sans",sans-serif; margin-left:12px; border-radius:16px; transition:0.2s; display:inline-block;';
-    addBtn.textContent = '+ 新增子页面'; addBtn.onclick = function(e) { e.stopPropagation(); addChildTab(g.id); };
-    addBtn.onmouseenter = function() { addBtn.style.background = '#E8F0FE'; }; addBtn.onmouseleave = function() { addBtn.style.background = 'transparent'; };
-    childWrap.appendChild(addBtn); list.appendChild(childWrap);
+    addBtn.textContent = '+ 新增子页面'; 
+    addBtn.onclick = e => { e.stopPropagation(); addChildTab(g.id); };
+    addBtn.onmouseenter = () => addBtn.style.background = '#E8F0FE'; 
+    addBtn.onmouseleave = () => addBtn.style.background = 'transparent';
+    
+    childWrap.appendChild(addBtn);
+    list.appendChild(childWrap);
   }
   for (let lidx = 0; lidx < leafTabs.length; lidx++) { list.appendChild(createTabItem(leafTabs[lidx], false)); }
 }
@@ -298,13 +365,14 @@ function createTabItem(tab, isGroup, isCollapsed) {
   const el = document.createElement('div'); el.className = 'tab-item' + (tab.id === activeTabId ? ' active' : '');
   if (isGroup) {
       const arrow = isCollapsed ? '▶' : '▼';
-      el.innerHTML = '<span class="collapse-arrow" onclick="event.stopPropagation();toggleCollapse(\''+tab.id+'\')" style="width:16px;display:inline-flex;align-items:center;justify-content:center;font-size:10px;color:#5F6368;cursor:pointer;">'+arrow+'</span><span class="tab-icon">📁</span><span class="tab-name">'+tab.name+'</span><span class="tab-actions"><button onclick="event.stopPropagation();startRename(\''+tab.id+'\',this.parentElement.parentElement.querySelector(\'.tab-name\'))" title="重命名">✏️</button>'+(tabs.size>1 ?`<button class="del-btn" onclick="event.stopPropagation();removeTab(\''+tab.id+'\')" title="删除">✕</button>`:'')+'</span>';
-      el.onclick = function() { activateTab(tab.id); }; return el;
+      el.innerHTML = `<span class="collapse-arrow" onclick="event.stopPropagation();toggleCollapse('${tab.id}')" style="width:16px;display:inline-flex;align-items:center;justify-content:center;font-size:10px;color:#5F6368;cursor:pointer;">${arrow}</span><span class="tab-icon">📁</span><span class="tab-name">${tab.name}</span><span class="tab-actions"><button onclick="event.stopPropagation();startRename('${tab.id}',this.parentElement.parentElement.querySelector('.tab-name'))" title="重命名">✏️</button>${tabs.size>1 ?`<button class="del-btn" onclick="event.stopPropagation();removeTab('${tab.id}')" title="删除">✕</button>`:''}</span>`;
+      el.onclick = () => activateTab(tab.id); return el;
   }
-  let innerIconHtml = tab.designImg ? '<span class="tab-icon" style="width:24px;height:24px;border-radius:4px;overflow:hidden;border:1px solid #DADCE0;"><img src="'+tab.designImg+'" style="width:100%;height:100%;object-fit:cover;"></span>' : '<span class="tab-icon">📄</span>';
-  let badgeHtml = (tab.designImg && tab.devImg) ? '<span style="font-size:10px;padding:2px 6px;border-radius:12px;background:#E6F4EA;color:#137333;">已传</span>' : '<span style="font-size:10px;padding:2px 6px;border-radius:12px;background:#FCE8E6;color:#C5221F;">未传</span>';
-  el.innerHTML = innerIconHtml + '<span class="tab-name">'+tab.name+'</span>'+badgeHtml+'<span class="tab-actions"><button onclick="event.stopPropagation();startRename(\''+tab.id+'\',this.parentElement.parentElement.querySelector(\'.tab-name\'))">✏️</button><button class="del-btn" onclick="event.stopPropagation();removeTab(\''+tab.id+'\')">✕</button></span>';
-  el.onclick = function() { activateTab(tab.id); }; return el;
+  
+  let innerIconHtml = tab.designImg ? `<span class="tab-icon" style="width:24px;height:24px;border-radius:4px;overflow:hidden;border:1px solid #DADCE0;"><img src="${tab.designImg}" style="width:100%;height:100%;object-fit:cover;"></span>` : `<span class="tab-icon">📄</span>`;
+  let badgeHtml = (tab.designImg && tab.devImg) ? `<span style="font-size:10px;padding:2px 6px;border-radius:12px;background:#E6F4EA;color:#137333;">已传</span>` : `<span style="font-size:10px;padding:2px 6px;border-radius:12px;background:#FCE8E6;color:#C5221F;">未传</span>`;
+  el.innerHTML = `${innerIconHtml}<span class="tab-name">${tab.name}</span>${badgeHtml}<span class="tab-actions"><button onclick="event.stopPropagation();startRename('${tab.id}',this.parentElement.parentElement.querySelector('.tab-name'))">✏️</button><button class="del-btn" onclick="event.stopPropagation();removeTab('${tab.id}')">✕</button></span>`;
+  el.onclick = () => activateTab(tab.id); return el;
 }
 
 function toggleCollapse(groupId) { if (collapsedGroups.has(groupId)) collapsedGroups.delete(groupId); else collapsedGroups.add(groupId); renderTabList(); }
@@ -312,297 +380,596 @@ function startRename(id, nameEl) {
   if (id === 'dashboard') return;
   const tab = tabs.get(id); if (!tab || !nameEl) return;
   const input = document.createElement('input'); input.className = 'inline-edit'; input.value = tab.name;
-  input.onblur = function() { renameTab(id,input.value); }; input.onkeydown = function(e) { if(e.key==='Enter')input.blur(); if(e.key==='Escape'){input.value=tab.name;input.blur();} };
+  input.onblur = () => { renameTab(id,input.value); }; input.onkeydown = e => { if(e.key==='Enter')input.blur(); if(e.key==='Escape'){input.value=tab.name;input.blur();} };
   nameEl.replaceWith(input); input.focus(); input.select();
 }
+function openModal(src) { document.getElementById('modalImg').src = src; document.getElementById('modalOverlay').classList.add('open'); }
+function closeModal() { document.getElementById('modalOverlay').classList.remove('open'); }
 
-// ===== 完美修复“上传需选两次”的无损读取机制 =====
-function handleDropFile(e, id, key) { 
-    const file = e.target.files[0]; if (!file) return; 
-    readImgToTab(id, key, file); 
-    e.target.value = ''; // 🚀 智能数据擦除：清空 DOM 缓存，保证连续选择同张切图能稳定触发
-}
-function handleDrop(e, id, key) { e.preventDefault(); e.currentTarget.classList.remove('dragover'); const file = e.dataTransfer.files[0]; if (file && file.type.indexOf('image/') !== -1) { readImgToTab(id, key, file); } }
-function readImgToTab(id, key, file) { 
-    const tab = tabs.get(id); if (!tab) return; 
-    const reader = new FileReader(); 
-    reader.onload = function(e) { 
-        // 🚀 恢复百分百高保真高清切图数据原液，让走查分析重获精准视力！
-        if (key === 'design') tab.designImg = e.target.result; else if (key === 'dev') tab.devImg = e.target.result; 
-        renderMain(id); renderTabList(); autoSave();
-    }; 
-    reader.readAsDataURL(file); 
-}
-function makeDropZone(id, key, icon, label) { return '<div class="drop-zone" id="dz_'+id+'_'+key+'" onclick="document.getElementById(\'fi_'+id+'_'+key+'\').click()" ondragover="e.preventDefault();this.classList.add(\'dragover\')" ondrop="handleDrop(event,\''+id+'\',\''+key+'\')" ondragleave="this.classList.remove(\'dragover\')"><div class="dz-icon">'+icon+'</div><div class="dz-text">'+label+'</div><input type="file" accept="image/*" id="fi_'+id+'_'+key+'" onchange="handleDropFile(event,\''+id+'\',\''+key+'\')" onclick="event.stopPropagation()"></div>'; }
-
-// ===== 缺陷忽略开关切换 =====
-window.toggleIssueStatus = function(id, idx) {
-    const tab = tabs.get(id); if (!tab || !tab.result || !tab.result.issues[idx]) return;
-    tab.result.issues[idx].closed = !tab.result.issues[idx].closed; autoSave();
-    renderIssueTable(id, tab); buildUploadBar(id); drawMarkers(id, tab);
-};
-
-// ===== 工作区路由渲染大厅 =====
+// ===== 路由：渲染主内容区 =====
 function renderMain(id) {
-  const main = document.getElementById('mainArea'); if (id === 'dashboard') { renderDashboard(); return; }
-  const tab = tabs.get(id); if (!tab) return; if (tab.isGroup) { renderGroupMain(tab); return; }
+  const main = document.getElementById('mainArea'); 
   
-  const hasResult = !!tab.result; let activeIssuesCount = 0;
-  if (hasResult && tab.result.issues) { for(let i=0; i<tab.result.issues.length; i++) { if (!tab.result.issues[i].closed) activeIssuesCount++; } }
+  if (id === 'dashboard') { renderDashboard(); return; }
   
-  const dCellHtml = tab.designImg ? '<span class="cell-label">🎨 设计稿</span><button onclick="event.stopPropagation();removeDesignImg(\''+id+'\')" style="position:absolute;top:10px;right:45px;z-index:5;width:28px;height:28px;border:none;border-radius:50%;background:#FFFFFF;color:#5F6368;font-size:14px;cursor:pointer;box-shadow:0 1px 2px rgba(60,64,67,0.3);">✕</button><img class="cell-img" src="'+tab.designImg+'" id="dImg_'+id+'" onclick="event.stopPropagation();openModal(\''+tab.designImg+'\')"><span class="cell-enlarge" onclick="event.stopPropagation();openModal(\''+tab.designImg+'\')">🔍</span>' : makeDropZone(id,'design','🎨','点击或拖拽设计稿');
-  const vCellHtml = tab.devImg ? '<span class="cell-label">🛠 还原稿</span><button onclick="event.stopPropagation();removeDevImg(\''+id+'\')" style="position:absolute;top:10px;right:45px;z-index:5;width:28px;height:28px;border:none;border-radius:50%;background:#FFFFFF;color:#5F6368;font-size:14px;cursor:pointer;box-shadow:0 1px 2px rgba(60,64,67,0.3);">✕</button><img class="cell-img" src="'+tab.devImg+'" id="vImg_'+id+'" onclick="event.stopPropagation();openModal(\''+tab.devImg+'\')"><span class="cell-enlarge" onclick="event.stopPropagation();openModal(\''+tab.devImg+'\')">🔍</span>' : makeDropZone(id,'dev','🛠','点击或拖拽还原稿');
+  const tab = tabs.get(id); if (!tab) return;
+  if (tab.isGroup) { renderGroupMain(tab); return; }
+  
+  const hasResult = !!tab.result;
+  const dCellHtml = tab.designImg ? `<span class="cell-label">🎨 设计稿</span><button onclick="event.stopPropagation();removeDesignImg('${id}')" style="position:absolute;top:10px;right:45px;z-index:5;width:28px;height:28px;border:none;border-radius:50%;background:#FFFFFF;color:#5F6368;font-size:14px;cursor:pointer;box-shadow:0 1px 2px rgba(60,64,67,0.3);">✕</button><img class="cell-img" src="${tab.designImg}" id="dImg_${id}" onclick="event.stopPropagation();openModal('${tab.designImg}')"><span class="cell-enlarge" onclick="event.stopPropagation();openModal('${tab.designImg}')">🔍</span>` : makeDropZone(id,'design','🎨','点击或拖拽上传设计稿');
+  const vCellHtml = tab.devImg ? `<span class="cell-label">🛠 还原稿</span><button onclick="event.stopPropagation();removeDevImg('${id}')" style="position:absolute;top:10px;right:45px;z-index:5;width:28px;height:28px;border:none;border-radius:50%;background:#FFFFFF;color:#5F6368;font-size:14px;cursor:pointer;box-shadow:0 1px 2px rgba(60,64,67,0.3);">✕</button><img class="cell-img" src="${tab.devImg}" id="vImg_${id}" onclick="event.stopPropagation();openModal('${tab.devImg}')"><span class="cell-enlarge" onclick="event.stopPropagation();openModal('${tab.devImg}')">🔍</span>` : makeDropZone(id,'dev','🛠','点击或拖拽上传还原稿');
   const overlaySrc = (tab.result && tab.result.diffOverlay) ? tab.result.diffOverlay : null;
-  const oCellHtml = tab.designImg && tab.devImg ? '<div class="overlay-wrap" id="ow_'+id+'"><span class="cell-label">🔀 叠图对比</span><img class="overlay-bg" src="'+tab.designImg+'" style="opacity:1;"><img class="overlay-top" src="'+tab.devImg+'" style="opacity:'+tab.overlayOpacity+'"><span class="cell-enlarge" onclick="event.stopPropagation();enlargeOverlay(\''+id+'\')">🔍</span><div class="overlay-slider"><span class="slider-val">透明度</span><input type="range" min="0" max="100" value="'+Math.round(tab.overlayOpacity*100)+'" oninput="setOverlay(\''+id+'\', this.value/100)"><span class="slider-val">'+Math.round(tab.overlayOpacity*100)+'%</span></div></div>' : '<div class="overlay-wrap" id="ow_'+id+'"><span class="cell-label">🔀 叠图对比</span><div class="drop-zone"><div class="dz-icon">🔀</div><div class="dz-text">需同时上传两图</div></div></div>';
-  const hCellHtml = hasResult && overlaySrc ? '<span class="cell-label">🔥 差异热图</span><img class="cell-img" src="'+overlaySrc+'" onclick="event.stopPropagation();openModal(\''+overlaySrc+'\')"><span class="cell-enlarge" onclick="event.stopPropagation();openModal(\''+overlaySrc+'\')">🔍</span>' : '<div style="display:flex;flex-direction:column;align-items:center;justify-content:center;width:100%;height:100%;color:#80868B;background:#F8F9FA;"><div class="dz-icon">🔥</div><div class="dz-text" style="margin-top:12px;">对比后自动生成</div></div>';
+  const oCellHtml = tab.designImg && tab.devImg ? `<div class="overlay-wrap" id="ow_${id}"><span class="cell-label">🔀 叠图对比</span><img class="overlay-bg" src="${tab.designImg}" style="opacity:1;"><img class="overlay-top" src="${tab.devImg}" style="opacity:${tab.overlayOpacity}"><span class="cell-enlarge" onclick="event.stopPropagation();enlargeOverlay('${id}')">🔍</span><div class="overlay-slider"><span class="slider-val">透明度</span><input type="range" min="0" max="100" value="${Math.round(tab.overlayOpacity*100)}" oninput="setOverlay('${id}', this.value/100)"><span class="slider-val">${Math.round(tab.overlayOpacity*100)}%</span></div></div>` : `<div class="overlay-wrap" id="ow_${id}"><span class="cell-label">🔀 叠图对比</span><div class="drop-zone"><div class="dz-icon">🔀</div><div class="dz-text">需同时上传两图</div></div></div>`;
+  const hCellHtml = hasResult && overlaySrc ? `<span class="cell-label">🔥 差异热图</span><img class="cell-img" src="${overlaySrc}" onclick="event.stopPropagation();openModal('${overlaySrc}')"><span class="cell-enlarge" onclick="event.stopPropagation();openModal('${overlaySrc}')">🔍</span>` : `<div style="display:flex;flex-direction:column;align-items:center;justify-content:center;width:100%;height:100%;color:#80868B;background:#F8F9FA;"><div class="dz-icon">🔥</div><div class="dz-text" style="margin-top:12px;">对比后自动生成</div></div>`;
 
-  main.innerHTML = '<div class="upload-bar" id="ub_'+id+'"></div><div class="compare-4" id="c4_'+id+'"><div class="cell" id="dCell_'+id+'">'+dCellHtml+'</div><div class="cell" id="vCell_'+id+'">'+vCellHtml+'</div><div class="cell" id="oCell_'+id+'">'+oCellHtml+'</div><div class="cell" id="hCell_'+id+'">'+hCellHtml+'</div></div><div class="resize-bar" id="resizeBar_'+id+'"></div><div class="issue-panel" id="ip_'+id+'"><div class="issue-header" id="ih_'+id+'"><h3>📋 缺陷报告</h3><span class="stats">'+(hasResult ? '' : '暂无数据')+'</span></div><div class="issue-list-wrap" id="ilw_'+id+'"><div class="loading-state"><span>'+(hasResult && activeIssuesCount===0 ? '🎉 完美还原！没有未修复的问题。' : hasResult ? '渲染中…' : '请在上方点击「开始走查」')+'</span></div></div></div>';
-  buildUploadBar(id); if (hasResult) renderIssueTable(id, tab);
+  main.innerHTML = `
+    <div class="upload-bar" id="ub_${id}"></div>
+    <div class="compare-4" id="c4_${id}">
+      <div class="cell" id="dCell_${id}">${dCellHtml}</div>
+      <div class="cell" id="vCell_${id}">${vCellHtml}</div>
+      <div class="cell" id="oCell_${id}">${oCellHtml}</div>
+      <div class="cell" id="hCell_${id}">${hCellHtml}</div>
+    </div>
+    <div class="resize-bar" id="resizeBar_${id}"></div>
+    <div class="issue-panel" id="ip_${id}">
+      <div class="issue-header" id="ih_${id}"><h3>📋 缺陷报告</h3><span class="stats">${hasResult ? '' : '暂无数据'}</span></div>
+      <div class="issue-list-wrap" id="ilw_${id}">
+        <div class="loading-state"><span>${hasResult && tab.result.issues.length===0 ? '🎉 完美还原！没有发现问题。' : hasResult ? '渲染中…' : '请在上方点击「开始全能检测」'}</span></div>
+      </div>
+    </div>`;
+
+  buildUploadBar(id);
+  if (hasResult) renderIssueTable(id, tab);
 }
 
 function buildUploadBar(id) {
   const ub = document.getElementById('ub_'+id); const tab = tabs.get(id); if (!ub||!tab) return;
-  const dOk=!!tab.designImg, vOk=!!tab.devImg; const devName = tab.developer || '';
-  let activeCount = 0; if (tab.result && tab.result.issues) { for(let i=0; i<tab.result.issues.length; i++) { if (!tab.result.issues[i].closed) activeCount++; } }
-  ub.innerHTML = '<div style="display:flex;align-items:center;gap:6px;padding:4px 10px;background:#F1F3F4;border-radius:16px;flex-shrink:0;"><span style="font-size:12px;color:#5F6368;font-weight:500;">👨‍💻 责任人</span>'+(devName ? '<span style="font-size:13px;font-weight:600;color:#1A73E8;padding:0 4px;">'+devName+'</span><button onclick="event.stopPropagation();openDevSelector(\''+id+'\')" style="border:none;background:transparent;cursor:pointer;font-size:12px;color:#5F6368;" title="修改">✏️</button>' : '<button onclick="event.stopPropagation();openDevSelector(\''+id+'\')" style="border:1px dashed #DADCE0;border-radius:12px;background:transparent;font-size:12px;color:#1A73E8;cursor:pointer;padding:2px 10px;">+ 指定</button>')+'</div><label class="file-label'+(dOk?' has-img':'')+'">🎨 设计稿 <input type="file" accept="image/*" onchange="handleDropFile(event,\''+id+'\',\'design\')"></label><label class="file-label'+(vOk?' has-img':'')+'">🛠 还原稿 <input type="file" accept="image/*" onchange="handleDropFile(event,\''+id+'\',\'dev\')"></label><button class="detect-btn" onclick="runDetect(\''+id+'\')" '+(dOk&&vOk?'':'disabled')+'>🔍 开始走查检测</button><span class="status">'+(tab.result ? '✅ 当前存活 '+activeCount+' 个偏差' : '等待检测')+'</span>';
+  const dOk=!!tab.designImg, vOk=!!tab.devImg;
+  const devName = tab.developer || '';
+  ub.innerHTML = `
+    <div style="display:flex;align-items:center;gap:6px;padding:4px 10px;background:#F1F3F4;border-radius:16px;flex-shrink:0;">
+      <span style="font-size:12px;color:#5F6368;font-weight:500;">👨‍💻 责任人</span>
+      ${devName
+        ? `<span style="font-size:13px;font-weight:600;color:#1A73E8;padding:0 4px;">${devName}</span><button onclick="event.stopPropagation();openDevSelector('${id}')" style="border:none;background:transparent;cursor:pointer;font-size:12px;color:#5F6368;" title="修改">✏️</button>`
+        : `<button onclick="event.stopPropagation();openDevSelector('${id}')" style="border:1px dashed #DADCE0;border-radius:12px;background:transparent;font-size:12px;color:#1A73E8;cursor:pointer;padding:2px 10px;">+ 指定</button>`}
+    </div>
+    <label class="file-label${dOk?' has-img':''}">🎨 设计稿 <input type="file" accept="image/*" onchange="handleDropFile(event,'${id}','design')"></label>
+    <label class="file-label${vOk?' has-img':''}">🛠 还原稿 <input type="file" accept="image/*" onchange="handleDropFile(event,'${id}','dev')"></label>
+    <button class="detect-btn" onclick="runDetect('${id}')" ${dOk&&vOk?'':'disabled'}>🔍 开始全能检测</button>
+    <span class="status">${tab.result ? `✅ 发现 ${tab.result.issues.length} 个偏差` : '等待检测'}</span>
+  `;
 }
 
 function openDevSelector(id) {
   const tab = tabs.get(id); if (!tab) return;
-  const els = document.querySelectorAll('.dev-selector-overlay'); for(let i=0; i<els.length; i++) els[i].remove();
+  document.querySelectorAll('.dev-selector-overlay').forEach(el => el.remove());
   const rect = document.getElementById('ub_'+id); if (!rect) return;
-  const overlay = document.createElement('div'); overlay.className = 'dev-selector-overlay'; overlay.style.cssText = 'position:fixed;inset:0;z-index:999;'; overlay.onclick = function(e) { if (e.target === overlay) overlay.remove(); };
+  const overlay = document.createElement('div'); overlay.className = 'dev-selector-overlay'; overlay.style.cssText = 'position:fixed;inset:0;z-index:999;'; overlay.onclick = (e) => { if (e.target === overlay) overlay.remove(); };
   const panel = document.createElement('div'); panel.style.cssText = 'position:absolute;background:#fff;border:1px solid #DADCE0;border-radius:8px;box-shadow:0 4px 16px rgba(0,0,0,.12);padding:8px;min-width:180px;z-index:1000;display:flex;flex-direction:column;gap:4px;';
   document.body.appendChild(overlay); overlay.appendChild(panel);
   const br = rect.getBoundingClientRect(); panel.style.left = Math.min(br.left, window.innerWidth - 200) + 'px'; panel.style.top = (br.bottom + 4) + 'px';
-  const currentName = tab.developer || ''; const allNames = []; for(let i=0; i<devPool.length; i++){ if(allNames.indexOf(devPool[i])===-1) allNames.push(devPool[i]); } allNames.sort();
+  const currentName = tab.developer || ''; const allNames = [...new Set(devPool)].sort();
   const searchInput = document.createElement('input'); searchInput.type = 'text'; searchInput.placeholder = '搜索或输入新名字...'; searchInput.value = currentName; searchInput.style.cssText = 'width:100%;padding:8px;border:1px solid #DADCE0;border-radius:4px;font-size:13px;outline:none;box-sizing:border-box;'; searchInput.oninput = filterList; panel.appendChild(searchInput);
   const list = document.createElement('div'); list.style.cssText = 'max-height:160px;overflow-y:auto;display:flex;flex-direction:column;gap:2px;'; panel.appendChild(list);
   function filterList() {
-    const q = searchInput.value.trim().toLowerCase(); list.innerHTML = ''; 
-    const matched = []; for(let i=0; i<allNames.length; i++) { if(allNames[i].toLowerCase().indexOf(q) !== -1) matched.push(allNames[i]); }
-    let hasExact = false; for(let i=0; i<allNames.length; i++) { if(allNames[i].toLowerCase() === q) hasExact = true; }
-    if (q && !hasExact) {
+    const q = searchInput.value.trim().toLowerCase(); list.innerHTML = ''; const matched = allNames.filter(n => n.toLowerCase().includes(q));
+    if (q && !allNames.some(n => n.toLowerCase() === q)) {
       const item = document.createElement('div'); item.style.cssText = 'padding:8px;border-radius:4px;font-size:13px;color:#1A73E8;cursor:pointer;display:flex;align-items:center;gap:6px;'; item.innerHTML = '<span style="font-size:14px;">+</span> 新建 "' + searchInput.value.trim() + '"';
-      item.onmouseenter = function() { item.style.background = '#E8F0FE'; }; item.onmouseleave = function() { item.style.background = ''; }; item.onclick = function() { selectDev(id, searchInput.value.trim()); overlay.remove(); }; list.appendChild(item);
+      item.onmouseenter = () => item.style.background = '#E8F0FE'; item.onmouseleave = () => item.style.background = ''; item.onclick = () => { selectDev(id, searchInput.value.trim()); overlay.remove(); }; list.appendChild(item);
     }
     for (let i=0; i<matched.length; i++) {
-      const n = matched[i]; const item = document.createElement('div'); item.style.cssText = 'padding:8px;border-radius:4px;font-size:13px;color:#3C4043;cursor:pointer;display:flex;align-items:center;gap:6px;';
+      const n = matched[i];
+      const item = document.createElement('div'); item.style.cssText = 'padding:8px;border-radius:4px;font-size:13px;color:#3C4043;cursor:pointer;display:flex;align-items:center;gap:6px;';
       if (n === currentName) item.style.background = '#E8F0FE';
       item.innerHTML = '<span style="font-size:13px;color:#80868B;">👤</span> ' + n + (n === currentName ? ' <span style="font-size:11px;color:#1A73E8;">(当前)</span>' : '');
-      item.onmouseenter = function() { if (n !== currentName) item.style.background = '#F8F9FA'; }; item.onmouseleave = function() { if (n !== currentName) item.style.background = ''; }; item.onclick = function() { selectDev(id, n); overlay.remove(); }; list.appendChild(item);
+      item.onmouseenter = () => { if (n !== currentName) item.style.background = '#F8F9FA'; }; item.onmouseleave = () => { if (n !== currentName) item.style.background = ''; }; item.onclick = () => { selectDev(id, n); overlay.remove(); }; list.appendChild(item);
     }
   }
-  filterList(); setTimeout(function() { searchInput.focus(); }, 50);
+  filterList(); setTimeout(() => searchInput.focus(), 50);
 }
-function selectDev(id, name) { const tab = tabs.get(id); if (!tab) return; tab.developer = name || ''; if (name && devPool.indexOf(name)===-1) { devPool.push(name); saveDevPool(); } buildUploadBar(id); autoSave(); }
+function selectDev(id, name) { const tab = tabs.get(id); if (!tab) return; tab.developer = name || ''; if (name && !devPool.includes(name)) { devPool.push(name); saveDevPool(); } buildUploadBar(id); autoSave(); }
 
-// ===== 视图渲染：全局数据看板 =====
+// ===== 视图渲染：全局数据看板 (核心重构) =====
 function renderDashboard() {
-  const main = document.getElementById('mainArea'); const allTabsWithResult = []; const seenIds = new Set();
+  const main = document.getElementById('mainArea'); 
+  const allTabsWithResult = []; 
+  const seenIds = new Set();
+  
+  // 遍历所有 Tab 抽取数据，绝对跳过自身
   tabs.forEach(t => {
     if (t.id === 'dashboard') return;
     if (t.isGroup) {
-      for(let i=0; i<t.children.length; i++) {
-        const ct = tabs.get(t.children[i]); if (ct && ct.result) { allTabsWithResult.push(ct); }
-      }
-    } else { if (t.result) allTabsWithResult.push(t); }
+      t.children.forEach(cid => {
+        const ct = tabs.get(cid);
+        if (ct && ct.result && !seenIds.has(ct.id)) { seenIds.add(ct.id); allTabsWithResult.push(ct); }
+      });
+    } else {
+      if (t.result && !seenIds.has(t.id)) { seenIds.add(t.id); allTabsWithResult.push(t); }
+    }
   });
 
-  let p0 = 0, p1 = 0, p2 = 0; const catMap = {}; 
-  for(let k=0; k<allTabsWithResult.length; k++) {
-    const ct = allTabsWithResult[k];
+  let p0 = 0, p1 = 0, p2 = 0;
+  const catMap = {}; 
+  
+  allTabsWithResult.forEach(ct => {
     if (ct.result && ct.result.issues) {
-      for(let i=0; i<ct.result.issues.length; i++) {
-        const is = ct.result.issues[i]; if (!is.closed) { 
-            if (is.priority === 'P0') p0++; else if (is.priority === 'P1') p1++; else if (is.priority === 'P2') p2++;
-            const c = is.category || 'unknown'; catMap[c] = (catMap[c] || 0) + 1;
-        }
-      }
+      ct.result.issues.forEach(is => {
+        if (is.priority === 'P0') p0++;
+        else if (is.priority === 'P1') p1++;
+        else if (is.priority === 'P2') p2++;
+        
+        const c = is.category || 'unknown';
+        catMap[c] = (catMap[c] || 0) + 1;
+      });
     }
-  }
+  });
 
-  main.innerHTML = '<div class="upload-bar" style="justify-content: space-between;"><div style="font-size: 18px; font-weight: 500; font-family: \'Google Sans\', sans-serif;">📊 全局体验打分大屏</div><div class="status">统计数据已自动滤除忽略的缺陷</div></div><div class="dashboard-wrap"><div class="card-grid"><div class="stat-card card-p0"><div class="val" style="color:#C5221F;">'+p0+'</div><div class="lbl">P0 严重破坏 (阻断级)</div></div><div class="stat-card card-p1"><div class="val" style="color:#F29900;">'+p1+'</div><div class="lbl">P1 样式异常 (违背规范)</div></div><div class="stat-card card-p2"><div class="val" style="color:#1A73E8;">'+p2+'</div><div class="lbl">P2 体验瑕疵 (不平齐)</div></div><div class="stat-card card-pages"><div class="val" style="color:#137333;">'+allTabsWithResult.length+'</div><div class="lbl">已走查完成的页面数</div></div></div><div style="display:grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 24px;"><div class="stat-card"><div class="lbl" style="margin-bottom:12px;">缺陷分类分布</div><canvas id="dashboardPieChart" width="400" height="200" style="width:200px;height:100px;"></canvas></div><div class="stat-card"><div class="lbl" style="margin-bottom:12px;">研发问题严重级趋势</div><canvas id="dashboardBarChart" width="400" height="200" style="width:200px;height:100px;"></canvas></div></div><div style="background:#FFFFFF; border:1px solid #DADCE0; border-radius:8px; padding:20px; box-shadow:0 1px 2px 0 rgba(60,64,67,0.1); margin-bottom:24px;"><div style="font-size:14px; font-weight:500; font-family:\'Google Sans\',sans-serif; color:#202124; margin-bottom:16px;">👨‍💻 研发团队还原度红黑榜</div><div id="devStatsSection"></div></div><div style="background:#FFFFFF; border:1px solid #DADCE0; border-radius:8px; padding:20px; box-shadow:0 1px 2px 0 rgba(60,64,67,0.1);"><div style="font-size:14px; font-weight:500; font-family:\'Google Sans\',sans-serif; color:#202124; margin-bottom:16px;">🖼️ 全局走查页面池 (所有被检测页面的直观对比)</div><div id="allPagesImagesSection"></div></div></div>';
+  let html = `
+    <div class="upload-bar" style="justify-content: space-between;">
+        <div style="font-size: 18px; font-weight: 500; font-family: 'Google Sans', sans-serif;">📊 全局数据看板</div>
+        <div class="status">统计数据实时同步</div>
+    </div>
+    <div class="dashboard-wrap">
+      <div class="card-grid">
+        <div class="stat-card card-p0"><div class="val" style="color:#C5221F;">${p0}</div><div class="lbl">P0 严重破坏</div></div>
+        <div class="stat-card card-p1"><div class="val" style="color:#F29900;">${p1}</div><div class="lbl">P1 样式异常</div></div>
+        <div class="stat-card card-p2"><div class="val" style="color:#1A73E8;">${p2}</div><div class="lbl">P2 体验瑕疵</div></div>
+        <div class="stat-card card-pages"><div class="val" style="color:#137333;">${allTabsWithResult.length}</div><div class="lbl">已走查页面数</div></div>
+      </div>
+      <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 24px;">
+        <div class="stat-card"><div class="lbl" style="margin-bottom:12px;">缺陷分类分布</div><canvas id="dashboardPieChart" width="400" height="200" style="width:200px;height:100px;"></canvas></div>
+        <div class="stat-card"><div class="lbl" style="margin-bottom:12px;">严重级趋势</div><canvas id="dashboardBarChart" width="400" height="200" style="width:200px;height:100px;"></canvas></div>
+      </div>
+      <div style="background:#FFFFFF; border:1px solid #DADCE0; border-radius:8px; padding:20px; box-shadow:0 1px 2px 0 rgba(60,64,67,0.1); margin-bottom:24px;">
+        <div style="font-size:14px; font-weight:500; font-family:'Google Sans',sans-serif; color:#202124; margin-bottom:16px;">👨‍💻 研发责任人效能统计</div>
+        <div id="devStatsSection"></div>
+      </div>
+      <div style="background:#FFFFFF; border:1px solid #DADCE0; border-radius:8px; padding:20px; box-shadow:0 1px 2px 0 rgba(60,64,67,0.1);">
+        <div style="font-size:14px; font-weight:500; font-family:'Google Sans',sans-serif; color:#202124; margin-bottom:16px;">🖼️ 全局已检测页面存档池</div>
+        <div id="allPagesImagesSection"></div>
+      </div>
+    </div>
+  `;
+  main.innerHTML = html;
 
-  setTimeout(function() {
+  setTimeout(() => {
+    // 渲染饼图
     const pieC = document.getElementById('dashboardPieChart');
     if (pieC) {
-      const ctx = pieC.getContext('2d'); ctx.clearRect(0,0,400,200); const entries = Object.entries(catMap);
-      if(entries.length === 0) { ctx.font='14px Roboto'; ctx.fillText('完美还原，暂无数据', 130, 100); }
+      const ctx = pieC.getContext('2d'); ctx.clearRect(0,0,400,200);
+      const entries = Object.entries(catMap);
+      if(entries.length === 0) { ctx.font='14px Roboto'; ctx.fillText('暂无数据', 150, 100); }
       else {
-        let start = 0; const total = p0 + p1 + p2; const colors = {'文字问题':'#1A73E8', 'position':'#F29900', 'color':'#D93025', 'size':'#A142F4', 'container':'#12B5CB', 'image':'#34A853'};
+        let start = 0; const total = p0 + p1 + p2;
+        const colors = {'文字问题':'#1A73E8', 'position':'#F29900', 'color':'#D93025', 'size':'#A142F4', 'container':'#12B5CB', 'image':'#34A853'};
         entries.forEach((entry, idx) => {
-            const cat = entry[0]; const val = entry[1]; const slice = (val/total) * 2 * Math.PI; ctx.beginPath(); ctx.moveTo(100,100); ctx.arc(100,100, 80, start, start+slice); ctx.fillStyle = colors[cat] || '#80868B'; ctx.fill(); ctx.fillRect(220, 30 + idx*25, 12, 12); ctx.fillStyle='#3C4043'; ctx.font='14px Roboto'; ctx.fillText(cat+' ('+val+')', 240, 42 + idx*25); start += slice;
+            const cat = entry[0]; const val = entry[1];
+            const slice = (val/total) * 2 * Math.PI;
+            ctx.beginPath(); ctx.moveTo(100,100); ctx.arc(100,100, 80, start, start+slice); ctx.fillStyle = colors[cat] || '#80868B'; ctx.fill();
+            ctx.fillRect(220, 30 + idx*25, 12, 12); ctx.fillStyle='#3C4043'; ctx.font='14px Roboto'; ctx.fillText(`${cat} (${val})`, 240, 42 + idx*25);
+            start += slice;
         });
       }
     }
+    // 渲染柱状图
     const barC = document.getElementById('dashboardBarChart');
     if (barC) {
-      const ctx = barC.getContext('2d'); ctx.clearRect(0,0,400,200); const max = Math.max(p0, p1, p2, 1);
-      ctx.fillStyle='#FCE8E6'; ctx.fillRect(60, 160 - (p0/max)*120, 60, (p0/max)*120); ctx.fillStyle='#C5221F'; ctx.fillText('P0: '+p0, 75, 150 - (p0/max)*120);
-      ctx.fillStyle='#FEF7E0'; ctx.fillRect(160, 160 - (p1/max)*120, 60, (p1/max)*120); ctx.fillStyle='#B06000'; ctx.fillText('P1: '+p1, 175, 150 - (p1/max)*120);
-      ctx.fillStyle='#E8F0FE'; ctx.fillRect(260, 160 - (p2/max)*120, 60, (p2/max)*120); ctx.fillStyle='#1A73E8'; ctx.fillText('P2: '+p2, 275, 150 - (p2/max)*120);
+      const ctx = barC.getContext('2d'); ctx.clearRect(0,0,400,200);
+      const max = Math.max(p0, p1, p2, 1);
+      ctx.fillStyle='#FCE8E6'; ctx.fillRect(60, 160 - (p0/max)*120, 60, (p0/max)*120); ctx.fillStyle='#C5221F'; ctx.fillText(`P0: ${p0}`, 75, 150 - (p0/max)*120);
+      ctx.fillStyle='#FEF7E0'; ctx.fillRect(160, 160 - (p1/max)*120, 60, (p1/max)*120); ctx.fillStyle='#B06000'; ctx.fillText(`P1: ${p1}`, 175, 150 - (p1/max)*120);
+      ctx.fillStyle='#E8F0FE'; ctx.fillRect(260, 160 - (p2/max)*120, 60, (p2/max)*120); ctx.fillStyle='#1A73E8'; ctx.fillText(`P2: ${p2}`, 275, 150 - (p2/max)*120);
       ctx.beginPath(); ctx.moveTo(40,160); ctx.lineTo(360,160); ctx.stroke();
     }
-    renderDevDashboardStats(); renderAllPagesImagesTable(allTabsWithResult);
+    // 渲染责任人表格
+    renderDevDashboardStats();
+    // 渲染所有页面缩略图汇总
+    renderAllPagesImagesTable(allTabsWithResult);
   }, 100);
 }
 
 function renderDevDashboardStats() {
-  const el = document.getElementById('devStatsSection'); if (!el) return; const devMap = {};
-  tabs.forEach(function(t) {
+  const el = document.getElementById('devStatsSection'); if (!el) return;
+  const devMap = {};
+  
+  tabs.forEach(t => {
     if (t.id === 'dashboard' || t.isGroup || !t.developer || !t.result) return;
-    const dev = t.developer; const issues = []; if(t.result.issues) { for(let i=0; i<t.result.issues.length; i++) { if(!t.result.issues[i].closed) issues.push(t.result.issues[i]); } }
-    let p0c = 0, p1c = 0; for(let i=0; i<issues.length; i++) { if(issues[i].priority === 'P0') p0c++; if(issues[i].priority === 'P1') p1c++; }
-    const score = Math.round(Math.max(0, 100 - issues.length * 5 - p0c * 10 - p1c * 5)); if (!devMap[dev]) devMap[dev] = { name: dev, items: [], totalIssues: 0, totalP0: 0, totalP1: 0, scores: [] };
-    devMap[dev].items.push({ tabName: t.name, score: score, issues: issues.length, p0: p0c, p1: p1c }); devMap[dev].totalIssues += issues.length; devMap[dev].totalP0 += p0c; devMap[dev].totalP1 += p1c; devMap[dev].scores.push(score);
+    const dev = t.developer;
+    const issues = t.result.issues || [];
+    let p0c = 0, p1c = 0;
+    issues.forEach(is => {
+        if (is.priority === 'P0') p0c++;
+        if (is.priority === 'P1') p1c++;
+    });
+    const score = Math.round(Math.max(0, 100 - issues.length * 5 - p0c * 10 - p1c * 5));
+    if (!devMap[dev]) devMap[dev] = { name: dev, items: [], totalIssues: 0, totalP0: 0, totalP1: 0, scores: [] };
+    devMap[dev].items.push({ tabName: t.name, score: score, issues: issues.length, p0: p0c, p1: p1c });
+    devMap[dev].totalIssues += issues.length; devMap[dev].totalP0 += p0c; devMap[dev].totalP1 += p1c; devMap[dev].scores.push(score);
   });
-  const list = []; const keys = Object.keys(devMap); for(let i=0; i<keys.length; i++) list.push(devMap[keys[i]]);
-  if (list.length === 0) { el.innerHTML = '<div style="color:#80868B;font-size:13px;padding:24px;text-align:center;">暂无责任人统计数据，请在走查子页面上方指派责任人。</div>'; return; }
-  for(let i=0; i<list.length; i++) { let sum = 0; for(let s=0; s<list[i].scores.length; s++) sum += list[i].scores[s]; list[i].avgScore = Math.round(sum / list[i].scores.length); }
-  list.sort(function(a,b) { return b.avgScore - a.avgScore; }); 
-  let html = '<table class="group-table" style="box-shadow:none;"><thead><tr><th>研发负责人</th><th>开发页面数</th><th>平均还原分</th><th>P0 严重缺陷</th><th>P1 样式缺陷</th><th>缺陷总数</th></tr></thead><tbody>';
-  for(let i=0; i<list.length; i++) {
-    const d = list[i]; const c = d.avgScore >= 90 ? '#137333' : d.avgScore >= 70 ? '#B06000' : '#C5221F';
-    html += '<tr><td style="font-weight:500;">'+d.name+'</td><td>'+d.items.length+'</td><td style="font-size:16px; font-weight:700; color:'+c+';">'+d.avgScore+' 分</td><td style="color:#C5221F;">'+d.totalP0+' 个</td><td style="color:#B06000;">'+d.totalP1+' 个</td><td>'+d.totalIssues+' 个</td></tr>';
-  }
-  html += '</tbody></table>'; el.innerHTML = html;
+  
+  const list = Object.values(devMap);
+  if (!list.length) { el.innerHTML = '<div style="color:#80868B;font-size:13px;padding:24px;text-align:center;">暂无责任人统计数据，请在走查子页面指派责任人。</div>'; return; }
+  
+  list.forEach(d => {
+      let sum = 0;
+      d.scores.forEach(s => sum += s);
+      d.avgScore = Math.round(sum / d.scores.length);
+  });
+  list.sort((a,b) => b.avgScore - a.avgScore);
+  
+  let html = `<table class="group-table" style="box-shadow:none;"><thead><tr><th>研发负责人</th><th>开发页面数</th><th>平均还原分</th><th>P0 问题</th><th>P1 问题</th><th>总缺陷数</th></tr></thead><tbody>`;
+  list.forEach(d => {
+    const c = d.avgScore >= 90 ? '#137333' : d.avgScore >= 70 ? '#B06000' : '#C5221F';
+    html += `<tr><td style="font-weight:500;">${d.name}</td><td>${d.items.length}</td><td style="font-size:16px; font-weight:700; color:${c};">${d.avgScore}</td><td style="color:#C5221F;">${d.totalP0}</td><td style="color:#B06000;">${d.totalP1}</td><td>${d.totalIssues}</td></tr>`;
+  });
+  html += `</tbody></table>`;
+  el.innerHTML = html;
 }
 
 function renderAllPagesImagesTable(allPages) {
   const el = document.getElementById('allPagesImagesSection'); if (!el) return;
-  if (allPages.length === 0) { el.innerHTML = '<div style="color:#80868B;font-size:13px;padding:24px;text-align:center;">暂无检测完毕的页面。</div>'; return; }
-  let html = '<table class="group-table" style="box-shadow:none;"><thead><tr><th style="width: 200px;">页面名称</th><th>🎨 设计稿</th><th>🛠 还原稿</th><th>🔥 热力图</th><th style="width: 80px;">⭐ 评分</th><th style="width: 100px;">⚠️ 问题</th></tr></thead><tbody>';
+  if (!allPages.length) { el.innerHTML = '<div style="color:#80868B;font-size:13px;padding:24px;text-align:center;">暂无检测完毕的页面。</div>'; return; }
+
+  let html = `<table class="group-table" style="box-shadow:none;"><thead><tr><th style="width: 180px;">所属页面</th><th>🎨 设计稿</th><th>🛠 还原稿</th><th>🔥 热力图</th><th style="width: 80px;">⭐ 评分</th><th style="width: 80px;">⚠️ 缺陷</th></tr></thead><tbody>`;
+
   allPages.forEach(ct => {
-    const issues = (ct.result ? ct.result.issues : []).filter(i => !i.closed);
-    let p0 = 0, p1 = 0; issues.forEach(i => { if (i.priority === 'P0') p0++; if (i.priority === 'P1') p1++; });
+    const issues = ct.result ? ct.result.issues : [];
+    let p0 = 0, p1 = 0;
+    issues.forEach(i => { if (i.priority === 'P0') p0++; if (i.priority === 'P1') p1++; });
     const score = ct.result ? Math.round(Math.max(0, 100 - issues.length * 5 - p0 * 10 - p1 * 5)) : '-';
     let scColor = '#3C4043'; if(score !== '-') scColor = score >= 90 ? '#137333' : score >= 70 ? '#B06000' : '#C5221F';
+
     const thumb = (src, label) => src ? `<div class="thumb-box" onclick="event.stopPropagation();openModal('${src}')"><img src="${src}"></div>` : `<div class="thumb-box"><span class="empty">${label}</span></div>`;
-    html += `<tr><td><div class="page-name" onclick="activateTab('${ct.id}')"><span style="font-size:16px;">📄</span> ${ct.name}</div></td><td>${thumb(ct.designImg, '未上传')}</td><td>${thumb(ct.devImg, '未上传')}</td><td>${thumb(ct.result ? ct.result.diffOverlay : null, '未生成')}</td><td style="font-size:16px; font-weight:700; color:${scColor};">${score}</td><td>${issues.length > 0 ? `<div style="display:flex;flex-direction:column;gap:4px;"><span style="color:#C5221F;font-size:12px;font-weight:500;">P0: ${p0}</span><span style="color:#B06000;font-size:12px;font-weight:500;">P1: ${p1}</span></div>` : '<span style="color:#9AA0A6;">无</span>'}</td></tr>`;
+    const overlayImg = (ct.result && ct.result.diffOverlay) ? ct.result.diffOverlay : null;
+
+    html += `<tr>
+        <td><div class="page-name" onclick="activateTab('${ct.id}')"><span style="font-size:16px;">📄</span> ${ct.name}</div></td>
+        <td>${thumb(ct.designImg, '未传')}</td>
+        <td>${thumb(ct.devImg, '未传')}</td>
+        <td>${thumb(overlayImg, '未生成')}</td>
+        <td style="font-size:16px; font-weight:700; color:${scColor};">${score}</td>
+        <td>${issues.length > 0 ? `<div style="display:flex;flex-direction:column;gap:4px;"><span style="color:#C5221F;font-size:12px;font-weight:500;">P0: ${p0}</span><span style="color:#B06000;font-size:12px;font-weight:500;">P1: ${p1}</span></div>` : '<span style="color:#9AA0A6;">无</span>'}</td>
+    </tr>`;
   });
-  html += '</tbody></table>'; el.innerHTML = html;
+  html += `</tbody></table>`;
+  el.innerHTML = html;
 }
 
+// ===== 视图渲染：板块主页汇总 =====
 function renderGroupMain(group) {
-  const main = document.getElementById('mainArea'); const children = []; group.children.forEach(cid => { const t = tabs.get(cid); if (t) children.push(t); });
-  let html = '<div class="upload-bar" style="justify-content: space-between;"><div style="font-size: 18px; font-weight: 500; font-family: \'Google Sans\', sans-serif;">📁 ' + group.name + ' <span>子页面汇总</span></div><button class="detect-btn" onclick="addChildTab(\'' + group.id + '\')">+ 新增子页面</button></div><div class="dashboard-wrap">';
-  if (children.length === 0) { html += '<div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:300px;color:#80868B;"><div style="font-size:48px;margin-bottom:16px;">📁</div><div style="font-size:16px;">当前模块为空，请点击上方创建走查子页。</div></div></div>'; main.innerHTML = html; return; }
-  html += '<table class="group-table"><thead><tr><th style="width: 200px;">子页面名称</th><th>🎨 设计稿</th><th>🛠 还原稿</th><th>🔥 热力图</th><th style="width: 80px;">⭐ 评分</th><th style="width: 100px;">⚠️ 问题</th></tr></thead><tbody>';
+  const main = document.getElementById('mainArea'); 
+  const children = [];
+  group.children.forEach(cid => {
+      const t = tabs.get(cid);
+      if (t) children.push(t);
+  });
+  
+  let html = `
+    <div class="upload-bar" style="justify-content: space-between;">
+        <div style="font-size: 18px; font-weight: 500; font-family: 'Google Sans', sans-serif;">📁 ${group.name} <span>板块汇总</span></div>
+        <button class="detect-btn" onclick="addChildTab('${group.id}')">+ 新增子页面</button>
+    </div>
+    <div class="dashboard-wrap">
+  `;
+
+  if (children.length === 0) {
+    html += `<div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:300px;color:#80868B;"><div style="font-size:48px;margin-bottom:16px;">📁</div><div style="font-size:16px;">当前板块为空，请添加子页面</div></div></div>`;
+    main.innerHTML = html; return;
+  }
+
+  html += `<table class="group-table"><thead><tr><th style="width: 200px;">子页面名称</th><th>🎨 设计稿</th><th>🛠 还原稿</th><th>🔥 热力图</th><th style="width: 80px;">⭐ 评分</th><th style="width: 100px;">⚠️ 问题</th></tr></thead><tbody>`;
+
   children.forEach(ct => {
-    const issues = (ct.result ? ct.result.issues : []).filter(i => !i.closed);
-    let p0 = 0, p1 = 0; issues.forEach(i => { if (i.priority === 'P0') p0++; if (i.priority === 'P1') p1++; });
+    const issues = ct.result ? ct.result.issues : [];
+    let p0 = 0, p1 = 0;
+    issues.forEach(i => {
+        if (i.priority === 'P0') p0++;
+        if (i.priority === 'P1') p1++;
+    });
     const score = ct.result ? Math.round(Math.max(0, 100 - issues.length * 5 - p0 * 10 - p1 * 5)) : '-';
     let scColor = '#3C4043'; if(score !== '-') scColor = score >= 90 ? '#137333' : score >= 70 ? '#B06000' : '#C5221F';
-    const thumb = (src, label) => src ? `<div class="thumb-box" onclick="event.stopPropagation();openModal(\''+src+'\')"><img src="${src}"></div>` : `<div class="thumb-box"><span class="empty">${label}</span></div>`;
-    html += `<tr><td><div class="page-name" onclick="activateTab(\''+ct.id+'\')"><span style="font-size:16px;">📄</span> ${ct.name}</div></td><td>${thumb(ct.designImg, '未传')}</td><td>${thumb(ct.devImg, '未传')}</td><td>${thumb(ct.result ? ct.result.diffOverlay : null, '未生成')}</td><td style="font-size:16px; font-weight:700; color:${scColor};">${score}</td><td>${issues.length > 0 ? `<div style="display:flex;flex-direction:column;gap:4px;"><span style="color:#C5221F;font-size:12px;font-weight:500;">P0: ${p0}</span><span style="color:#B06000;font-size:12px;font-weight:500;">P1: ${p1}</span></div>` : '<span style="color:#9AA0A6;">无</span>'}</td></tr>`;
+
+    const thumb = (src, label) => src ? `<div class="thumb-box" onclick="event.stopPropagation();openModal('${src}')"><img src="${src}"></div>` : `<div class="thumb-box"><span class="empty">${label}</span></div>`;
+    const overlayImg = (ct.result && ct.result.diffOverlay) ? ct.result.diffOverlay : null;
+
+    html += `<tr>
+        <td><div class="page-name" onclick="activateTab('${ct.id}')"><span style="font-size:16px;">📄</span> ${ct.name}</div></td>
+        <td>${thumb(ct.designImg, '未传')}</td>
+        <td>${thumb(ct.devImg, '未传')}</td>
+        <td>${thumb(overlayImg, '未生成')}</td>
+        <td style="font-size:16px; font-weight:700; color:${scColor};">${score}</td>
+        <td>
+            ${issues.length > 0 ? `<div style="display:flex;flex-direction:column;gap:4px;"><span style="color:#C5221F;font-size:12px;font-weight:500;">P0: ${p0}</span><span style="color:#B06000;font-size:12px;font-weight:500;">P1: ${p1}</span></div>` : '<span style="color:#9AA0A6;">无</span>'}
+        </td>
+    </tr>`;
   });
-  html += '</tbody></table></div>'; main.innerHTML = html;
+  html += `</tbody></table></div>`;
+  main.innerHTML = html;
 }
 
-// ===== 物理级数据强隔离备份导出/导入核心技术方案 =====
-window.exportLocalBackup = function() {
-  const data = {};
-  tabs.forEach(function(tab, id) {
-    if (id !== 'dashboard') {
-      data[id] = { id: id, name: tab.name, isGroup: tab.isGroup, children: tab.children, designImg: tab.designImg, devImg: tab.devImg, result: tab.result, developer: tab.developer || '' };
+function enlargeOverlay(id) { const tab = tabs.get(id); if (!tab || !tab.designImg || !tab.devImg) return; const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="800" height="600"><image href="${tab.designImg}" width="800" height="600" opacity="1"/><image href="${tab.devImg}" width="800" height="600" opacity="${tab.overlayOpacity}"/></svg>`; openModal('data:image/svg+xml,' + encodeURIComponent(svg)); }
+function makeDropZone(id, key, icon, label) { return `<div class="drop-zone" id="dz_${id}_${key}" onclick="document.getElementById('fi_${id}_${key}').click()" ondragover="e.preventDefault();this.classList.add('dragover')" ondrop="handleDrop(event,'${id}','${key}')" ondragleave="this.classList.remove('dragover')"><div class="dz-icon">${icon}</div><div class="dz-text">${label}</div><input type="file" accept="image/*" id="fi_${id}_${key}" onchange="handleDropFile(event,'${id}','${key}')"></div>`; }
+function handleDropFile(e, id, key) { const file = e.target.files[0]; if (!file) return; readImgToTab(id, key, file); autoSave(); }
+function handleDrop(e, id, key) { e.preventDefault(); e.currentTarget.classList.remove('dragover'); const file = e.dataTransfer.files[0]; if (file && file.type.startsWith('image/')) readImgToTab(id, key, file); autoSave(); }
+function readImgToTab(id, key, file) { const tab = tabs.get(id); if (!tab) return; const reader = new FileReader(); reader.onload = (e) => { if (key === 'design') tab.designImg = e.target.result; else if (key === 'dev') tab.devImg = e.target.result; renderMain(id); renderTabList(); }; reader.readAsDataURL(file); }
+function setOverlay(id, val) { const tab = tabs.get(id); if (!tab) return; tab.overlayOpacity = val; const topImg = document.querySelector(`#ow_${id} .overlay-top`); if (topImg) topImg.style.opacity = val; const vEl = document.querySelector(`#ow_${id} .slider-val:last-child`); if (vEl) vEl.textContent = Math.round(val*100)+'%'; }
+
+let resizeActive = false;
+document.addEventListener('mousedown', e => {
+  const bar = e.target.closest('.resize-bar'); if (!bar) return;
+  const id = bar.id.replace('resizeBar_', ''); const c4 = document.getElementById('c4_' + id); if (!c4) return;
+  resizeActive = true; const startY = e.clientY, startH = c4.offsetHeight;
+  const onMove = (ev) => { if (!resizeActive) return; const dh = ev.clientY - startY; c4.style.height = Math.max(120, Math.min(window.innerHeight - 300, startH + dh)) + 'px'; };
+  const onUp = () => { resizeActive = false; document.removeEventListener('mousemove', onMove); document.removeEventListener('mouseup', onUp); document.body.style.cursor = ''; };
+  document.addEventListener('mousemove', onMove); document.addEventListener('mouseup', onUp); document.body.style.cursor = 'row-resize'; e.preventDefault();
+});
+
+// ===== 🚀 核心走查纠偏逻辑 =====
+async function runDetect(id) {
+  const tab = tabs.get(id); if (!tab || !tab.designImg || !tab.devImg) return;
+  tab.result = null; tab.selectedIdx = -1; renderMain(id);
+  const s = document.querySelector(`#ub_${id} .status`); if (s) s.textContent = '⏳ 小龙虾 AI 走查比对中…';
+  try {
+    let rawResult = await window.vgDetect(tab.designImg, tab.devImg);
+    if (rawResult && rawResult.issues) {
+      let wrappedIssues = [];
+      for(let i=0; i<rawResult.issues.length; i++) {
+          let is = rawResult.issues[i];
+          wrappedIssues.push({ ...is, box: { x: is.x, y: is.y, w: is.w, h: is.h } });
+      }
+      let refinedIssues = applyStructuralCorrection(wrappedIssues);
+      rawResult.issues = [];
+      for(let i=0; i<refinedIssues.length; i++) {
+          let is = refinedIssues[i];
+          rawResult.issues.push({ ...is, x: is.box.x, y: is.box.y, w: is.box.w, h: is.box.h });
+      }
+      for(let i=0; i<rawResult.issues.length; i++){ rawResult.issues[i].regionIndex = i + 1; }
     }
+    tab.result = rawResult; renderMain(id); renderTabList(); autoSave();
+    if (s) s.textContent = `✅ 检测完成，共发现 ${rawResult.issues.length} 个偏差`;
+  } catch(e) { if (s) s.textContent = '❌ '+e.message; console.error(e); }
+}
+
+function applyStructuralCorrection(issues) {
+  let clusters = []; const MERGE_RADIUS = 40;
+  for(let n=0; n<issues.length; n++) {
+    let issue = issues[n];
+    let merged = false;
+    for (let i=0; i<clusters.length; i++) {
+      let cluster = clusters[i];
+      if (!(issue.box.x > cluster.box.x + cluster.box.w + MERGE_RADIUS || issue.box.x + issue.box.w + MERGE_RADIUS < cluster.box.x || issue.box.y > cluster.box.y + cluster.box.h + MERGE_RADIUS || issue.box.y + issue.box.h + MERGE_RADIUS < cluster.box.y)) {
+        cluster.box = { x: Math.min(cluster.box.x, issue.box.x), y: Math.min(cluster.box.y, issue.box.y), w: Math.max(cluster.box.x + cluster.box.w, issue.box.x + issue.box.w) - Math.min(cluster.box.x, issue.box.x), h: Math.max(cluster.box.y + cluster.box.h, issue.box.y + issue.box.h) - Math.min(cluster.box.y, issue.box.y) };
+        cluster.rawIssues.push(issue); merged = true; break;
+      }
+    }
+    if (!merged) { clusters.push({ box: issue.box, rawIssues: [issue] }); }
+  }
+
+  let refined = [];
+  for(let n=0; n<clusters.length; n++) {
+    let cluster = clusters[n];
+    let box = cluster.box; 
+    let sortedRaw = [...cluster.rawIssues].sort((a,b) => {
+        const ra = a.priority === 'P0' ? 0 : a.priority === 'P1' ? 1 : 2;
+        const rb = b.priority === 'P0' ? 0 : b.priority === 'P1' ? 1 : 2;
+        return ra - rb;
+    });
+    let mainIssue = sortedRaw[0]; 
+    let area = box.w * box.h;
+    let category = mainIssue.category; let description = mainIssue.description || mainIssue.desc || ''; let detail = mainIssue.detail || ''; let priority = mainIssue.priority || 'P1';
+
+    const isLargeArea = area > 8000; const isSquareish = (Math.max(box.w, box.h) / Math.min(box.w, box.h)) < 1.8;
+    
+    let hasFontError = false; let hasColorError = false;
+    for(let i=0; i<cluster.rawIssues.length; i++) {
+        if(cluster.rawIssues[i].category === 'font' || cluster.rawIssues[i].category === 'text' || (cluster.rawIssues[i].desc && cluster.rawIssues[i].desc.includes('文字'))) hasFontError = true;
+        if(cluster.rawIssues[i].category === 'color') hasColorError = true;
+    }
+    const isSmallText = area < 3500;
+
+    if (isLargeArea) {
+      if (isSquareish) { category = 'image'; description = '插画大图异常'; } else { category = 'container'; description = '卡片/容器差异'; }
+      if (hasColorError) { category = 'position'; description = '整体位置偏移'; detail = '大卡片或插画发生整体位移，导致原位置比对失效'; priority = 'P0'; }
+    } else if (hasFontError || (isSmallText && mainIssue.category === 'color')) {
+       category = '文字问题';
+       let hasSize = false;
+       for(let i=0; i<cluster.rawIssues.length; i++) { if(cluster.rawIssues[i].category === 'size') hasSize = true; }
+       
+       if (mainIssue.category === 'color' || hasColorError) { description = '颜色差异'; detail = `文字颜色或对比度发生变化`; priority = 'P1'; }
+       else if (mainIssue.category === 'size' || hasSize) { description = '字号差异'; detail = `字号大小或粗细发生变化`; priority = 'P1'; }
+       else { description = '排版差异'; detail = `文字对齐、行距或边距出现偏移`; priority = 'P2'; }
+    }
+    refined.push({ ...mainIssue, box: box, category: category, description: description, detail: detail, priority: priority });
+  }
+  return refined;
+}
+
+// ===== 缺陷列表渲染 =====
+function sortByPriority(issues) { 
+    return [...issues].sort((a, b) => {
+        const prioRank = { P0: 0, P1: 1, P2: 2, P3: 3 }; 
+        const ra = prioRank[a.priority] !== undefined ? prioRank[a.priority] : 99;
+        const rb = prioRank[b.priority] !== undefined ? prioRank[b.priority] : 99;
+        return ra - rb;
+    }); 
+}
+
+function renderIssueTable(id, tab) {
+  const r = tab.result; if (!r) return;
+  const rawIssues = r.issues || []; const cr = r.cropUrls || [];
+  const issues = sortByPriority(rawIssues); 
+  const idxMap = rawIssues.map((iss,i)=>i); 
+  idxMap.sort((a,b) => {
+        const prioRank = { P0: 0, P1: 1, P2: 2, P3: 3 };
+        const ra = prioRank[rawIssues[a].priority] !== undefined ? prioRank[rawIssues[a].priority] : 99;
+        const rb = prioRank[rawIssues[b].priority] !== undefined ? prioRank[rawIssues[b].priority] : 99;
+        return ra - rb;
   });
-  const json = JSON.stringify({ tabs: data, devPool: devPool });
-  const blob = new Blob([json], { type: 'application/json' });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a'); a.href = url;
-  a.download = 'VisionGuard_Backup_' + new Date().toISOString().slice(0,10) + '.json';
-  document.body.appendChild(a); a.click(); document.body.removeChild(a); URL.revokeObjectURL(url);
-};
+  const sortedCr = idxMap.map(i=>cr[i]);
 
-window.importLocalBackup = function(e) {
-  const file = e.target.files[0]; if (!file) return;
-  const reader = new FileReader();
-  reader.onload = function(evt) {
-    try {
-      const remoteObj = JSON.parse(evt.target.result);
-      let remote = remoteObj;
-      if (remoteObj && remoteObj.tabs) {
-          remote = remoteObj.tabs;
-          if (remoteObj.devPool && Array.isArray(remoteObj.devPool)) { devPool = remoteObj.devPool; saveDevPool(); }
-      }
-      tabs.clear(); let maxId = 0; const ids = Object.keys(remote);
-      for(let i=0; i<ids.length; i++) {
-        const id = ids[i]; const rec = remote[id]; if (id === 'dashboard' || rec.name === '数据看板') continue;
-        if (!rec.id) rec.id = id; tabs.set(id, rec);
-        const num = parseInt(id.replace('tab_', ''), 10); if (num > maxId) maxId = num;
-      }
-      tabIdCounter = maxId + 1;
-      if (!tabs.has('dashboard')) tabs.set('dashboard', { id: 'dashboard', name: '数据看板', isGroup: true, children: [] });
-      saveTabs(); activeTabId = 'dashboard'; renderTabList(); renderMain('dashboard');
-      alert('✅ 本地离线备份数据导入成功！');
-    } catch(err) { alert('❌ 备份文件解析失败，请检查格式。'); }
+  const h = document.getElementById('ih_'+id);
+  if (h) { 
+      let p0c = 0, p1c = 0;
+      for(let i=0; i<rawIssues.length; i++) { if(rawIssues[i].priority === 'P0') p0c++; if(rawIssues[i].priority === 'P1') p1c++; }
+      h.innerHTML = `<h3>📋 缺陷报告</h3><span class="stats">共发现 ${rawIssues.length} 个缺陷 ( P0: ${p0c} , P1: ${p1c} )</span>`; 
+  }
+  const wrap = document.getElementById('ilw_'+id); if (!wrap) return;
+  if (issues.length === 0) { wrap.innerHTML = '<div class="no-issues">🎉 完美还原！没有发现视觉缺陷。</div>'; return; }
+
+  let html = `<table class="issue-table"><thead><tr><th class="id-col">#</th><th class="prio-col">级别</th><th class="type-col">类型</th><th>描述</th><th>预览图</th><th>技术详情</th></tr></thead><tbody>`;
+  const typeMap = { font:'字体', position:'位置', size:'尺寸', color:'颜色', image:'图片', container:'容器' };
+  
+  for(let i=0; i<issues.length; i++) {
+    const iss = issues[i];
+    const src = sortedCr[i] || ''; 
+    const previewHtml = src ? `<img class="preview-img" src="${src}" onclick="event.stopPropagation();openModal('${src}')">` : '-';
+    let subTypeStyle = '';
+    if (iss.category === '文字问题') {
+      if (iss.description === '颜色差异') subTypeStyle = 'color: #D93025; font-weight: 600;';
+      else if (iss.description === '字号差异') subTypeStyle = 'color: #F29900; font-weight: 600;';
+      else if (iss.description === '排版差异') subTypeStyle = 'color: #1A73E8; font-weight: 600;';
+    }
+
+    html += `<tr class="${i===tab.selectedIdx?'active':''}" data-idx="${idxMap[i]}" onclick="selectIssue('${id}',${idxMap[i]})"><td class="id-col">${i+1}</td><td class="prio-col"><span class="tag tag-${iss.priority||'P2'}">${iss.priority||'P2'}</span></td><td class="type-col">${typeMap[iss.category]||iss.category}</td><td style="${subTypeStyle}">${iss.description || ''}</td><td style="padding: 6px 16px;">${previewHtml}</td><td style="color:#5F6368;font-size:12px;">${iss.detail||''}</td></tr>`;
+  }
+  html += '</tbody></table>'; wrap.innerHTML = html;
+  if (issues.length > 0 && tab.selectedIdx < 0) selectIssue(id, idxMap[0]); else if (tab.selectedIdx >= 0) drawMarkers(id, tab);
+}
+
+function selectIssue(id, idx) {
+  const tab = tabs.get(id); if (!tab||!tab.result||!tab.result.issues[idx]) return;
+  tab.selectedIdx = idx; document.querySelectorAll(`#ilw_${id} tr`).forEach(el=>el.classList.remove('active'));
+  const row = document.querySelector(`#ilw_${id} tr[data-idx="${idx}"]`); if (row) row.classList.add('active'); drawMarkers(id, tab);
+}
+
+function drawMarkers(id, tab) {
+  const r = tab.result; const idx = tab.selectedIdx; if (idx < 0 || !r || !r.issues[idx]) return; const iss = r.issues[idx];
+  document.querySelectorAll(`#dCell_${id} .marker, #vCell_${id} .marker`).forEach(el=>el.remove());
+  const addMarker = (cellId, imgId, ox, oy) => {
+    const cell = document.getElementById(cellId); const img = document.getElementById(imgId); if (!cell || !img) return;
+    const tryMark = () => {
+      const iw = img.naturalWidth, ih = img.naturalHeight; const cw = cell.offsetWidth, ch = cell.offsetHeight; if (!iw || !ih || !cw || !ch) { setTimeout(tryMark, 100); return; }
+      const scale = Math.min(cw / iw, ch / ih); const dispW = iw * scale, dispH = ih * scale; const offsetX = (cw - dispW) / 2, offsetY = (ch - dispH) / 2;
+      cell.querySelectorAll('.marker').forEach(el=>el.remove());
+      const m = document.createElement('div'); m.className = 'marker'; m.style.cssText = `position:absolute;left:${offsetX+(iss.x+ox)*scale}px;top:${offsetY+(iss.y+oy)*scale}px;width:${Math.max(iss.w*scale,2)}px;height:${Math.max(iss.h*scale,2)}px;border:2px solid #EA4335;border-radius:4px;pointer-events:none;z-index:2;box-shadow:0 0 0 1px rgba(255,255,255,0.8);`; cell.appendChild(m);
+    }; tryMark();
   };
-  reader.readAsText(file); e.target.value = '';
+  addMarker('dCell_'+id, 'dImg_'+id, 0, 0); addMarker('vCell_'+id, 'vImg_'+id, r.align ? r.align.dx : 0, r.align ? r.align.dy : 0);
+}
+
+document.addEventListener('keydown', e => {
+  if (!activeTabId) return; const tab = tabs.get(activeTabId); if (!tab||!tab.result||!tab.result.issues.length) return;
+  if (e.key === 'ArrowUp' || e.key === 'ArrowDown') { const d = e.key==='ArrowUp' ? -1 : 1; const n = tab.selectedIdx + d; if (n>=0 && n<tab.result.issues.length) { selectIssue(activeTabId, n); const row = document.querySelector(`#ilw_${activeTabId} tr[data-idx="${n}"]`); if (row) row.scrollIntoView({behavior:'smooth', block:'nearest'}); } e.preventDefault(); }
+});
+
+// ===== 云端配置与同步中心 =====
+let cloudConfig = JSON.parse(localStorage.getItem('vgCloudConfig')) || {
+    cloudName: 'dxm3bwnzi', apiKey: '713313811327755', apiSecret: 'QIBVvLSSePJW5-1UVYECknvBLBQ', dataName: 'vg_prod_v2'
 };
 
-// ===== IndexedDB 存储系统 =====
+function openCloudSettings() {
+    document.getElementById('cfgCloudName').value = cloudConfig.cloudName; document.getElementById('cfgApiKey').value = cloudConfig.apiKey; document.getElementById('cfgApiSecret').value = cloudConfig.apiSecret; document.getElementById('cfgDataName').value = cloudConfig.dataName; document.getElementById('settingsModal').classList.add('open');
+}
+function closeCloudSettings() { document.getElementById('settingsModal').classList.remove('open'); }
+function saveCloudSettings() {
+    cloudConfig.cloudName = document.getElementById('cfgCloudName').value.trim(); cloudConfig.apiKey = document.getElementById('cfgApiKey').value.trim(); cloudConfig.apiSecret = document.getElementById('cfgApiSecret').value.trim(); cloudConfig.dataName = document.getElementById('cfgDataName').value.trim(); localStorage.setItem('vgCloudConfig', JSON.stringify(cloudConfig)); closeCloudSettings(); location.reload();
+}
+
 const DB_NAME = 'VisionGuardDB'; const DB_VERSION = 5; const STORE_NAME = 'tabs'; const CONFIG_KEY = 'appConfig';
-function openDB() { return new Promise((resolve, reject) => { const req = indexedDB.open(DB_NAME, DB_VERSION); req.onupgradeneeded = e => { const db = e.target.result; if (e.oldVersion > 0 && e.oldVersion < DB_VERSION) { if (db.objectStoreNames.contains(STORE_NAME)) db.deleteObjectStore(STORE_NAME); } if (!db.objectStoreNames.contains(STORE_NAME)) db.createObjectStore(STORE_NAME, { keyPath: 'id' }); }; req.onsuccess = e => resolve(e.target.result); }); }
-async function loadDevPool() { try { const db = await openDB(); const tx = db.transaction(STORE_NAME, 'readonly'); const store = tx.objectStore(STORE_NAME); const cfg = await new Promise((resolve) => { const req = store.get(CONFIG_KEY); req.onsuccess = () => resolve(req.result); }); if (cfg && cfg.devPool) devPool = cfg.devPool; } catch(e) {} }
-async function saveDevPool() { try { const db = await openDB(); const tx = db.transaction(STORE_NAME, 'readwrite'); const store = tx.objectStore(STORE_NAME); store.put({ id: CONFIG_KEY, devPool: devPool }); } catch(e) {} }
-async function saveTabs() { try { const db = await openDB(); const tx = db.transaction(STORE_NAME, 'readwrite'); const store = tx.objectStore(STORE_NAME); store.clear(); tabs.forEach(tab => { if(tab.id !== 'dashboard') store.put({ id: tab.id, name: tab.name, isGroup: tab.isGroup, children: tab.children, designImg: tab.designImg, devImg: tab.devImg, result: tab.result, overlayOpacity: tab.overlayOpacity, developer: tab.developer || '' }); }); } catch(e) {} }
-async function loadTabs() { try { const db = await openDB(); const tx = db.transaction(STORE_NAME, 'readonly'); const store = tx.objectStore(STORE_NAME); const all = await new Promise((resolve) => { const req = store.getAll(); req.onsuccess = () => resolve(req.result); }); if (!all || all.length === 0) return false; tabs.clear(); let maxId = 0; for (let i=0; i<all.length; i++) { const rec = all[i]; if (rec.id === 'dashboard' || rec.name === '数据看板') continue; tabs.set(rec.id, rec); const num = parseInt(rec.id.replace('tab_', ''), 10); if (num > maxId) maxId = num; } tabIdCounter = maxId + 1; return true; } catch(e) { return false; } }
+function openDB() { return new Promise((resolve, reject) => { const req = indexedDB.open(DB_NAME, DB_VERSION); req.onupgradeneeded = e => { const db = e.target.result; if (e.oldVersion > 0 && e.oldVersion < DB_VERSION) { if (db.objectStoreNames.contains(STORE_NAME)) db.deleteObjectStore(STORE_NAME); } if (!db.objectStoreNames.contains(STORE_NAME)) db.createObjectStore(STORE_NAME, { keyPath: 'id' }); }; req.onsuccess = e => resolve(e.target.result); req.onerror = e => reject(e.target.error); }); }
+async function loadDevPool() { try { const db = await openDB(); const tx = db.transaction(STORE_NAME, 'readonly'); const store = tx.objectStore(STORE_NAME); const cfg = await new Promise((resolve, reject) => { const req = store.get(CONFIG_KEY); req.onsuccess = () => resolve(req.result); req.onerror = () => reject(req.error); }); if (cfg && cfg.devPool) devPool = cfg.devPool; } catch(e) {} }
+async function saveDevPool() { try { const db = await openDB(); const tx = db.transaction(STORE_NAME, 'readwrite'); const store = tx.objectStore(STORE_NAME); store.put({ id: CONFIG_KEY, devPool: devPool }); await new Promise((resolve, reject) => { tx.oncomplete = resolve; tx.onerror = reject; }); } catch(e) {} }
+async function saveTabs() { try { const db = await openDB(); const tx = db.transaction(STORE_NAME, 'readwrite'); const store = tx.objectStore(STORE_NAME); store.clear(); tabs.forEach(tab => { if(tab.id !== 'dashboard') store.put({ id: tab.id, name: tab.name, isGroup: tab.isGroup, children: tab.children, designImg: tab.designImg, devImg: tab.devImg, result: tab.result, overlayOpacity: tab.overlayOpacity, developer: tab.developer || '' }); }); await new Promise((resolve, reject) => { tx.oncomplete = resolve; tx.onerror = reject; }); } catch(e) {} }
+
+async function loadTabs() { 
+  try { 
+    const db = await openDB(); const tx = db.transaction(STORE_NAME, 'readonly'); const store = tx.objectStore(STORE_NAME); 
+    const all = await new Promise((resolve, reject) => { const req = store.getAll(); req.onsuccess = () => resolve(req.result); req.onerror = () => reject(req.error); }); 
+    if (!all || all.length === 0) return false; 
+    tabs.clear(); let maxId = 0; 
+    for (let i=0; i<all.length; i++) { 
+        const rec = all[i]; 
+        if (rec.id === 'dashboard' || rec.name === '数据看板') continue; 
+        tabs.set(rec.id, rec); 
+        const num = parseInt(rec.id.replace('tab_', ''), 10); 
+        if (num > maxId) maxId = num; 
+    } 
+    tabIdCounter = maxId + 1; 
+    return true; 
+  } catch(e) { return false; } 
+}
+
 function autoSave() { setTimeout(saveTabs, 100); autoCloudify(); }
 
-let pendingCloudSync = null; function autoCloudify() { if (pendingCloudSync) clearTimeout(pendingCloudSync); pendingCloudSync = setTimeout(manualCloudPush, 2000); }
+let pendingCloudSync = null;
+function autoCloudify() { if (pendingCloudSync) clearTimeout(pendingCloudSync); pendingCloudSync = setTimeout(manualCloudPush, 3500); }
+
 function updateCloudUI(text, statusType) { const el = document.getElementById('cloudStatusText'); if (el) { el.innerHTML = text; el.className = 'cloud-status ' + statusType; } }
 
 async function manualCloudPush() {
-  if (!navigator.onLine) { updateCloudUI('☁️ 本地工作模式 (离线)', 'ok'); return; }
-  updateCloudUI('☁️ 后台同步中...', 'syncing');
+  updateCloudUI('☁️ 正在推送...', 'syncing');
   try {
-    const data = {}; tabs.forEach((tab, id) => { if (id !== 'dashboard') data[id] = { id: id, name: tab.name, isGroup: tab.isGroup, children: tab.children, designImg: tab.designImg, devImg: tab.devImg, result: tab.result, developer: tab.developer || '' }; });
-    const json = JSON.stringify({ tabs: data, devPool: devPool }); const timestamp = Math.floor(Date.now() / 1000); const signStr = 'public_id=' + cloudConfig.dataName + '&timestamp=' + timestamp + cloudConfig.apiSecret; const sig = await sha1Hex(signStr);
+    const data = {};
+    tabs.forEach((tab, id) => { if (id !== 'dashboard') data[id] = { id: id, name: tab.name, isGroup: tab.isGroup, children: tab.children, designImg: tab.designImg, devImg: tab.devImg, result: tab.result, developer: tab.developer || '' }; });
+    const json = JSON.stringify(data); const timestamp = Math.floor(Date.now() / 1000); const signStr = 'public_id=' + cloudConfig.dataName + '&timestamp=' + timestamp + cloudConfig.apiSecret; const sig = await sha1Hex(signStr);
     const formData = new FormData(); formData.append('file', new Blob([json], { type: 'application/json' }), 'data.json'); formData.append('api_key', cloudConfig.apiKey); formData.append('timestamp', timestamp + ''); formData.append('signature', sig); formData.append('public_id', cloudConfig.dataName); formData.append('resource_type', 'raw');
     const res = await fetch(`https://api.cloudinary.com/v1_1/${cloudConfig.cloudName}/raw/upload`, { method: 'POST', body: formData });
-    if (!res.ok) updateCloudUI('☁️ 同步挂起', 'err'); else updateCloudUI('✅ 云端已同步', 'ok');
-  } catch(e) { updateCloudUI('☁️ 本地模式', 'ok'); }
+    if (!res.ok) { updateCloudUI('☁️ 推送失败', 'err'); } else { updateCloudUI('✅ 云端已同步', 'ok'); }
+  } catch(e) { updateCloudUI('☁️ 网络异常', 'err'); }
 }
 
 async function cloudifyLoad() {
   try {
-    if (!navigator.onLine) return 'error';
     const res = await fetch(`https://res.cloudinary.com/${cloudConfig.cloudName}/raw/upload/${cloudConfig.dataName}.json?_t=${Date.now()}`);
-    if (res.status === 404) return '404'; if (!res.ok) return 'error';
-    const remoteObj = await res.json(); if (!remoteObj || typeof remoteObj !== 'object') return 'error';
-    let remote = remoteObj; if (remoteObj && remoteObj.tabs) { remote = remoteObj.tabs; if (remoteObj.devPool && Array.isArray(remoteObj.devPool)) { devPool = remoteObj.devPool; saveDevPool(); } }
-    tabs.clear(); let maxId = 0; const ids = Object.keys(remote);
+    if (res.status === 404) return false; if (!res.ok) return false;
+    const remote = await res.json(); if (!remote || typeof remote !== 'object' || Object.keys(remote).length === 0) return false;
+    tabs.clear(); let maxId = 0;
+    const ids = Object.keys(remote);
     for(let i=0; i<ids.length; i++) {
-      const id = ids[i]; const rec = remote[id]; if (id === 'dashboard' || rec.name === '数据看板') continue;
-      if (!rec.id) rec.id = id; tabs.set(id, rec); const num = parseInt(id.replace('tab_', ''), 10); if (num > maxId) maxId = num;
+      const id = ids[i]; const rec = remote[id]; 
+      if (id === 'dashboard' || rec.name === '数据看板') continue;
+      if (!rec.id) rec.id = id; tabs.set(id, rec);
+      const num = parseInt(id.replace('tab_', ''), 10); if (num > maxId) maxId = num;
     }
-    tabIdCounter = maxId + 1; return 'success';
-  } catch(e) { return 'error'; }
+    tabIdCounter = maxId + 1; return true;
+  } catch(e) { return false; }
 }
 
-async function silentCloudPull() {
-  if (!navigator.onLine) { updateCloudUI('☁️ 本地独立工作模式', 'ok'); return; }
-  updateCloudUI('☁️ 挂载云端进度...', 'syncing'); const status = await cloudifyLoad();
+async function manualCloudPull() {
+  updateCloudUI('☁️ 正在拉取...', 'syncing');
+  const restored = await cloudifyLoad();
+  
   if (!tabs.has('dashboard')) tabs.set('dashboard', { id: 'dashboard', name: '数据看板', isGroup: true, children: [] });
-  if (status === 'success') { saveTabs(); renderTabList(); renderMain(activeTabId); updateCloudUI('✅ 协作同步完成', 'ok'); } 
-  else if (status === '404') { updateCloudUI('☁️ 创建新云端仓...', 'syncing'); await manualCloudPush(); } 
-  else { updateCloudUI('☁️ 本地独立工作模式', 'ok'); }
+  
+  if (restored) {
+    activeTabId = 'dashboard'; renderTabList(); renderMain('dashboard'); updateCloudUI('✅ 拉取成功', 'ok');
+  } else { updateCloudUI('☁️ 无云端数据', 'err'); }
 }
-async function manualCloudPull() { await silentCloudPull(); }
+
 function sha1Hex(str) { return crypto.subtle.digest('SHA-1', new TextEncoder().encode(str)).then(buf => Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('')); }
 
-// ===== 极速首屏高可用无感异步引导系统 =====
+// ===== 启动主程序 =====
 (async function init() {
-  await loadDevPool(); let localRestored = await loadTabs();
-  if (!tabs.has('dashboard')) tabs.set('dashboard', { id: 'dashboard', name: '数据看板', isGroup: true, children: [] });
-  if (localRestored) { activeTabId = 'dashboard'; renderTabList(); renderMain('dashboard'); } 
-  else { activeTabId = 'dashboard'; const defaultGroupId = addTab('默认走查模块', {isGroup: true}); addChildTab(defaultGroupId); }
+  updateCloudUI('☁️ 连接云端...', 'syncing');
+  await loadDevPool(); 
   
-  // 核心机制：离线优先！启动时率先将本地秒级拉起，再在后台静默向远端握手对齐
-  silentCloudPull();
+  let restored = await cloudifyLoad();
+  if (restored) { updateCloudUI('✅ 团队数据已同步', 'ok'); } 
+  else { restored = await loadTabs(); updateCloudUI('☁️ 本地模式', 'syncing'); }
+  
+  // 注入超级节点：数据看板
+  if (!tabs.has('dashboard')) tabs.set('dashboard', { id: 'dashboard', name: '数据看板', isGroup: true, children: [] });
+  
+  if (restored) {
+    activeTabId = 'dashboard'; renderTabList(); renderMain('dashboard');
+  } else {
+    activeTabId = 'dashboard';
+    const defaultGroupId = addTab('默认测试板块', {isGroup: true}); addChildTab(defaultGroupId);
+    autoCloudify(); // 新环境，创建云端文件
+  }
 })();
 </script>
+
+<div class="settings-modal" id="settingsModal"><div class="settings-content"><div class="settings-header"><span>配置 Cloudinary 同步密钥</span><span style="cursor:pointer; color:#5F6368;" onclick="closeCloudSettings()">✕</span></div><div class="settings-body" style="padding: 24px; display: flex; flex-direction: column; gap: 16px;"><div style="font-size:12px; color:#B06000; background:#FEF7E0; padding:8px 12px; border-radius:4px;">提醒：高清图片会使 JSON 体积膨胀，云端同步可能会花费几秒钟。</div><div class="settings-group" style="display:flex; flex-direction:column; gap:6px;"><label style="font-size:12px;font-weight:500;color:#5F6368;">Cloud Name</label><input type="text" id="cfgCloudName" style="padding:10px;border:1px solid #DADCE0;border-radius:4px;"></div><div class="settings-group" style="display:flex; flex-direction:column; gap:6px;"><label style="font-size:12px;font-weight:500;color:#5F6368;">API Key</label><input type="text" id="cfgApiKey" style="padding:10px;border:1px solid #DADCE0;border-radius:4px;"></div><div class="settings-group" style="display:flex; flex-direction:column; gap:6px;"><label style="font-size:12px;font-weight:500;color:#5F6368;">API Secret</label><input type="password" id="cfgApiSecret" style="padding:10px;border:1px solid #DADCE0;border-radius:4px;"></div><div class="settings-group" style="display:flex; flex-direction:column; gap:6px;"><label style="font-size:12px;font-weight:500;color:#5F6368;">存储集合名称 (ID)</label><input type="text" id="cfgDataName" style="padding:10px;border:1px solid #DADCE0;border-radius:4px;"></div></div><div class="settings-footer" style="padding: 16px 24px; border-top: 1px solid #DADCE0; display: flex; justify-content: flex-end; gap: 12px; background: #F8F9FA;"><button class="btn-cancel" onclick="closeCloudSettings()" style="padding:8px 24px;border:none;background:transparent;cursor:pointer;">取消</button><button class="btn-save" onclick="saveCloudSettings()" style="padding:8px 24px;border:none;background:#1A73E8;color:#fff;border-radius:4px;cursor:pointer;">保存并重载</button></div></div></div>
 </body>
 </html>
