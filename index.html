@@ -46,14 +46,18 @@ html, body { height: 100%; overflow: hidden; font-family: 'Google Sans', 'Roboto
 .cloud-status.ok { background: #E6F4EA; color: #137333; }
 .cloud-status.syncing { background: #FEF7E0; color: #B06000; }
 .cloud-status.err { background: #FCE8E6; color: #C5221F; }
+.cloud-settings-btn { width: 28px; height: 28px; border: none; border-radius: 50%; background: transparent; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 14px; transition: background 0.2s; }
+.cloud-settings-btn:hover { background: #F1F3F4; }
 .cloud-btns { display: flex; gap: 8px; }
 .cloud-btn { flex: 1; padding: 8px; font-size: 12px; font-weight: 500; font-family: 'Google Sans', sans-serif; border: 1px solid #DADCE0; border-radius: 4px; cursor: pointer; transition: all 0.2s; background: #FFFFFF; color: #3C4043; }
 .cloud-btn:hover { background: #F8F9FA; box-shadow: 0 1px 2px 0 rgba(60,64,67,0.3); }
+.btn-push { background: #1A73E8; color: #FFFFFF; border: none; }
+.btn-push:hover { background: #1B66C9; color: #FFFFFF; box-shadow: 0 1px 2px 0 rgba(60,64,67,0.3), 0 1px 3px 1px rgba(60,64,67,0.15); }
 
 /* ===== 主内容工作区 ===== */
 .main { flex: 1; display: flex; flex-direction: column; min-width: 0; background: #F8F9FA; }
 
-/* ===== 统一上传/控制栏 ===== */
+/* ===== 统一页面控制栏 ===== */
 .upload-bar { display: flex; gap: 12px; align-items: center; padding: 12px 24px; background: #FFFFFF; border-bottom: 1px solid #DADCE0; flex-shrink: 0; flex-wrap: wrap; z-index: 5; }
 .upload-bar .file-label { display: flex; align-items: center; gap: 8px; padding: 8px 16px; background: #FFFFFF; border: 1px solid #DADCE0; border-radius: 4px; cursor: pointer; font-size: 13px; font-weight: 500; color: #3C4043; transition: all 0.2s; }
 .upload-bar .file-label:hover { background: #F8F9FA; }
@@ -100,7 +104,7 @@ html, body { height: 100%; overflow: hidden; font-family: 'Google Sans', 'Roboto
 /* 缺陷被关闭（忽略）后的样式 */
 .issue-table tr.closed-issue { opacity: 0.55; background: #F8F9FA !important; }
 .issue-table tr.closed-issue td { color: #9AA0A6 !important; text-decoration: line-through; }
-.issue-table tr.closed-issue .preview-img { filter: grayscale(100%); opacity: 0.7; text-decoration: none; }
+.issue-table tr.closed-issue .preview-img { filter: grayscale(100%); opacity: 0.7; pointer-events: none; }
 .issue-table tr.closed-issue .tag { background: #E8EAED !important; color: #80868B !important; text-decoration: none; }
 .btn-toggle-issue { padding: 4px 10px; border: 1px solid #DADCE0; border-radius: 12px; background: #FFFFFF; color: #5F6368; font-size: 12px; font-weight: 500; cursor: pointer; text-decoration: none !important; transition: all 0.2s; box-shadow: 0 1px 2px rgba(0,0,0,0.05); }
 .btn-toggle-issue:hover { background: #F1F3F4; color: #202124; }
@@ -218,20 +222,20 @@ html, body { height: 100%; overflow: hidden; font-family: 'Google Sans', 'Roboto
 
 <script>
 // ====================================================================
-// VisionGuard Detection Engine v9 — 底层核心机器视觉分析引擎
+// VisionGuard Detection Engine v9 — 底层视觉比对算法 (免修改区)
 // ====================================================================
-(function(){function e(r,g,b){return'#'+[r,g,b].map(v=>Math.max(0,Math.min(255,Math.round(v))).toString(16).padStart(2,'0')).join('').toUpperCase()}function d(r1,g1,b1,r2,g2,b2){return Math.sqrt(Math.pow(r1-r2,2)+Math.pow(g1-g2,2)+Math.pow(b1-b2,2))/Math.sqrt(Math.pow(255,2)*3)}function l(r,g,b){return.299*r+.587*g+.114*b}function loadCanvas(url){return new Promise(resolve=>{const img=new Image;if(!url.startsWith('data:'))img.crossOrigin='anonymous';img.onload=()=>{const c=document.createElement('canvas');c.width=img.width;c.height=img.height;const ctx=c.getContext('2d');ctx.drawImage(img,0,0);resolve({w:img.width,h:img.height,data:ctx.getImageData(0,0,img.width,img.height),ctx,canvas:c})};img.onerror=()=>resolve({w:0,h:0,data:null});img.src=url})}function alignImages(d,v){const dd=d.data.data,vd=v.data.data,vW=v.w,vH=v.h;function s(ox,oy,tdx,tdy){const rw=Math.min(40,d.w-ox),rh=Math.min(40,d.h-oy);let s=0,n=0;for(let y=oy;y<oy+rh;y+=4)for(let x=ox;x<ox+rw;x+=4){const py=y+tdy,px=x+tdx;if(py<0||px<0||py>=vH||px>=vW)continue;const piD=(y*d.w+x)*4,piV=(py*vW+px)*4;s+=Math.abs(dd[piD]-vd[piV])+Math.abs(dd[piD+1]-vd[piV+1])+Math.abs(dd[piD+2]-vd[piV+2]);n++}return n>0?s/n:1/0}let bDx=0,bDy=0,bS=1/0;for(let dy=-12;dy<=12;dy+=2)for(let dx=-12;dx<=12;dx+=2){let t=0,c=0;for(const[ox,oy]of[[0,0],[Math.max(0,d.w-60),0],[0,Math.max(0,d.h-60)]]){const sc=s(ox,oy,dx,dy);if(sc<1/0){t+=sc;c++}}const avg=c>0?t/c:1/0;if(avg<bS){bS=avg;bDx=dx;bDy=dy}}for(let dy=-1;dy<=1;dy++)for(let dx=-1;dx<=1;dx++){let t=0,c=0;for(const[ox,oy]of[[0,0],[Math.max(0,d.w-60),0],[0,Math.max(0,d.h-60)]]){const sc=s(ox,oy,bDx+dx,bDy+dy);if(sc<1/0){t+=sc;c++}}const avg=c>0?t/c:1/0;if(avg<bS){bS=avg;bDx+=dx;bDy+=dy}}return{dx:bDx,dy:bDy}}function enhanceContrast(imgData,iW,iH){const data=new Uint8ClampedArray(imgData),ts=64,tx=Math.ceil(iW/ts),ty=Math.ceil(iH/ts);for(let by=0;by<ty;by++)for(let bx=0;bx<tx;bx++){const x1=bx*ts,y1=by*ts,x2=Math.min(x1+ts,iW),y2=Math.min(y1+ts,iH),hist=new Int32Array(256);for(let y=y1;y<y2;y++)for(let x=x1;x<x2;x++){const pi=(y*iW+x)*4;hist[Math.round(l(imgData[pi],imgData[pi+1],imgData[pi+2]))]++}const tp=(x2-x1)*(y2-y1),lim=Math.max(3,tp*.01);let ex=0;for(let i=0;i<256;i++){if(hist[i]>lim){ex+=hist[i]-lim;hist[i]=lim}}const rd=Math.floor(ex/256);for(let i=0;i<256;i++)hist[i]+=rd;const cdf=new Int32Array(256);cdf[0]=hist[0];for(let i=1;i<256;i++)cdf[i]=cdf[i-1]+hist[i];const cdfMin=cdf[0],cdfR=cdf[255]-cdfMin;for(let y=y1;y<y2;y++)for(let x=x1;x<x2;x++){const pi=(y*iW+x)*4,lu=Math.round(l(imgData[pi],imgData[pi+1],imgData[pi+2])),mp=cdfR>0?Math.round((cdf[lu]-cdfMin)*255/cdfR):lu,nl=lu+(mp-lu)*.7*Math.min(2,Math.max(1,cdfR>0?255/cdfR:1));data[pi]=data[pi+1]=data[pi+2]=Math.max(0,Math.min(255,nl))}}let mL=255,xL=0;for(let i=0;i<data.length;i+=4){const lv=data[i];if(lv<mL)mL=lv;if(lv>xL)xL=lv}const rg=xL-mL;if(rg>10)for(let i=0;i<data.length;i+=4){data[i]=(data[i]-mL)*255/rg;data[i+1]=data[i+2]=data[i]}return data}function clusterDiffs(d,v,w,h,al){const dd=d.data.data,vd=v.data.data,vW=v.w,vH=v.h,dm=new Uint8Array(w*h);for(let y=0;y<h;y++)for(let x=0;x<w;x++){const vy=y+al.dy,vx=x+al.dx;if(vx<0||vx>=vW||vy<0||vy>=vH)continue;const piD=(y*w+x)*4,piV=(vy*vW+vx)*4;if(Math.abs(dd[piD]-vd[piV])+Math.abs(dd[piD+1]-vd[piV+1])+Math.abs(dd[piD+2]-vd[piV+2])>30)dm[y*w+x]=1}const bs=8,bw=Math.ceil(w/bs),bh=Math.ceil(h/bs),bm=new Uint8Array(bw*bh);for(let by=0;by<bh;by++)for(let bx=0;bx<bw;bx++){let dc=0,tp=0;for(let dy=0;dy<bs&&by*bs+dy<h;dy++)for(let dx=0;dx<bs&&bx*bs+dx<w;dx++){tp++;if(dm[(by*bs+dy)*w+(bx*bs+dx)])dc++}if(dc>tp*.03)bm[by*bw+bx]=1}const vis=new Uint8Array(bw*bh),clusters=[];for(let by=0;by<bh;by++)for(let bx=0;bx<bw;bx++){const idx=by*bw+bx;if(!bm[idx]||vis[idx])continue;const q=[[bx,by]];vis[idx]=1;let mnX=bx,mxX=bx,mnY=by,mxY=by;while(q.length){const[cx,cy]=q.shift();mnX=Math.min(mnX,cx);mxX=Math.max(mxX,cx);mnY=Math.min(mnY,cy);mxY=Math.max(mxY,cy);for(let dy=-1;dy<=1;dy++)for(let dx=-1;dx<=1;dx++){const nx=cx+dx,ny=cy+dy;if(nx<0||nx>=bw||ny<0||ny>=bh)continue;const ni=ny*bw+nx;if(bm[ni]&&!vis[ni]){vis[ni]=1;q.push([nx,ny])}}}clusters.push({x:mnX*bs,y:mnY*bs,w:Math.min((mxX-mnX+1)*bs,w-mnX*bs),h:Math.min((mxY-mnY+1)*bs,h-mnY*bs)})}return clusters}function classifyRegionType(id,ld,rx,ry,rw,rh,iW,iH){if(rw<6||rh<6)return'noise';const cs=new Set;let te=0,he=0,ve=0,tp=0,ls=0;const lh=new Int32Array(256);for(let y=ry;y<ry+rh;y++)for(let x=rx;x<rx+rw;x++){tp++;const pi=(y*iW+x)*4,lu=Math.round(l(id[pi],id[pi+1],id[pi+2]));ls+=lu;lh[lu]++;cs.add(((id[pi]>>3)<<3)+','+((id[pi+1]>>3)<<3)+','+((id[pi+2]>>3)<<3))}const cr=cs.size/tp;for(let y=ry+1;y<ry+rh-1;y++)for(let x=rx+1;x<rx+rw-1;x++){const lv=ld[y*iW+x],hg=Math.abs(lv-ld[y*iW+x-1])+Math.abs(lv-ld[y*iW+x+1]),vg=Math.abs(lv-ld[(y-1)*iW+x])+Math.abs(lv-ld[(y+1)*iW+x]);he+=hg;ve+=vg}const ed=Math.min(100,(he+ve)/tp),hv=Math.min(10,he/Math.max(ve,.001));let mn=255,mx=0;for(let i=0;i<256;i++)if(lh[i]>0){if(i<mn)mn=i;if(i>mx)mx=i}const lr=mx-mn;if(cr>.12&&ed>5&&lr>80)return'image';if(cr<.03&&ed<2&&lr<50&&rh>12)return'button_bg';if(ed<.3&&cs.size<5&&rh>12&&rw>24)return'button_bg';if(cr<.04&&ed<4&&rh>10&&rw>20){if(rw*.4<rh&&rh<rw*2.5)return'button_bg'}if(rw<60&&rh<60&&ed>1.5){if(hv>.6&&hv<1.8){if(rw*.3<rh&&rh<rw*3)return'icon'}}if(cr<.06&&ed>.8&&hv>.8){if(hv>1.3&&rh>5&&rw>rh*.4&&rh<rw*3)return'text';if(lr>40&&ed>3&&rh>4&&rh<60)return'text'}if(rw<15&&rh>4&&rh<25&&ed>.5){if(rw*.3<rh&&rh<rw*3)return'text'}if(ed>2&&cr<.08&&rh>4&&rh<40)return'text';if(ed>1&&rw<80&&rh<80&&cr<.1){if(hv>.5&&hv<2)return'icon'}return'unknown'}function mserDetectInRegion(ld,iW,iH,rx,ry,rw,rh){const g=new Uint8Array(rw*rh);for(let y=ry+1;y<ry+rh-1;y++)for(let x=rx+1;x<rx+rw-1;x++){const idx=(y-ry)*rw+(x-rx),gx=Math.abs(ld[y*iW+x+1]-ld[y*iW+x-1]),gy=Math.abs(ld[(y+1)*iW+x]-ld[(y-1)*iW+x]);g[idx]=Math.min(255,Math.round(Math.sqrt(gx*gx*.6+gy*gy*.4)))}const bn=new Uint8Array(rw*rh),h=new Uint32Array(256);let tp=0;for(let i=0;i<rw*rh;i++){const v=g[i];if(v>5){h[v]++;tp++}}let s=0;for(let i=0;i<256;i++)s+=i*h[i];let sB=0,wB=0,wF=0,mV=0,oT=12;for(let t=0;t<256;t++){wB+=h[t];if(!wB)continue;wF=tp-wB;if(!wF)break;sB+=t*h[t];const mB=sB/wB,mF=(s-sB)/wF,bV=wB*wF*(mB-mF)*(mB-mF);if(bV>mV){mV=bV;oT=t}}const bT=Math.max(oT,10,Math.min(oT*1.5,120));for(let i=0;i<rw*rh;i++)bn[i]=g[i]>=bT?255:0;const mo=new Uint8Array(rw*rh);for(let y=0;y<rh;y++)for(let x=0;x<rw;x++){let mV=bn[y*rw+x];if(x>0&&bn[y*rw+x-1]>mV)mV=bn[y*rw+x-1];if(x<rw-1&&bn[y*rw+x+1]>mV)mV=bn[y*rw+x+1];mo[y*rw+x]=mV}const vs=new Uint8Array(rw*rh),cs=[];for(let y=0;y<rh;y++)for(let x=0;x<rw;x++){const idx=y*rw+x;if(mo[idx]!==255||vs[idx])continue;const q=[idx];vs[idx]=1;let mn=x,mx=x,mnY=y,mxY=y,cnt=0;while(q.length){const ci=q.shift();cnt++;const cx=ci%rw,cy=Math.floor(ci/rw);if(cx<mn)mn=cx;if(cx>mx)mx=cx;if(cy<mnY)mnY=cy;if(cy>mxY)mxY=cy;for(let dy=-1;dy<=1;dy++)for(let dx=-1;dx<=1;dx++){if(!dx&&!dy)continue;const nx=cx+dx,ny=cy+dy;if(nx<0||nx>=rw||ny<0||ny>=rh)continue;const ni=ny*rw+nx;if(vs[ni]||mo[ni]!==255)continue;vs[ni]=1;q.push(ni)}}const bw=mx-mn+1,bh=mxY-mnY+1;if(bw<5||bh<4||cnt<6)continue;const r=bw/Math.max(bh,1);if(r<.4||r>20)continue;if(cnt/(bw*bh)<.02||cnt/(bw*bh)>.95)continue;let ep=0;for(let sy=mnY;sy<=mxY;sy++)for(let sx=mn;sx<=mx;sx++)if(bn[sy*rw+sx]===255)ep++;if(ep/(bw*bh)<.01)continue;cs.push({x:mn+rx,y:mnY+ry,w:bw,h:bh,cnt,density:ep/(bw*bh),ratio:r})}if(!cs.length)return[];for(const c of cs){const lY=c.y-ry,lH=c.h;let t=lY;for(let y=lY;y<lY+lH;y++){let he=!1;for(let sx=c.x-rx;sx<c.x-rx+c.w;sx+=2)if(bn[y*rw+sx]===255){he=!0;break}if(he){t=y;break}}let b=lY+lH-1;for(let y=lY+lH-1;y>=t;y--){let he=!1;for(let sx=c.x-rx;sx<c.x-rx+c.w;sx+=2)if(bn[y*rw+sx]===255){he=!0;break}if(he){b=y;break}}const nh=b-t+1;if(nh>=4){c.y=t+ry;c.h=nh}}if(!cs.length)return[];const sH=[...cs].sort((a,b)=>a.h-b.h),mI=Math.floor(cs.length/2),bH=Math.max(sH[mI].h,10),st=[...cs].sort((a,b)=>(a.y+a.h/2)-(b.y+b.h/2)),yT=bH*1.0,rows=[];for(const c of st){const cy=c.y+c.h/2;let f=!1;for(let ri=rows.length-1;ri>=0;ri--){const r=rows[ri],mY=r.comps.reduce((s,cc)=>s+cc.y+cc.h/2,0)/r.comps.length;if(Math.abs(cy-mY)<=yT){r.comps.push(c);f=!0;break}}if(!f)rows.push({comps:[c]})}const ln=[];for(const r of rows){if(r.comps.length<1)continue;const mn=Math.min(...r.comps.map(c=>c.x)),mx=Math.max(...r.comps.map(c=>c.x+c.w)),mnY=Math.min(...r.comps.map(c=>c.y)),mxY=Math.max(...r.comps.map(c=>c.y+c.h));ln.push({x:mn,y:mnY,w:mx-mn,h:mxY-mnY,comps:r.comps.length})}ln.sort((a,b)=>a.y-b.y);for(let i=0;i<ln.length;i++)for(let j=i+1;j<ln.length;j++){const vo=Math.min(ln[i].y+ln[i].h,ln[j].y+ln[j].h)-Math.max(ln[i].y,ln[j].y);if(vo>Math.min(ln[i].h,ln[j].h)*.5&&vo>4){ln[i].x=Math.min(ln[i].x,ln[j].x);ln[i].y=Math.min(ln[i].y,ln[j].y);const x2=Math.max(ln[i].x+ln[i].w,ln[j].x+ln[j].w),y2=Math.max(ln[i].y+ln[i].h,ln[j].y+ln[j].h);ln[i].w=x2-ln[i].x;ln[i].h=y2-ln[i].y;ln[i].comps+=ln[j].comps;ln.splice(j,1);j--}}return ln.filter(l=>{if(l.w<20||l.h<8)return!1;if(l.comps<2&&l.h<20&&l.w<40)return!1;if(l.w/l.h>30&&l.h<8)return!1;return!0})}function detectContainers(id,iW,iH){const vs=new Uint8Array(iW*iH),cs=[];for(let y=8;y<iH-8;y+=4)for(let x=8;x<iW-8;x+=4){const i=y*iW+x;if(vs[i])continue;const pi=i*4,cr=id[pi],cg=id[pi+1],cb=id[pi+2],mC=Math.max(cr,cg,cb),mn=Math.min(cr,cg,cb),st=mC>30?mC-mn:0;if(st<10)continue;const lv=l(cr,cg,cb);if(lv>200||lv<20)continue;vs[i]=1;const q=[[x,y]];let mnX=x,mxX=x,mnY=y,mxY=y,pc=0;while(q.length){const[cx,cy]=q.shift();pc++;if(cx<mnX)mnX=cx;if(cx>mxX)mxX=cx;if(cy<mnY)mnY=cy;if(cy>mxY)mxY=cy;for(let dy=-4;dy<=4;dy+=4)for(let dx=-4;dx<=4;dx+=4){const nx=cx+dx,ny=cy+dy;if(nx<0||nx>=iW||ny<0||ny>=iH)continue;const ni=ny*iW+nx;if(vs[ni])continue;const npi=ni*4;if(Math.abs(id[npi]-cr)+Math.abs(id[npi+1]-cg)+Math.abs(id[npi+2]-cb)>60)continue;vs[ni]=1;q.push([nx,ny])}}const bw=mxX-mnX+1,bh=mxY-mnY+1;if(bw<20||bw>300||bh<15||bh>150)continue;const r=bw/Math.max(bh,1);if(r<.3||r>5)continue;if(pc/(bw*bh)<.03||pc/(bw*bh)>.6)continue;cs.push({x:mnX,y:mnY,w:bw,h:bh})}return cs}function dualTrackAnalyze(cl,dO,vO,w,h,al,dL,vL){const x1=cl.x,y1=cl.y,x2=Math.min(x1+cl.w,w),y2=Math.min(y1+cl.h,h),cw=x2-x1,ch=y2-y1;if(cw<6||ch<6)return null;const dd=dO.data.data,vd=vO.data?vO.data.data:null,vW=vO.w,vH=vO.h,res=[],regs=[];const ss=Math.max(4,Math.floor(Math.min(cw,ch)/6));for(let sy=y1;sy<y2;sy+=ss)for(let sx=x1;sx<x2;sx+=ss){const sz=Math.min(ss*2,x2-sx,y2-sy);if(sz<8)continue;const tp=classifyRegionType(dd,dL,sx,sy,sz,sz,w,h);let mr=!1;for(const r of regs){if(r.type!==tp)continue;if(Math.max(0,Math.min(sy+sz,r.y+r.h)-Math.max(sy,r.y))>0&&Math.abs(sx-(r.x+r.w))<ss*2){r.x=Math.min(r.x,sx);r.y=Math.min(r.y,sy);r.w=Math.max(r.x+r.w,sx+sz)-r.x;r.h=Math.max(r.y+r.h,sy+sz)-r.y;mr=!0;break}}if(!mr)regs.push({type:tp,x:sx,y:sy,w:sz,h:sz})}for(const r of regs){if(r.type!=='text'&&r.type!=='unknown')continue;const dL2=mserDetectInRegion(dL,w,h,r.x,r.y,r.w,r.h),vL2=vd?mserDetectInRegion(vL,vW,vH,r.x+al.dx,r.y+al.dy,r.w,r.h):[];for(const dl of dL2){let bV=null,bD=Infinity;for(const vl of vL2){const vd2=Math.abs(dl.y-(vl.y-al.dy));if(vd2<dl.h&&vd2<bD){bD=vd2;bV=vl}}if(!bV)continue;const vxD=bV.x-al.dx,vyD=bV.y-al.dy,dC=sSIR(dd,dl.x,dl.y,dl.w,dl.h,w,h),vC=vd?sSIR(vd,bV.x,bV.y,bV.w,bV.h,vW,vH):null;if(dC&&vC&&dC.count>=3&&vC.count>=3){const de=d(dC.r,dC.g,dC.b,vC.r,vC.g,vC.b);if(de>.05)res.push({type:'font',priority:de>.2?'P0':de>.12?'P1':'P2',desc:'文字颜色偏差',detail:'设计: '+e(Math.round(dC.r),Math.round(dC.g),Math.round(dC.b))+' → 还原: '+e(Math.round(vC.r),Math.round(vC.g),Math.round(vC.b))+' (ΔE='+Math.round(de*100)+'%)',design:e(Math.round(dC.r),Math.round(dC.g),Math.round(dC.b)),actual:e(Math.round(vC.r),Math.round(vC.g),Math.round(vC.b)),pxDiff:Math.round(de*100)+'%'})}const hB=Math.abs(vxD-dl.x),vB=Math.abs(vyD-dl.y);if(hB>=2||vB>=2){const p=[];hB>=2&&p.push('水平偏差'+hB+'px');vB>=2&&p.push('垂直偏差'+vB+'px');res.push({type:'position',priority:hB>=4||vB>=4?'P1':'P2',desc:'文字位置偏移',detail:p.join('，'),design:'('+dl.x+','+dl.y+')',actual:'('+vxD+','+vyD+')',pxDiff:p.join('，')})}if(Math.abs(bV.w-dl.w)>=3||Math.abs(bV.h-dl.h)>=3)res.push({type:'size',priority:Math.abs(bV.w-dl.w)>=6||Math.abs(bV.h-dl.h)>=6?'P1':'P2',desc:'文字大小偏差',detail:'设计 '+dl.w+'×'+dl.h+'px → 还原 '+bV.w+'×'+bV.h+'px',design:dl.w+'×'+dl.h+'px',actual:bV.w+'×'+bV.h+'px',pxDiff:'水平 '+Math.abs(bV.w-dl.w)+'px, 垂直 '+Math.abs(bV.h-dl.h)+'px'})}}const dCs=detectContainers(dd,w,h);for(const dc of dCs){if(Math.max(dc.x,x1)-Math.min(dc.x+dc.w,x2)>0||Math.max(dc.y,y1)-Math.min(dc.y+dc.h,y2)>0)continue;let bV=null,bVC=0;for(const vc of detectContainers(vd,vW,vH)){const vov=Math.min(vc.x+vc.w,dc.x+al.dx+dc.w)-Math.max(vc.x,dc.x+al.dx),vov2=Math.min(vc.y+vc.h,dc.y+al.dy+dc.h)-Math.max(vc.y,dc.y+al.dy);if(vov>0&&vov2>0){const c2=(vov*vov2)/(dc.w*dc.h);if(c2>bVC){bVC=c2;bV=vc}}}if(!bV||bVC<.3)continue;const vcxR=bV.x-al.dx,vcyR=bV.y-al.dy,hB=Math.round(Math.abs(vcxR-dc.x)),vB=Math.round(Math.abs(vcyR-dc.y));if(hB>=2||vB>=2)res.push({type:'position',priority:hB>=5||vB>=5?'P1':'P2',desc:'按钮容器位置偏移',detail:'水平偏差 '+hB+'px, 垂直偏差 '+vB+'px',design:'('+dc.x+','+dc.y+') '+dc.w+'×'+dc.h+'px',actual:'('+bV.x+','+bV.y+') '+bV.w+'×'+bV.h+'px',pxDiff:'水平 '+hB+'px, 垂直 '+vB+'px'});if(Math.abs(bV.w-dc.w)>=3||Math.abs(bV.h-dc.h)>=3)res.push({type:'size',priority:Math.abs(bV.w-dc.w)>=6||Math.abs(bV.h-dc.h)>=6?'P1':'P2',desc:'按钮容器大小偏差',detail:'设计 '+dc.w+'×'+dc.h+'px → 还原 '+bV.w+'×'+bV.h+'px',design:dc.w+'×'+dc.h+'px',actual:bV.w+'×'+bV.h+'px',pxDiff:'水平 '+Math.abs(bV.w-dc.w)+'px, 垂直 '+Math.abs(bV.h-dc.h)+'px'});const dIn=mserDetectInRegion(dL,w,h,dc.x,dc.y,dc.w,dc.h),vIn=mserDetectInRegion(vL,vW,vH,bV.x,bV.y,bV.w,bV.h);for(const dil of dIn){let bV2=null,bD2=1/0;for(const vil of vIn){const dd2=Math.abs(dil.y-(vil.y-al.dy));if(dd2<dil.h*.8&&dd2<bD2){bD2=dd2;bV2=vil}}if(!bV2)continue;const dC2=sSIR(dd,dil.x+dc.x,dil.y+dc.y,dil.w,dil.h,w,h),vC2=vd?sSIR(vd,bV2.x+bV.x+al.dx,bV2.y+bV.y+al.dy,bV2.w,bV2.h,vW,vH):null;if(dC2&&vC2){const de2=d(dC2.r,dC2.g,dC2.b,vC2.r,vC2.g,vC2.b);if(de2>.05)res.push({type:'font',priority:de2>.2?'P0':de2>.12?'P1':'P2',desc:'容器内文字颜色偏差',detail:'设计: '+e(Math.round(dC2.r),Math.round(dC2.g),Math.round(dC2.b))+' → 还原: '+e(Math.round(vC2.r),Math.round(vC2.g),Math.round(vC2.b))+' (ΔE='+Math.round(de2*100)+'%)',design:e(Math.round(dC2.r),Math.round(dC2.g),Math.round(dC2.b)),actual:e(Math.round(vC2.r),Math.round(vC2.g),Math.round(vC2.b)),pxDiff:Math.round(de2*100)+'%'})}const hB2=Math.abs(bV2.x-dil.x),vB2=Math.abs(bV2.y-dil.y);if(hB2>=2||vB2>=2)res.push({type:'position',priority:hB2>=4||vB2>=4?'P1':'P2',desc:'容器内文字位置偏移',detail:(hB2>=2?'水平'+hB2+'px ':'')+(vB2>=2?'垂直'+vB2+'px':''),design:'('+dil.x+','+dil.y+')',actual:'('+bV2.x+','+bV2.y+')',pxDiff:(hB2>=2?'水平偏差'+hB2+'px ':'')+(vB2>=2?'垂直偏差'+vB2+'px':'')});if(Math.abs(bV2.w-dil.w)>=3||Math.abs(bV2.h-dil.h)>=3)res.push({type:'size',priority:'P2',desc:'容器内文字大小偏差',detail:'设计 '+dil.w+'×'+dil.h+'px → 还原 '+bV2.w+'×'+bV2.h+'px',design:dil.w+'×'+dil.h+'px',actual:bV2.w+'×'+bV2.h+'px',pxDiff:'水平 '+Math.abs(bV2.w-dil.w)+'px, 垂直 '+Math.abs(bV2.h-dil.h)+'px'})}}if(!res.length){let dR=0,dG=0,dB=0,vR=0,vG=0,vB=0,cnt=0;for(let y=y1;y<y2;y+=2)for(let x=x1;x<x2;x+=2){const pi=(y*w+x)*4;(dR+=dd[pi]),(dG+=dd[pi+1]),(dB+=dd[pi+2]);const vy=y+al.dy,vx=x+al.dx;if(vy>=0&&vy<vH&&vx>=0&&vx<vW){const piV=(vy*vW+vx)*4;(vR+=vd[piV]),(vG+=vd[piV+1]),(vB+=vd[piV+2]);cnt++}}if(cnt>0){const de=d(dR/cnt,dG/cnt,dB/cnt,vR/cnt,vG/cnt,vB/cnt);de>.04&&res.push({type:'color',priority:'P2',desc:'颜色偏差',detail:'ΔE='+Math.round(de*100)+'%',design:e(Math.round(dR/cnt),Math.round(dG/cnt),Math.round(dB/cnt)),actual:e(Math.round(vR/cnt),Math.round(vG/cnt),Math.round(vB/cnt)),pxDiff:Math.round(de*100)+'%'})}}return res.length?res:null}function cropIssueImages(d,v,w,h,al,is){const mgX=Math.ceil(Math.max(is.w,10)),mgY=Math.ceil(Math.max(is.h,10)),cx=Math.max(0,is.x-mgX),cy=Math.max(0,is.y-mgY),cw=Math.min(is.w+mgX*2,w-cx),ch=Math.min(is.h+mgY*2,h-cy),ds=document.createElement('canvas');ds.width=cw;ds.height=ch;ds.getContext('2d').drawImage(d.canvas,cx,cy,cw,ch,0,0,cw,ch);const dv=document.createElement('canvas');dv.width=cw;dv.height=ch;dv.getContext('2d').drawImage(v.canvas,cx-al.dx,cy-al.dy,cw,ch,0,0,cw,ch);const rx=is.x-cx,ry=is.y-cy,rw=is.w,rh=is.h;[ds,dv].forEach(c=>{const ctx=c.getContext('2d');ctx.strokeStyle='#ef4444';ctx.lineWidth=2;ctx.strokeRect(rx,ry,rw,rh);ctx.lineWidth=3;ctx.strokeRect(rx,ry,rw,rh)});const gap=6,lh=22,out=document.createElement('canvas');out.width=cw*2+gap;out.height=ch+lh;const ctx=out.getContext('2d');ctx.fillStyle='#f8fafc';ctx.fillRect(0,0,out.width,out.height);ctx.drawImage(ds,0,0,cw,ch,0,lh,cw,ch);ctx.drawImage(dv,0,0,cw,ch,cw+gap,lh,cw,ch);ctx.fillStyle='#6b7280';ctx.font='12px sans-serif';ctx.textAlign='center';ctx.fillText('🎨 设计稿',cw/2,15);ctx.fillText('🛠 还原稿',cw+gap+cw/2,15);return out.toDataURL('image/png')}function generateDiffOverlay(d,v,w,h,al){const c=document.createElement('canvas');c.width=w;c.height=h;const ctx=c.getContext('2d');ctx.drawImage(d.canvas,0,0,w,h);const id=ctx.getImageData(0,0,w,h),o=id.data,dd=d.data.data,vd=v.data.data;for(let y=0;y<h;y++)for(let x=0;x<w;x++){const vy=y+al.dy,vx=x+al.dx;if(vx<0||vx>=v.w||vy<0||vy>=v.h)continue;const piD=(y*w+x)*4,piV=(vy*v.w+vx)*4;if(Math.abs(dd[piD]-vd[piV])+Math.abs(dd[piD+1]-vd[piV+1])+Math.abs(dd[piD+2]-vd[piV+2])>80){o[(y*w+x)*4]=255;o[(y*w+x)*4+1]=0;o[(y*w+x)*4+2]=0;o[(y*w+x)*4+3]=255}}ctx.putImageData(id,0,0);return c.toDataURL('image/png')}async function vgDetect(designUrl,devUrl){try{const[d,v]=await Promise.all([loadCanvas(designUrl),loadCanvas(devUrl)]);if(!d.data||!v.data)return{issues:[],align:{dx:0,dy:0},cropUrls:[],diffOverlay:null};const w=Math.min(d.w,v.w),h=Math.min(d.h,v.h);if(w<10||h<10)return{issues:[],align:{dx:0,dy:0},cropUrls:[],diffOverlay:null};const al=alignImages(d,v),dEn=enhanceContrast(d.data.data,d.data.width,d.data.height),vEn=enhanceContrast(v.data.data,v.data.width,v.data.height),dLum=new Uint8Array(d.w*d.h),vLum=new Uint8Array(v.w*v.h);for(let i=0;i<d.w*d.h;i++)dLum[i]=dEn[i*4];for(let i=0;i<v.w*v.h;i++)vLum[i]=vEn[i*4];const textLines=[];try{const raw=mserDetectInRegion(dLum,d.w,d.h,0,0,d.w,d.h);for(const l of raw)if(l.w>20&&l.h>6)textLines.push({x:l.x,y:l.y,w:l.w,h:l.h,comps:l.comps||1})}catch(e){}const cls=clusterDiffs(d,v,w,h,al),issues=[];for(const c of cls){const list=dualTrackAnalyze(c,d,v,w,h,al,dLum,vLum);if(list)for(const is of list)issues.push({x:c.x,y:c.y,w:c.w,h:c.h,category:is.type,priority:is.priority,description:is.desc,detail:is.detail,designValue:is.design||'',actualValue:is.actual||'',pxDiff:is.pxDiff||''})}const merged=[];for(const is of issues){let dup=!1;for(const m of merged)if(m.category===is.category&&Math.hypot(is.x-m.x,is.y-m.y)<24){dup=!0;break}dup||merged.push(is)}const final=[];for(const is of merged){let ad=!1;for(const g of final){if(g.category!==is.category)continue;var gx2=Math.max(g.x+g.w,is.x+is.w),gy2=Math.max(g.y+g.h,is.y+is.h),ix=Math.max(g.x,is.x),iy=Math.max(g.y,is.y),ix2=Math.min(g.x+g.w,is.x+is.w),iy2=Math.min(g.y+g.h,is.y+is.h);if(ix<ix2&&iy<iy2){var ov=(ix2-ix)*(iy2-iy),tu=g.w*g.h+is.w*is.h-ov;if(tu>0&&ov/tu>.15){g.x=Math.min(g.x,is.x);g.y=Math.min(g.y,is.y);g.w=gx2-g.x;g.h=gy2-g.y;g.regionCount=(g.regionCount||1)+1;if(g.regionCount===2)g.description=is.category==='font'?'文字/字体差异':is.category==='position'?'位置偏差':is.category==='size'?'尺寸偏差':'颜色偏差';ad=!0;break}}}ad||(is.regionCount=1,final.push(is))}final.forEach((is,i)=>is.regionIndex=i+1);const po={P0:0,P1:1,P2:2,P3:3},sorted=final.sort((a,b)=> (po[a.priority] !== undefined ? po[a.priority] : 99) - (po[b.priority] !== undefined ? po[b.priority] : 99)),cropUrls=sorted.map(is=>{try{return cropIssueImages(d,v,w,h,al,is)}catch(e){return null}}),diffOverlay=generateDiffOverlay(d,v,w,h,al);return{issues:sorted,align:al,cropUrls,diffOverlay}}catch(e){return{issues:[],align:{dx:0,dy:0},cropUrls:[],diffOverlay:null}}}window.vgDetect=vgDetect;})();
+(function(){function e(r,g,b){return'#'+[r,g,b].map(v=>Math.max(0,Math.min(255,Math.round(v))).toString(16).padStart(2,'0')).join('').toUpperCase()}function d(r1,g1,b1,r2,g2,b2){return Math.sqrt(Math.pow(r1-r2,2)+Math.pow(g1-g2,2)+Math.pow(b1-b2,2))/Math.sqrt(Math.pow(255,2)*3)}function l(r,g,b){return.299*r+.587*g+.114*b}function loadCanvas(url){return new Promise(resolve=>{const img=new Image;if(!url.startsWith('data:'))img.crossOrigin='anonymous';img.onload=()=>{const c=document.createElement('canvas');c.width=img.width;c.height=img.height;const ctx=c.getContext('2d');ctx.drawImage(img,0,0);resolve({w:img.width,h:img.height,data:ctx.getImageData(0,0,img.width,img.height),ctx,canvas:c})};img.onerror=()=>resolve({w:0,h:0,data:null});img.src=url})}function alignImages(d,v){const dd=d.data.data,vd=v.data.data,vW=v.w,vH=v.h;function s(ox,oy,tdx,tdy){const rw=Math.min(40,d.w-ox),rh=Math.min(40,d.h-oy);let s=0,n=0;for(let y=oy;y<oy+rh;y+=4)for(let x=ox;x<ox+rw;x+=4){const py=y+tdy,px=x+tdx;if(py<0||px<0||py>=vH||px>=vW)continue;const piD=(y*d.w+x)*4,piV=(py*vW+px)*4;s+=Math.abs(dd[piD]-vd[piV])+Math.abs(dd[piD+1]-vd[piV+1])+Math.abs(dd[piD+2]-vd[piV+2]);n++}return n>0?s/n:1/0}let bDx=0,bDy=0,bS=1/0;for(let dy=-12;dy<=12;dy+=2)for(let dx=-12;dx<=12;dx+=2){let t=0,c=0;for(const[ox,oy]of[[0,0],[Math.max(0,d.w-60),0],[0,Math.max(0,d.h-60)]]){const sc=s(ox,oy,dx,dy);if(sc<1/0){t+=sc;c++}}const avg=c>0?t/c:1/0;if(avg<bS){bS=avg;bDx=dx;bDy=dy}}for(let dy=-1;dy<=1;dy++)for(let dx=-1;dx<=1;dx++){let t=0,c=0;for(const[ox,oy]of[[0,0],[Math.max(0,d.w-60),0],[0,Math.max(0,d.h-60)]]){const sc=s(ox,oy,bDx+dx,bDy+dy);if(sc<1/0){t+=sc;c++}}const avg=c>0?t/c:1/0;if(avg<bS){bS=avg;bDx+=dx;bDy+=dy}}return{dx:bDx,dy:bDy}}function enhanceContrast(imgData,iW,iH){const data=new Uint8ClampedArray(imgData),ts=64,tx=Math.ceil(iW/ts),ty=Math.ceil(iH/ts);for(let by=0;by<ty;by++)for(let bx=0;bx<tx;bx++){const x1=bx*ts,y1=by*ts,x2=Math.min(x1+ts,iW),y2=Math.min(y1+ts,iH),hist=new Int32Array(256);for(let y=y1;y<y2;y++)for(let x=x1;x<x2;x++){const pi=(y*iW+x)*4;hist[Math.round(l(imgData[pi],imgData[pi+1],imgData[pi+2]))]++}const tp=(x2-x1)*(y2-y1),lim=Math.max(3,tp*.01);let ex=0;for(let i=0;i<256;i++){if(hist[i]>lim){ex+=hist[i]-lim;hist[i]=lim}}const rd=Math.floor(ex/256);for(let i=0;i<256;i++)hist[i]+=rd;const cdf=new Int32Array(256);cdf[0]=hist[0];for(let i=1;i<256;i++)cdf[i]=cdf[i-1]+hist[i];const cdfMin=cdf[0],cdfR=cdf[255]-cdfMin;for(let y=y1;y<y2;y++)for(let x=x1;x<x2;x++){const pi=(y*iW+x)*4,lu=Math.round(l(imgData[pi],imgData[pi+1],imgData[pi+2])),mp=cdfR>0?Math.round((cdf[lu]-cdfMin)*255/cdfR):lu,nl=lu+(mp-lu)*.7*Math.min(2,Math.max(1,cdfR>0?255/cdfR:1));data[pi]=data[pi+1]=data[pi+2]=Math.max(0,Math.min(255,nl))}}let mL=255,xL=0;for(let i=0;i<data.length;i+=4){const lv=data[i];if(lv<mL)mL=lv;if(lv>xL)xL=lv}const rg=xL-mL;if(rg>10)for(let i=0;i<data.length;i+=4){data[i]=(data[i]-mL)*255/rg;data[i+1]=data[i+2]=data[i]}return data}function clusterDiffs(d,v,w,h,al){const dd=d.data.data,vd=v.data.data,vW=v.w,vH=v.h,dm=new Uint8Array(w*h);for(let y=0;y<h;y++)for(let x=0;x<w;x++){const vy=y+al.dy,vx=x+al.dx;if(vx<0||vx>=vW||vy<0||vy>=vH)continue;const piD=(y*w+x)*4,piV=(vy*vW+vx)*4;if(Math.abs(dd[piD]-vd[piV])+Math.abs(dd[piD+1]-vd[piV+1])+Math.abs(dd[piD+2]-vd[piV+2])>30)dm[y*w+x]=1}const bs=8,bw=Math.ceil(w/bs),bh=Math.ceil(h/bs),bm=new Uint8Array(bw*bh);for(let by=0;by<bh;by++)for(let bx=0;bx<bw;bx++){let dc=0,tp=0;for(let dy=0;dy<bs&&by*bs+dy<h;dy++)for(let dx=0;dx<bs&&bx*bs+dx<w;dx++){tp++;if(dm[(by*bs+dy)*w+(bx*bs+dx)])dc++}if(dc>tp*.03)bm[by*bw+bx]=1}const vis=new Uint8Array(bw*bh),clusters=[];for(let by=0;by<bh;by++)for(let bx=0;bx<bw;bx++){const idx=by*bw+bx;if(!bm[idx]||vis[idx])continue;const q=[[bx,by]];vis[idx]=1;let mnX=bx,mxX=bx,mnY=by,mxY=by;while(q.length){const[cx,cy]=q.shift();mnX=Math.min(mnX,cx);mxX=Math.max(mxX,cx);mnY=Math.min(mnY,cy);mxY=Math.max(mxY,cy);for(let dy=-1;dy<=1;dy++)for(let dx=-1;dx<=1;dx++){const nx=cx+dx,ny=cy+dy;if(nx<0||nx>=bw||ny<0||ny>=bh)continue;const ni=ny*bw+nx;if(bm[ni]&&!vis[ni]){vis[ni]=1;q.push([nx,ny])}}}clusters.push({x:mnX*bs,y:mnY*bs,w:Math.min((mxX-mnX+1)*bs,w-mnX*bs),h:Math.min((mxY-mnY+1)*bs,h-mnY*bs)})}return clusters}function classifyRegionType(id,ld,rx,ry,rw,rh,iW,iH){if(rw<6||rh<6)return'noise';const cs=new Set;let te=0,he=0,ve=0,tp=0,ls=0;const lh=new Int32Array(256);for(let y=ry;y<ry+rh;y++)for(let x=rx;x<rx+rw;x++){tp++;const pi=(y*iW+x)*4,lu=Math.round(l(id[pi],id[pi+1],id[pi+2]));ls+=lu;lh[lu]++;cs.add(((id[pi]>>3)<<3)+','+((id[pi+1]>>3)<<3)+','+((id[pi+2]>>3)<<3))}const cr=cs.size/tp;for(let y=ry+1;y<ry+rh-1;y++)for(let x=rx+1;x<rx+rw-1;x++){const lv=ld[y*iW+x],hg=Math.abs(lv-ld[y*iW+x-1])+Math.abs(lv-ld[y*iW+x+1]),vg=Math.abs(lv-ld[(y-1)*iW+x])+Math.abs(lv-ld[(y+1)*iW+x]);he+=hg;ve+=vg}const ed=Math.min(100,(he+ve)/tp),hv=Math.min(10,he/Math.max(ve,.001));let mn=255,mx=0;for(let i=0;i<256;i++)if(lh[i]>0){if(i<mn)mn=i;if(i>mx)mx=i}const lr=mx-mn;if(cr>.12&&ed>5&&lr>80)return'image';if(cr<.03&&ed<2&&lr<50&&rh>12)return'button_bg';if(ed<.3&&cs.size<5&&rh>12&&rw>24)return'button_bg';if(cr<.04&&ed<4&&rh>10&&rw>20){if(rw*.4<rh&&rh<rw*2.5)return'button_bg'}if(rw<60&&rh<60&&ed>1.5){if(hv>.6&&hv<1.8){if(rw*.3<rh&&rh<rw*3)return'icon'}}if(cr<.06&&ed>.8&&hv>.8){if(hv>1.3&&rh>5&&rw>rh*.4&&rh<rw*3)return'text';if(lr>40&&ed>3&&rh>4&&rh<60)return'text'}if(rw<15&&rh>4&&rh<25&&ed>.5){if(rw*.3<rh&&rh<rw*3)return'text'}if(ed>2&&cr<.08&&rh>4&&rh<40)return'text';if(ed>1&&rw<80&&rh<80&&cr<.1){if(hv>.5&&hv<2)return'icon'}return'unknown'}function mserDetectInRegion(ld,iW,iH,rx,ry,rw,rh){const g=new Uint8Array(rw*rh);for(let y=ry+1;y<ry+rh-1;y++)for(let x=rx+1;x<rx+rw-1;x++){const idx=(y-ry)*rw+(x-rx),gx=Math.abs(ld[y*iW+x+1]-ld[y*iW+x-1]),gy=Math.abs(ld[(y+1)*iW+x]-ld[(y-1)*iW+x]);g[idx]=Math.min(255,Math.round(Math.sqrt(gx*gx*.6+gy*gy*.4)))}const bn=new Uint8Array(rw*rh),h=new Uint32Array(256);let tp=0;for(let i=0;i<rw*rh;i++){const v=g[i];if(v>5){h[v]++;tp++}}let s=0;for(let i=0;i<256;i++)s+=i*h[i];let sB=0,wB=0,wF=0,mV=0,oT=12;for(let t=0;t<256;t++){wB+=h[t];if(!wB)continue;wF=tp-wB;if(!wF)break;sB+=t*h[t];const mB=sB/wB,mF=(s-sB)/wF,bV=wB*wF*(mB-mF)*(mB-mF);if(bV>mV){mV=bV;oT=t}}const bT=Math.max(oT,10,Math.min(oT*1.5,120));for(let i=0;i<rw*rh;i++)bn[i]=g[i]>=bT?255:0;const mo=new Uint8Array(rw*rh);for(let y=0;y<rh;y++)for(let x=0;x<rw;x++){let mV=bn[y*rw+x];if(x>0&&bn[y*rw+x-1]>mV)mV=bn[y*rw+x-1];if(x<rw-1&&bn[y*rw+x+1]>mV)mV=bn[y*rw+x+1];mo[y*rw+x]=mV}const vs=new Uint8Array(rw*rh),cs=[];for(let y=0;y<rh;y++)for(let x=0;x<rw;x++){const idx=y*rw+x;if(mo[idx]!==255||vs[idx])continue;const q=[idx];vs[idx]=1;let mn=x,mx=x,mnY=y,mxY=y,cnt=0;while(q.length){const ci=q.shift();cnt++;const cx=ci%rw,cy=Math.floor(ci/rw);if(cx<mn)mn=cx;if(cx>mx)mx=cx;if(cy<mnY)mnY=cy;if(cy>mxY)mxY=cy;for(let dy=-1;dy<=1;dy++)for(let dx=-1;dx<=1;dx++){if(!dx&&!dy)continue;const nx=cx+dx,ny=cy+dy;if(nx<0||nx>=rw||ny<0||ny>=rh)continue;const ni=ny*rw+nx;if(vs[ni]||mo[ni]!==255)continue;vs[ni]=1;q.push(ni)}}const bw=mx-mn+1,bh=mxY-mnY+1;if(bw<5||bh<4||cnt<6)continue;const r=bw/Math.max(bh,1);if(r<.4||r>20)continue;if(cnt/(bw*bh)<.02||cnt/(bw*bh)>.95)continue;let ep=0;for(let sy=mnY;sy<=mxY;sy++)for(let sx=mn;sx<=mx;sx++)if(bn[sy*rw+sx]===255)ep++;if(ep/(bw*bh)<.01)continue;cs.push({x:mn+rx,y:mnY+ry,w:bw,h:bh,cnt,density:ep/(bw*bh),ratio:r})}if(!cs.length)return[];for(const c of cs){const lY=c.y-ry,lH=c.h;let t=lY;for(let y=lY;y<lY+lH;y++){let he=!1;for(let sx=c.x-rx;sx<c.x-rx+c.w;sx+=2)if(bn[y*rw+sx]===255){he=!0;break}if(he){t=y;break}}let b=lY+lH-1;for(let y=lY+lH-1;y>=t;y--){let he=!1;for(let sx=c.x-rx;sx<c.x-rx+c.w;sx+=2)if(bn[y*rw+sx]===255){he=!0;break}if(he){b=y;break}}const nh=b-t+1;if(nh>=4){c.y=t+ry;c.h=nh}}if(!cs.length)return[];const sH=[...cs].sort((a,b)=>a.h-b.h),mI=Math.floor(cs.length/2),bH=Math.max(sH[mI].h,10),st=[...cs].sort((a,b)=>(a.y+a.h/2)-(b.y+b.h/2)),yT=bH*1.0,rows=[];for(const c of st){const cy=c.y+c.h/2;let f=!1;for(let ri=rows.length-1;ri>=0;ri--){const r=rows[ri],mY=r.comps.reduce((s,cc)=>s+cc.y+cc.h/2,0)/r.comps.length;if(Math.abs(cy-mY)<=yT){r.comps.push(c);f=!0;break}}if(!f)rows.push({comps:[c]})}const ln=[];for(const r of rows){if(r.comps.length<1)continue;const mn=Math.min(...r.comps.map(c=>c.x)),mx=Math.max(...r.comps.map(c=>c.x+c.w)),mnY=Math.min(...r.comps.map(c=>c.y)),mxY=Math.max(...r.comps.map(c=>c.y+c.h));ln.push({x:mn,y:mnY,w:mx-mn,h:mxY-mnY,comps:r.comps.length})}ln.sort((a,b)=>a.y-b.y);for(let i=0;i<ln.length;i++)for(let j=i+1;j<ln.length;j++){const vo=Math.min(ln[i].y+ln[i].h,ln[j].y+ln[j].h)-Math.max(ln[i].y,ln[j].y);if(vo>Math.min(ln[i].h,ln[j].h)*.5&&vo>4){ln[i].x=Math.min(ln[i].x,ln[j].x);ln[i].y=Math.min(ln[i].y,ln[j].y);const x2=Math.max(ln[i].x+ln[i].w,ln[j].x+ln[j].w),y2=Math.max(ln[i].y+ln[i].h,ln[j].y+ln[j].h);ln[i].w=x2-ln[i].x;ln[i].h=y2-ln[i].y;ln[i].comps+=ln[j].comps;ln.splice(j,1);j--}}return ln.filter(l=>{if(l.w<20||l.h<8)return!1;if(l.comps<2&&l.h<20&&l.w<40)return!1;if(l.w/l.h>30&&l.h<8)return!1;return!0})}function detectContainers(id,iW,iH){const vs=new Uint8Array(iW*iH),cs=[];for(let y=8;y<iH-8;y+=4)for(let x=8;x<iW-8;x+=4){const i=y*iW+x;if(vs[i])continue;const pi=i*4,cr=id[pi],cg=id[pi+1],cb=id[pi+2],mC=Math.max(cr,cg,cb),mn=Math.min(cr,cg,cb),st=mC>30?mC-mn:0;if(st<10)continue;const lv=l(cr,cg,cb);if(lv>200||lv<20)continue;vs[i]=1;const q=[[x,y]];let mnX=x,mxX=x,mnY=y,mxY=y,pc=0;while(q.length){const[cx,cy]=q.shift();pc++;if(cx<mnX)mnX=cx;if(cx>mxX)mxX=cx;if(cy<mnY)mnY=cy;if(cy>mxY)mxY=cy;for(let dy=-4;dy<=4;dy+=4)for(let dx=-4;dx<=4;dx+=4){const nx=cx+dx,ny=cy+dy;if(nx<0||nx>=iW||ny<0||ny>=iH)continue;const ni=ny*iW+nx;if(vs[ni])continue;const npi=ni*4;if(Math.abs(id[npi]-cr)+Math.abs(id[npi+1]-cg)+Math.abs(id[npi+2]-cb)>60)continue;vs[ni]=1;q.push([nx,ny])}}const bw=mxX-mnX+1,bh=mxY-mnY+1;if(bw<20||bw>300||bh<15||bh>150)continue;const r=bw/Math.max(bh,1);if(r<.3||r>5)continue;if(pc/(bw*bh)<.03||pc/(bw*bh)>.6)continue;cs.push({x:mnX,y:mnY,w:bw,h:bh})}return cs}function dualTrackAnalyze(cl,dO,vO,w,h,al,dL,vL){const x1=cl.x,y1=cl.y,x2=Math.min(x1+cl.w,w),y2=Math.min(y1+cl.h,h),cw=x2-x1,ch=y2-y1;if(cw<6||ch<6)return null;const dd=dO.data.data,vd=vO.data?vO.data.data:null,vW=vO.w,vH=vO.h,res=[],regs=[];const ss=Math.max(4,Math.floor(Math.min(cw,ch)/6));for(let sy=y1;sy<y2;sy+=ss)for(let sx=x1;sx<x2;sx+=ss){const sz=Math.min(ss*2,x2-sx,y2-sy);if(sz<8)continue;const tp=classifyRegionType(dd,dL,sx,sy,sz,sz,w,h);let mr=!1;for(const r of regs){if(r.type!==tp)continue;if(Math.max(0,Math.min(sy+sz,r.y+r.h)-Math.max(sy,r.y))>0&&Math.abs(sx-(r.x+r.w))<ss*2){r.x=Math.min(r.x,sx);r.y=Math.min(r.y,sy);r.w=Math.max(r.x+r.w,sx+sz)-r.x;r.h=Math.max(r.y+r.h,sy+sz)-r.y;mr=!0;break}}if(!mr)regs.push({type:tp,x:sx,y:sy,w:sz,h:sz})}for(const r of regs){if(r.type!=='text'&&r.type!=='unknown')continue;const dL2=mserDetectInRegion(dL,w,h,r.x,r.y,r.w,r.h),vL2=vd?mserDetectInRegion(vL,vW,vH,r.x+al.dx,r.y+al.dy,r.w,r.h):[];for(const dl of dL2){let bV=null,bD=Infinity;for(const vl of vL2){const vd2=Math.abs(dl.y-(vl.y-al.dy));if(vd2<dl.h&&vd2<bD){bD=vd2;bV=vl}}if(!bV)continue;const vxD=bV.x-al.dx,vyD=bV.y-al.dy,dC=sSIR(dd,dl.x,dl.y,dl.w,dl.h,w,h),vC=vd?sSIR(vd,bV.x,bV.y,bV.w,bV.h,vW,vH):null;if(dC&&vC&&dC.count>=3&&vC.count>=3){const de=d(dC.r,dC.g,dC.b,vC.r,vC.g,vC.b);if(de>.05)res.push({type:'font',priority:de>.2?'P0':de>.12?'P1':'P2',desc:'文字颜色偏差',detail:'设计: '+e(Math.round(dC.r),Math.round(dC.g),Math.round(dC.b))+' → 还原: '+e(Math.round(vC.r),Math.round(vC.g),Math.round(vC.b))+' (ΔE='+Math.round(de*100)+'%)',design:e(Math.round(dC.r),Math.round(dC.g),Math.round(dC.b)),actual:e(Math.round(vC.r),Math.round(vC.g),Math.round(vC.b)),pxDiff:Math.round(de*100)+'%'})}const hB=Math.abs(vxD-dl.x),vB=Math.abs(vyD-dl.y);if(hB>=2||vB>=2){const p=[];hB>=2&&p.push('水平偏差'+hB+'px');vB>=2&&p.push('垂直偏差'+vB+'px');res.push({type:'position',priority:hB>=4||vB>=4?'P1':'P2',desc:'文字位置偏移',detail:p.join('，'),design:'('+dl.x+','+dl.y+')',actual:'('+vxD+','+vyD+')',pxDiff:p.join('，')})}if(Math.abs(bV.w-dl.w)>=3||Math.abs(bV.h-dl.h)>=3)res.push({type:'size',priority:Math.abs(bV.w-dl.w)>=6||Math.abs(bV.h-dl.h)>=6?'P1':'P2',desc:'文字大小偏差',detail:'设计 '+dl.w+'×'+dl.h+'px → 还原 '+bV.w+'×'+bV.h+'px',design:dl.w+'×'+dl.h+'px',actual:bV.w+'×'+bV.h+'px',pxDiff:'水平 '+Math.abs(bV.w-dl.w)+'px,  垂直 '+Math.abs(bV.h-dl.h)+'px'})}}const dCs=detectContainers(dd,w,h);for(const dc of dCs){if(Math.max(dc.x,x1)-Math.min(dc.x+dc.w,x2)>0||Math.max(dc.y,y1)-Math.min(dc.y+dc.h,y2)>0)continue;let bV=null,bVC=0;for(const vc of detectContainers(vd,vW,vH)){const vov=Math.min(vc.x+vc.w,dc.x+al.dx+dc.w)-Math.max(vc.x,dc.x+al.dx),vov2=Math.min(vc.y+vc.h,dc.y+al.dy+dc.h)-Math.max(vc.y,dc.y+al.dy);if(vov>0&&vov2>0){const c2=(vov*vov2)/(dc.w*dc.h);if(c2>bVC){bVC=c2;bV=vc}}}if(!bV||bVC<.3)continue;const vcxR=bV.x-al.dx,vcyR=bV.y-al.dy,hB=Math.round(Math.abs(vcxR-dc.x)),vB=Math.round(Math.abs(vcyR-dc.y));if(hB>=2||vB>=2)res.push({type:'position',priority:hB>=5||vB>=5?'P1':'P2',desc:'按钮容器位置偏移',detail:'水平偏差 '+hB+'px, 垂直偏差 '+vB+'px',design:'('+dc.x+','+dc.y+') '+dc.w+'×'+dc.h+'px',actual:'('+bV.x+','+bV.y+') '+bV.w+'×'+bV.h+'px',pxDiff:'水平 '+hB+'px, 垂直 '+vB+'px'});if(Math.abs(bV.w-dc.w)>=3||Math.abs(bV.h-dc.h)>=3)res.push({type:'size',priority:Math.abs(bV.w-dc.w)>=6||Math.abs(bV.h-dc.h)>=6?'P1':'P2',desc:'按钮容器大小偏差',detail:'设计 '+dc.w+'×'+dc.h+'px → 还原 '+bV.w+'×'+bV.h+'px',design:dc.w+'×'+dc.h+'px',actual:bV.w+'×'+bV.h+'px',pxDiff:'水平 '+Math.abs(bV.w-dc.w)+'px, 垂直 '+Math.abs(bV.h-dc.h)+'px'});const dIn=mserDetectInRegion(dL,w,h,dc.x,dc.y,dc.w,dc.h),vIn=mserDetectInRegion(vL,vW,vH,bV.x,bV.y,bV.w,bV.h);for(const dil of dIn){let bV2=null,bD2=1/0;for(const vil of vIn){const dd2=Math.abs(dil.y-(vil.y-al.dy));if(dd2<dil.h*.8&&dd2<bD2){bD2=dd2;bV2=vil}}if(!bV2)continue;const dC2=sSIR(dd,dil.x+dc.x,dil.y+dc.y,dil.w,dil.h,w,h),vC2=vd?sSIR(vd,bV2.x+bV.x+al.dx,bV2.y+bV.y+al.dy,bV2.w,bV2.h,vW,vH):null;if(dC2&&vC2){const de2=d(dC2.r,dC2.g,dC2.b,vC2.r,vC2.g,vC2.b);if(de2>.05)res.push({type:'font',priority:de2>.2?'P0':de2>.12?'P1':'P2',desc:'容器内文字颜色偏差',detail:'设计: '+e(Math.round(dC2.r),Math.round(dC2.g),Math.round(dC2.b))+' → 还原: '+e(Math.round(vC2.r),Math.round(vC2.g),Math.round(vC2.b))+' (ΔE='+Math.round(de2*100)+'%)',design:e(Math.round(dC2.r),Math.round(dC2.g),Math.round(dC2.b)),actual:e(Math.round(vC2.r),Math.round(vC2.g),Math.round(vC2.b)),pxDiff:Math.round(de2*100)+'%'})}const hB2=Math.abs(bV2.x-dil.x),vB2=Math.abs(bV2.y-dil.y);if(hB2>=2||vB2>=2)res.push({type:'position',priority:hB2>=4||vB2>=4?'P1':'P2',desc:'容器内文字位置偏移',detail:(hB2>=2?'水平'+hB2+'px ':'')+(vB2>=2?'垂直'+vB2+'px':''),design:'('+dil.x+','+dil.y+')',actual:'('+bV2.x+','+bV2.y+')',pxDiff:(hB2>=2?'水平偏差'+hB2+'px ':'')+(vB2>=2?'垂直偏差'+vB2+'px':'')});if(Math.abs(bV2.w-dil.w)>=3||Math.abs(bV2.h-dil.h)>=3)res.push({type:'size',priority:'P2',desc:'容器内文字大小偏差',detail:'设计 '+dil.w+'×'+dil.h+'px → 还原 '+bV2.w+'×'+bV2.h+'px',design:dil.w+'×'+dil.h+'px',actual:bV2.w+'×'+bV2.h+'px',pxDiff:'水平 '+Math.abs(bV2.w-dil.w)+'px, 垂直 '+Math.abs(bV2.h-dil.h)+'px'})}}if(!res.length){let dR=0,dG=0,dB=0,vR=0,vG=0,vB=0,cnt=0;for(let y=y1;y<y2;y+=2)for(let x=x1;x<x2;x+=2){const pi=(y*w+x)*4;(dR+=dd[pi]),(dG+=dd[pi+1]),(dB+=dd[pi+2]);const vy=y+al.dy,vx=x+al.dx;if(vy>=0&&vy<vH&&vx>=0&&vx<vW){const piV=(vy*vW+vx)*4;(vR+=vd[piV]),(vG+=vd[piV+1]),(vB+=vd[piV+2]);cnt++}}if(cnt>0){const de=d(dR/cnt,dG/cnt,dB/cnt,vR/cnt,vG/cnt,vB/cnt);de>.04&&res.push({type:'color',priority:'P2',desc:'颜色偏差',detail:'ΔE='+Math.round(de*100)+'%',design:e(Math.round(dR/cnt),Math.round(dG/cnt),Math.round(dB/cnt)),actual:e(Math.round(vR/cnt),Math.round(vG/cnt),Math.round(vB/cnt)),pxDiff:Math.round(de*100)+'%'})}}return res.length?res:null}function cropIssueImages(d,v,w,h,al,is){const mgX=Math.ceil(Math.max(is.w,10)),mgY=Math.ceil(Math.max(is.h,10)),cx=Math.max(0,is.x-mgX),cy=Math.max(0,is.y-mgY),cw=Math.min(is.w+mgX*2,w-cx),ch=Math.min(is.h+mgY*2,h-cy),ds=document.createElement('canvas');ds.width=cw;ds.height=ch;ds.getContext('2d').drawImage(d.canvas,cx,cy,cw,ch,0,0,cw,ch);const dv=document.createElement('canvas');dv.width=cw;dv.height=ch;dv.getContext('2d').drawImage(v.canvas,cx-al.dx,cy-al.dy,cw,ch,0,0,cw,ch);const rx=is.x-cx,ry=is.y-cy,rw=is.w,rh=is.h;[ds,dv].forEach(c=>{const ctx=c.getContext('2d');ctx.strokeStyle='#ef4444';ctx.lineWidth=2;ctx.strokeRect(rx,ry,rw,rh);ctx.lineWidth=3;ctx.strokeRect(rx,ry,rw,rh)});const gap=6,lh=22,out=document.createElement('canvas');out.width=cw*2+gap;out.height=ch+lh;const ctx=out.getContext('2d');ctx.fillStyle='#f8fafc';ctx.fillRect(0,0,out.width,out.height);ctx.drawImage(ds,0,0,cw,ch,0,lh,cw,ch);ctx.drawImage(dv,0,0,cw,ch,cw+gap,lh,cw,ch);ctx.fillStyle='#6b7280';ctx.font='12px sans-serif';ctx.textAlign='center';ctx.fillText('🎨 设计稿',cw/2,15);ctx.fillText('🛠 还原稿',cw+gap+cw/2,15);return out.toDataURL('image/png')}function generateDiffOverlay(d,v,w,h,al){const c=document.createElement('canvas');c.width=w;c.height=h;const ctx=c.getContext('2d');ctx.drawImage(d.canvas,0,0,w,h);const id=ctx.getImageData(0,0,w,h),o=id.data,dd=d.data.data,vd=v.data.data;for(let y=0;y<h;y++)for(let x=0;x<w;x++){const vy=y+al.dy,vx=x+al.dx;if(vx<0||vx>=v.w||vy<0||vy>=v.h)continue;const piD=(y*w+x)*4,piV=(vy*v.w+vx)*4;if(Math.abs(dd[piD]-vd[piV])+Math.abs(dd[piD+1]-vd[piV+1])+Math.abs(dd[piD+2]-vd[piV+2])>80){o[(y*w+x)*4]=255;o[(y*w+x)*4+1]=0;o[(y*w+x)*4+2]=0;o[(y*w+x)*4+3]=255}}ctx.putImageData(id,0,0);return c.toDataURL('image/png')}async function vgDetect(designUrl,devUrl){try{const[d,v]=await Promise.all([loadCanvas(designUrl),loadCanvas(devUrl)]);if(!d.data||!v.data)return{issues:[],align:{dx:0,dy:0},cropUrls:[],diffOverlay:null};const w=Math.min(d.w,v.w),h=Math.min(d.h,v.h);if(w<10||h<10)return{issues:[],align:{dx:0,dy:0},cropUrls:[],diffOverlay:null};const al=alignImages(d,v),dEn=enhanceContrast(d.data.data,d.data.width,d.data.height),vEn=enhanceContrast(v.data.data,v.data.width,v.data.height),dLum=new Uint8Array(d.w*d.h),vLum=new Uint8Array(v.w*v.h);for(let i=0;i<d.w*d.h;i++)dLum[i]=dEn[i*4];for(let i=0;i<v.w*v.h;i++)vLum[i]=vEn[i*4];const textLines=[];try{const raw=mserDetectInRegion(dLum,d.w,d.h,0,0,d.w,d.h);for(const l of raw)if(l.w>20&&l.h>6)textLines.push({x:l.x,y:l.y,w:l.w,h:l.h,comps:l.comps||1})}catch(e){}const cls=clusterDiffs(d,v,w,h,al),issues=[];for(const c of cls){const list=dualTrackAnalyze(c,d,v,w,h,al,dLum,vLum);if(list)for(const is of list)issues.push({x:c.x,y:c.y,w:c.w,h:c.h,category:is.type,priority:is.priority,description:is.desc,detail:is.detail,designValue:is.design||'',actualValue:is.actual||'',pxDiff:is.pxDiff||''})}const merged=[];for(const is of issues){let dup=!1;for(const m of merged)if(m.category===is.category&&Math.hypot(is.x-m.x,is.y-m.y)<24){dup=!0;break}dup||merged.push(is)}const final=[];for(const is of merged){let ad=!1;for(const g of final){if(g.category!==is.category)continue;var gx2=Math.max(g.x+g.w,is.x+is.w),gy2=Math.max(g.y+g.h,is.y+is.h),ix=Math.max(g.x,is.x),iy=Math.max(g.y,is.y),ix2=Math.min(g.x+g.w,is.x+is.w),iy2=Math.min(g.y+g.h,is.y+is.h);if(ix<ix2&&iy<iy2){var ov=(ix2-ix)*(iy2-iy),tu=g.w*g.h+is.w*is.h-ov;if(tu>0&&ov/tu>.15){g.x=Math.min(g.x,is.x);g.y=Math.min(g.y,is.y);g.w=gx2-g.x;g.h=gy2-g.y;g.regionCount=(g.regionCount||1)+1;if(g.regionCount===2)g.description=is.category==='font'?'文字/字体差异':is.category==='position'?'位置偏差':is.category==='size'?'尺寸偏差':'颜色偏差';ad=!0;break}}}ad||(is.regionCount=1,final.push(is))}final.forEach((is,i)=>is.regionIndex=i+1);const po={P0:0,P1:1,P2:2,P3:3},sorted=final.sort((a,b)=> (po[a.priority] !== undefined ? po[a.priority] : 99) - (po[b.priority] !== undefined ? po[b.priority] : 99)),cropUrls=sorted.map(is=>{try{return cropIssueImages(d,v,w,h,al,is)}catch(e){return null}}),diffOverlay=generateDiffOverlay(d,v,w,h,al);return{issues:sorted,align:al,cropUrls,diffOverlay}}catch(e){return{issues:[],align:{dx:0,dy:0},cropUrls:[],diffOverlay:null}}}window.vgDetect=vgDetect;})();
 </script>
 
 <script>
 // ====================================================================
-// 🔧 云端配置中心
+// 🔧 云端配置中心 (自定义配置)
 // ====================================================================
 let cloudConfig = JSON.parse(localStorage.getItem('vgCloudConfig')) || {
     cloudName: 'dxm3bwnzi',
     apiKey: '713313811327755',
     apiSecret: 'QIBVvLSSePJW5-1UVYECknvBLBQ',
-    dataName: 'vg_prod_v2'
+    dataName: 'vg_prod_final'
 };
 
 function openCloudSettings() {
@@ -242,22 +246,18 @@ function openCloudSettings() {
     document.getElementById('settingsModal').classList.add('open');
 }
 
-function closeCloudSettings() {
-    document.getElementById('settingsModal').classList.remove('open');
-}
-
+function closeCloudSettings() { document.getElementById('settingsModal').classList.remove('open'); }
 function saveCloudSettings() {
     cloudConfig.cloudName = document.getElementById('cfgCloudName').value.trim();
     cloudConfig.apiKey = document.getElementById('cfgApiKey').value.trim();
     cloudConfig.apiSecret = document.getElementById('cfgApiSecret').value.trim();
     cloudConfig.dataName = document.getElementById('cfgDataName').value.trim();
     localStorage.setItem('vgCloudConfig', JSON.stringify(cloudConfig));
-    closeCloudSettings();
-    location.reload(); 
+    closeCloudSettings(); location.reload(); 
 }
 
 // ====================================================================
-// 🚀 核心状态管理
+// 🚀 核心状态管理 (离线优先)
 // ====================================================================
 let tabIdCounter = 1;
 let activeTabId = 'dashboard';
@@ -273,7 +273,6 @@ function addTab(name, opts) {
   return id;
 }
 
-// 删除 Tab（绝对拦截看板删除）
 function removeTab(id) {
   if (id === 'dashboard') return;
   const tab = tabs.get(id); if (tabs.size <= 1 || !tab) return;
@@ -285,18 +284,15 @@ function removeTab(id) {
   renderTabList(); autoSave();
 }
 
-// 重命名 Tab（绝对拦截看板重命名）
 function renameTab(id, n) { 
   if (id === 'dashboard') return;
-  const t=tabs.get(id); 
-  if(t) { t.name = n || t.name; renderTabList(); } 
+  const t=tabs.get(id); if(t) { t.name = n || t.name; renderTabList(); } 
 }
 
 function removeDesignImg(id) { const t=tabs.get(id); if(!t)return; t.designImg = null; t.result = null; renderMain(id); }
 function removeDevImg(id) { const t=tabs.get(id); if(!t)return; t.devImg = null; t.result = null; renderMain(id); }
 function activateTab(id) { activeTabId = id; renderTabList(); renderMain(id); }
 
-// 添加子页面（拦截在看板下添加）
 function addChildTab(groupId) {
   if (groupId === 'dashboard') return;
   const g = tabs.get(groupId); if (!g) return;
@@ -305,22 +301,19 @@ function addChildTab(groupId) {
   g.children.push(cid); renderTabList(); activateTab(cid);
 }
 
-// ===== 左侧栏结构化渲染 =====
+// ===== 左侧栏渲染 =====
 function renderTabList() {
   const list = document.getElementById('tabList'); list.innerHTML = '';
   const groups = [], leafTabs = []; const childrenSet = new Set();
   
   tabs.forEach(t => { 
-      if (t.isGroup && t.id !== 'dashboard') { 
-          for (let i = 0; i < t.children.length; i++) childrenSet.add(t.children[i]); 
-      } 
+      if (t.isGroup && t.id !== 'dashboard') { for (let i = 0; i < t.children.length; i++) childrenSet.add(t.children[i]); } 
   });
   tabs.forEach(tab => { 
       if (tab.isGroup && tab.id !== 'dashboard') groups.push(tab); 
       else if (!childrenSet.has(tab.id) && tab.id !== 'dashboard') leafTabs.push(tab); 
   });
 
-  // 1. 强力插入：固定的绝对顶级“数据看板”
   const dbItem = document.createElement('div');
   dbItem.className = 'tab-item' + (activeTabId === 'dashboard' ? ' active' : '');
   dbItem.innerHTML = `<span style="width:16px;display:inline-block;"></span><span class="tab-icon">📊</span><span class="tab-name" style="font-weight:700;color:#1A73E8;">数据看板</span>`;
@@ -330,8 +323,6 @@ function renderTabList() {
   for (let idx = 0; idx < groups.length; idx++) {
     const g = groups[idx];
     const isCollapsed = collapsedGroups.has(g.id);
-    
-    // 渲染普通板块
     list.appendChild(createTabItem(g, true, isCollapsed));
     
     const childWrap = document.createElement('div'); childWrap.className = 'sub-page-wrap';
@@ -348,22 +339,18 @@ function renderTabList() {
     addBtn.onclick = e => { e.stopPropagation(); addChildTab(g.id); };
     addBtn.onmouseenter = () => addBtn.style.background = '#E8F0FE'; 
     addBtn.onmouseleave = () => addBtn.style.background = 'transparent';
-    
-    childWrap.appendChild(addBtn);
-    list.appendChild(childWrap);
+    childWrap.appendChild(addBtn); list.appendChild(childWrap);
   }
   for (let lidx = 0; lidx < leafTabs.length; lidx++) { list.appendChild(createTabItem(leafTabs[lidx], false)); }
 }
 
 function createTabItem(tab, isGroup, isCollapsed) {
   const el = document.createElement('div'); el.className = 'tab-item' + (tab.id === activeTabId ? ' active' : '');
-  
   if (isGroup) {
       const arrow = isCollapsed ? '▶' : '▼';
       el.innerHTML = `<span class="collapse-arrow" onclick="event.stopPropagation();toggleCollapse('${tab.id}')" style="width:16px;display:inline-flex;align-items:center;justify-content:center;font-size:10px;color:#5F6368;cursor:pointer;">${arrow}</span><span class="tab-icon">📁</span><span class="tab-name">${tab.name}</span><span class="tab-actions"><button onclick="event.stopPropagation();startRename('${tab.id}',this.parentElement.parentElement.querySelector('.tab-name'))" title="重命名">✏️</button><button class="del-btn" onclick="event.stopPropagation();removeTab('${tab.id}')" title="删除">✕</button></span>`;
       el.onclick = () => activateTab(tab.id); return el;
   }
-  
   let innerIconHtml = tab.designImg ? `<span class="tab-icon" style="width:24px;height:24px;border-radius:4px;overflow:hidden;border:1px solid #DADCE0;"><img src="${tab.designImg}" style="width:100%;height:100%;object-fit:cover;"></span>` : `<span class="tab-icon">📄</span>`;
   let badgeHtml = (tab.designImg && tab.devImg) ? `<span style="font-size:10px;padding:2px 6px;border-radius:12px;background:#E6F4EA;color:#137333;">已传</span>` : `<span style="font-size:10px;padding:2px 6px;border-radius:12px;background:#FCE8E6;color:#C5221F;">未传</span>`;
   el.innerHTML = `${innerIconHtml}<span class="tab-name">${tab.name}</span>${badgeHtml}<span class="tab-actions"><button onclick="event.stopPropagation();startRename('${tab.id}',this.parentElement.parentElement.querySelector('.tab-name'))">✏️</button><button class="del-btn" onclick="event.stopPropagation();removeTab('${tab.id}')">✕</button></span>`;
@@ -381,12 +368,10 @@ function startRename(id, nameEl) {
 function openModal(src) { document.getElementById('modalImg').src = src; document.getElementById('modalOverlay').classList.add('open'); }
 function closeModal() { document.getElementById('modalOverlay').classList.remove('open'); }
 
-// ===== 路由：渲染主内容区 =====
+// ===== 路由渲染 =====
 function renderMain(id) {
   const main = document.getElementById('mainArea'); 
-  
   if (id === 'dashboard') { renderDashboard(); return; }
-  
   const tab = tabs.get(id); if (!tab) return;
   if (tab.isGroup) { renderGroupMain(tab); return; }
   
@@ -435,7 +420,7 @@ function buildUploadBar(id) {
     <label class="file-label${dOk?' has-img':''}">🎨 设计稿 <input type="file" accept="image/*" onchange="handleDropFile(event,'${id}','design')"></label>
     <label class="file-label${vOk?' has-img':''}">🛠 还原稿 <input type="file" accept="image/*" onchange="handleDropFile(event,'${id}','dev')"></label>
     <button class="detect-btn" onclick="runDetect('${id}')" ${dOk&&vOk?'':'disabled'}>🔍 开始全能检测</button>
-    <span class="status">${tab.result ? `✅ 发现 ${activeCount} 个偏差` : '等待检测'}</span>
+    <span class="status">${tab.result ? `✅ 发现 ${activeCount} 个有效偏差` : '等待检测'}</span>
   `;
 }
 
@@ -469,12 +454,11 @@ function openDevSelector(id) {
 }
 function selectDev(id, name) { const tab = tabs.get(id); if (!tab) return; tab.developer = name || ''; if (name && devPool.indexOf(name)===-1) { devPool.push(name); saveDevPool(); } buildUploadBar(id); autoSave(); }
 
-// ===== 视图渲染：全局数据看板 (核心重构过滤) =====
+// ===== 视图渲染：全局数据看板 =====
 function renderDashboard() {
   const main = document.getElementById('mainArea'); 
   const allTabsWithResult = []; 
   
-  // 遍历所有 Tab 抽取数据，绝对跳过数据看板自身
   tabs.forEach(t => {
     if (t.id === 'dashboard') return;
     if (t.isGroup) {
@@ -493,12 +477,10 @@ function renderDashboard() {
   allTabsWithResult.forEach(ct => {
     if (ct.result && ct.result.issues) {
       ct.result.issues.forEach(is => {
-        // 只有状态为非 closed 的问题才进入统计
-        if (!is.closed) {
+        if (!is.closed) { // 过滤已被忽略的缺陷
             if (is.priority === 'P0') p0++;
             else if (is.priority === 'P1') p1++;
             else if (is.priority === 'P2') p2++;
-            
             const c = is.category || 'unknown';
             catMap[c] = (catMap[c] || 0) + 1;
         }
@@ -563,9 +545,7 @@ function renderDashboard() {
       ctx.fillStyle='#E8F0FE'; ctx.fillRect(260, 160 - (p2/max)*120, 60, (p2/max)*120); ctx.fillStyle='#1A73E8'; ctx.fillText(`P2: ${p2}`, 275, 150 - (p2/max)*120);
       ctx.beginPath(); ctx.moveTo(40,160); ctx.lineTo(360,160); ctx.stroke();
     }
-    // 渲染责任人表格
     renderDevDashboardStats();
-    // 渲染所有页面缩略图汇总
     renderAllPagesImagesTable(allTabsWithResult);
   }, 100);
 }
@@ -577,13 +557,9 @@ function renderDevDashboardStats() {
   tabs.forEach(t => {
     if (t.id === 'dashboard' || t.isGroup || !t.developer || !t.result) return;
     const dev = t.developer;
-    // 过滤出未被忽略的问题
     const issues = (t.result.issues || []).filter(i => !i.closed);
     let p0c = 0, p1c = 0;
-    issues.forEach(is => {
-        if (is.priority === 'P0') p0c++;
-        if (is.priority === 'P1') p1c++;
-    });
+    issues.forEach(is => { if (is.priority === 'P0') p0c++; if (is.priority === 'P1') p1c++; });
     const score = Math.round(Math.max(0, 100 - issues.length * 5 - p0c * 10 - p1c * 5));
     if (!devMap[dev]) devMap[dev] = { name: dev, items: [], totalIssues: 0, totalP0: 0, totalP1: 0, scores: [] };
     devMap[dev].items.push({ tabName: t.name, score: score, issues: issues.length, p0: p0c, p1: p1c });
@@ -593,11 +569,7 @@ function renderDevDashboardStats() {
   const list = Object.values(devMap);
   if (!list.length) { el.innerHTML = '<div style="color:#80868B;font-size:13px;padding:24px;text-align:center;">暂无责任人统计数据，请在走查子页面指派责任人。</div>'; return; }
   
-  list.forEach(d => {
-      let sum = 0;
-      d.scores.forEach(s => sum += s);
-      d.avgScore = Math.round(sum / d.scores.length);
-  });
+  list.forEach(d => { let sum = 0; d.scores.forEach(s => sum += s); d.avgScore = Math.round(sum / d.scores.length); });
   list.sort((a,b) => b.avgScore - a.avgScore);
   
   let html = `<table class="group-table" style="box-shadow:none;"><thead><tr><th>研发负责人</th><th>开发页面数</th><th>平均还原分</th><th>P0 问题</th><th>P1 问题</th><th>总缺陷数</th></tr></thead><tbody>`;
@@ -616,7 +588,6 @@ function renderAllPagesImagesTable(allPages) {
   let html = `<table class="group-table" style="box-shadow:none;"><thead><tr><th style="width: 180px;">所属页面</th><th>🎨 设计稿</th><th>🛠 还原稿</th><th>🔥 热力图</th><th style="width: 80px;">⭐ 评分</th><th style="width: 80px;">⚠️ 缺陷</th></tr></thead><tbody>`;
 
   allPages.forEach(ct => {
-    // 过滤出未被忽略的问题
     const issues = (ct.result ? ct.result.issues : []).filter(i => !i.closed);
     let p0 = 0, p1 = 0;
     issues.forEach(i => { if (i.priority === 'P0') p0++; if (i.priority === 'P1') p1++; });
@@ -643,10 +614,7 @@ function renderAllPagesImagesTable(allPages) {
 function renderGroupMain(group) {
   const main = document.getElementById('mainArea'); 
   const children = [];
-  group.children.forEach(cid => {
-      const t = tabs.get(cid);
-      if (t) children.push(t);
-  });
+  group.children.forEach(cid => { const t = tabs.get(cid); if (t) children.push(t); });
   
   let html = `
     <div class="upload-bar" style="justify-content: space-between;">
@@ -666,10 +634,7 @@ function renderGroupMain(group) {
   children.forEach(ct => {
     const issues = (ct.result ? ct.result.issues : []).filter(i => !i.closed);
     let p0 = 0, p1 = 0;
-    issues.forEach(i => {
-        if (i.priority === 'P0') p0++;
-        if (i.priority === 'P1') p1++;
-    });
+    issues.forEach(i => { if (i.priority === 'P0') p0++; if (i.priority === 'P1') p1++; });
     const score = ct.result ? Math.round(Math.max(0, 100 - issues.length * 5 - p0 * 10 - p1 * 5)) : '-';
     let scColor = '#3C4043'; if(score !== '-') scColor = score >= 90 ? '#137333' : score >= 70 ? '#B06000' : '#C5221F';
 
@@ -682,9 +647,7 @@ function renderGroupMain(group) {
         <td>${thumb(ct.devImg, '未传')}</td>
         <td>${thumb(overlayImg, '未生成')}</td>
         <td style="font-size:16px; font-weight:700; color:${scColor};">${score}</td>
-        <td>
-            ${issues.length > 0 ? `<div style="display:flex;flex-direction:column;gap:4px;"><span style="color:#C5221F;font-size:12px;font-weight:500;">P0: ${p0}</span><span style="color:#B06000;font-size:12px;font-weight:500;">P1: ${p1}</span></div>` : '<span style="color:#9AA0A6;">无</span>'}
-        </td>
+        <td>${issues.length > 0 ? `<div style="display:flex;flex-direction:column;gap:4px;"><span style="color:#C5221F;font-size:12px;font-weight:500;">P0: ${p0}</span><span style="color:#B06000;font-size:12px;font-weight:500;">P1: ${p1}</span></div>` : '<span style="color:#9AA0A6;">无</span>'}</td>
     </tr>`;
   });
   html += `</tbody></table></div>`;
@@ -725,8 +688,7 @@ async function runDetect(id) {
       rawResult.issues = [];
       for(let i=0; i<refinedIssues.length; i++) {
           let is = refinedIssues[i];
-          // 默认未关闭
-          rawResult.issues.push({ ...is, x: is.box.x, y: is.box.y, w: is.box.w, h: is.box.h, closed: false });
+          rawResult.issues.push({ ...is, x: is.box.x, y: is.box.y, w: is.box.w, h: is.box.h, closed: false }); // 默认全部开启
       }
       for(let i=0; i<rawResult.issues.length; i++){ rawResult.issues[i].regionIndex = i + 1; }
     }
@@ -764,13 +726,11 @@ function applyStructuralCorrection(issues) {
 
     const isLargeArea = area > 8000; const isSquareish = (Math.max(box.w, box.h) / Math.min(box.w, box.h)) < 1.8;
     
-    let hasFontError = false;
-    let hasColorError = false;
+    let hasFontError = false; let hasColorError = false;
     for(let i=0; i<cluster.rawIssues.length; i++) {
         if(cluster.rawIssues[i].category === 'font' || cluster.rawIssues[i].category === 'text' || (cluster.rawIssues[i].desc && cluster.rawIssues[i].desc.includes('文字'))) hasFontError = true;
         if(cluster.rawIssues[i].category === 'color') hasColorError = true;
     }
-    
     const isSmallText = area < 3500;
 
     if (isLargeArea) {
@@ -790,25 +750,16 @@ function applyStructuralCorrection(issues) {
   return refined;
 }
 
-// ===== 缺陷关闭逻辑与表格渲染 =====
+// ===== 忽略缺陷逻辑与表格渲染 =====
 window.toggleIssueStatus = function(id, idx) {
     const tab = tabs.get(id);
     if (!tab || !tab.result || !tab.result.issues[idx]) return;
-    tab.result.issues[idx].closed = !tab.result.issues[idx].closed;
+    tab.result.issues[idx].closed = !tab.result.issues[idx].closed; // 翻转关闭状态
     autoSave();
     renderIssueTable(id, tab);
     buildUploadBar(id);
     drawMarkers(id, tab);
 };
-
-function sortByPriority(issues) { 
-    return [...issues].sort((a, b) => {
-        const prioRank = { P0: 0, P1: 1, P2: 2, P3: 3 }; 
-        const ra = prioRank[a.priority] !== undefined ? prioRank[a.priority] : 99;
-        const rb = prioRank[b.priority] !== undefined ? prioRank[b.priority] : 99;
-        return ra - rb;
-    }); 
-}
 
 function renderIssueTable(id, tab) {
   const r = tab.result; if (!r) return;
@@ -830,7 +781,7 @@ function renderIssueTable(id, tab) {
   if (h) { 
       let p0c = 0, p1c = 0;
       for(let i=0; i<activeIssues.length; i++) { if(activeIssues[i].priority === 'P0') p0c++; if(activeIssues[i].priority === 'P1') p1c++; }
-      h.innerHTML = `<h3>📋 缺陷报告</h3><span class="stats">共 ${activeIssues.length} 个缺陷 ( P0: ${p0c} , P1: ${p1c} )</span>`; 
+      h.innerHTML = `<h3>📋 缺陷报告</h3><span class="stats">共发现 ${activeIssues.length} 个有效缺陷 ( P0: ${p0c} , P1: ${p1c} )</span>`; 
   }
   const wrap = document.getElementById('ilw_'+id); if (!wrap) return;
   if (issues.length === 0) { wrap.innerHTML = '<div class="no-issues">🎉 完美还原！没有发现视觉缺陷。</div>'; return; }
@@ -875,9 +826,8 @@ function drawMarkers(id, tab) {
       const scale = Math.min(cw / iw, ch / ih); const dispW = iw * scale, dispH = ih * scale; const offsetX = (cw - dispW) / 2, offsetY = (ch - dispH) / 2;
       cell.querySelectorAll('.marker').forEach(el=>el.remove());
       const m = document.createElement('div'); m.className = 'marker'; 
-      // 忽略的问题边框置灰
       const borderColor = iss.closed ? '#9AA0A6' : '#EA4335';
-      m.style.cssText = `position:absolute;left:${offsetX+(iss.x+ox)*scale}px;top:${offsetY+(iss.y+oy)*scale}px;width:${Math.max(iss.w*scale,2)}px;height:${Math.max(iss.h*scale,2)}px;border:2px solid ${borderColor};border-radius:4px;pointer-events:none;z-index:2;box-shadow:0 0 0 1px rgba(255,255,255,0.8);`; 
+      m.style.cssText = `position:absolute;left:${offsetX+(iss.x+ox)*scale}px;top:${offsetY+(iss.y+oy)*scale}px;width:${Math.max(iss.w*scale,2)}px;height:${Math.max(iss.h*scale,2)}px;border:2px dashed ${borderColor};border-radius:4px;pointer-events:none;z-index:2;box-shadow:0 0 0 1px rgba(255,255,255,0.8);`; 
       cell.appendChild(m);
     }; tryMark();
   };
@@ -889,33 +839,7 @@ document.addEventListener('keydown', e => {
   if (e.key === 'ArrowUp' || e.key === 'ArrowDown') { const d = e.key==='ArrowUp' ? -1 : 1; const n = tab.selectedIdx + d; if (n>=0 && n<tab.result.issues.length) { selectIssue(activeTabId, n); const row = document.querySelector(`#ilw_${activeTabId} tr[data-idx="${n}"]`); if (row) row.scrollIntoView({behavior:'smooth', block:'nearest'}); } e.preventDefault(); }
 });
 
-// ===== ☁️ 云端同步与持久化管理 =====
-let cloudConfig = JSON.parse(localStorage.getItem('vgCloudConfig')) || {
-    cloudName: 'dxm3bwnzi',
-    apiKey: '713313811327755',
-    apiSecret: 'QIBVvLSSePJW5-1UVYECknvBLBQ',
-    dataName: 'vg529_prod'
-};
-
-function openCloudSettings() {
-    document.getElementById('cfgCloudName').value = cloudConfig.cloudName;
-    document.getElementById('cfgApiKey').value = cloudConfig.apiKey;
-    document.getElementById('cfgApiSecret').value = cloudConfig.apiSecret;
-    document.getElementById('cfgDataName').value = cloudConfig.dataName;
-    document.getElementById('settingsModal').classList.add('open');
-}
-
-function closeCloudSettings() { document.getElementById('settingsModal').classList.remove('open'); }
-
-function saveCloudSettings() {
-    cloudConfig.cloudName = document.getElementById('cfgCloudName').value.trim();
-    cloudConfig.apiKey = document.getElementById('cfgApiKey').value.trim();
-    cloudConfig.apiSecret = document.getElementById('cfgApiSecret').value.trim();
-    cloudConfig.dataName = document.getElementById('cfgDataName').value.trim();
-    localStorage.setItem('vgCloudConfig', JSON.stringify(cloudConfig));
-    closeCloudSettings(); location.reload(); 
-}
-
+// ===== 离线优先：本地存储管理 =====
 const DB_NAME = 'VisionGuardDB'; const DB_VERSION = 5; const STORE_NAME = 'tabs'; const CONFIG_KEY = 'appConfig';
 
 function openDB() { return new Promise((resolve, reject) => { const req = indexedDB.open(DB_NAME, DB_VERSION); req.onupgradeneeded = e => { const db = e.target.result; if (e.oldVersion > 0 && e.oldVersion < DB_VERSION) { if (db.objectStoreNames.contains(STORE_NAME)) db.deleteObjectStore(STORE_NAME); } if (!db.objectStoreNames.contains(STORE_NAME)) db.createObjectStore(STORE_NAME, { keyPath: 'id' }); }; req.onsuccess = e => resolve(e.target.result); req.onerror = e => reject(e.target.error); }); }
@@ -936,19 +860,21 @@ async function loadTabs() {
         const num = parseInt(rec.id.replace('tab_', ''), 10); 
         if (num > maxId) maxId = num; 
     } 
-    tabIdCounter = maxId + 1; return true; 
+    tabIdCounter = maxId + 1; 
+    return true; 
   } catch(e) { return false; } 
 }
 
 function autoSave() { setTimeout(saveTabs, 100); autoCloudify(); }
 
+// ===== 后台静默同步：Cloudinary =====
 let pendingCloudSync = null;
 function autoCloudify() { if (pendingCloudSync) clearTimeout(pendingCloudSync); pendingCloudSync = setTimeout(manualCloudPush, 3500); }
 
 function updateCloudUI(text, statusType) { const el = document.getElementById('cloudStatusText'); if (el) { el.innerHTML = text; el.className = 'cloud-status ' + statusType; } }
 
 async function manualCloudPush() {
-  updateCloudUI('☁️ 正在推送...', 'syncing');
+  updateCloudUI('☁️ 后台推送中...', 'syncing');
   try {
     const data = {};
     tabs.forEach((tab, id) => { if (id !== 'dashboard') data[id] = { id: id, name: tab.name, isGroup: tab.isGroup, children: tab.children, designImg: tab.designImg, devImg: tab.devImg, result: tab.result, developer: tab.developer || '' }; });
@@ -956,7 +882,7 @@ async function manualCloudPush() {
     const formData = new FormData(); formData.append('file', new Blob([json], { type: 'application/json' }), 'data.json'); formData.append('api_key', cloudConfig.apiKey); formData.append('timestamp', timestamp + ''); formData.append('signature', sig); formData.append('public_id', cloudConfig.dataName); formData.append('resource_type', 'raw');
     const res = await fetch(`https://api.cloudinary.com/v1_1/${cloudConfig.cloudName}/raw/upload`, { method: 'POST', body: formData });
     if (!res.ok) { updateCloudUI('☁️ 推送失败', 'err'); } else { updateCloudUI('✅ 云端已同步', 'ok'); }
-  } catch(e) { updateCloudUI('☁️ 网络异常', 'err'); }
+  } catch(e) { updateCloudUI('☁️ 网络异常 (离线)', 'err'); }
 }
 
 async function cloudifyLoad() {
@@ -964,6 +890,8 @@ async function cloudifyLoad() {
     const res = await fetch(`https://res.cloudinary.com/${cloudConfig.cloudName}/raw/upload/${cloudConfig.dataName}.json?_t=${Date.now()}`);
     if (res.status === 404) return false; if (!res.ok) return false;
     const remote = await res.json(); if (!remote || typeof remote !== 'object' || Object.keys(remote).length === 0) return false;
+    
+    // 只在拉取成功时清空重建 tabs
     tabs.clear(); let maxId = 0; const ids = Object.keys(remote);
     for(let i=0; i<ids.length; i++) {
       const id = ids[i]; const rec = remote[id]; 
@@ -975,36 +903,41 @@ async function cloudifyLoad() {
   } catch(e) { return false; }
 }
 
-async function manualCloudPull() {
-  updateCloudUI('☁️ 正在拉取...', 'syncing');
+async function silentCloudPull() {
+  updateCloudUI('☁️ 后台比对云端...', 'syncing');
   const restored = await cloudifyLoad();
   
   if (!tabs.has('dashboard')) tabs.set('dashboard', { id: 'dashboard', name: '数据看板', isGroup: true, children: [] });
-  if (restored) { activeTabId = 'dashboard'; renderTabList(); renderMain('dashboard'); updateCloudUI('✅ 拉取成功', 'ok'); } 
-  else { updateCloudUI('☁️ 无云端数据', 'err'); }
+  
+  if (restored) {
+    saveTabs(); // 将云端数据刷入本地缓存
+    renderTabList(); renderMain(activeTabId); updateCloudUI('✅ 团队数据已同步', 'ok');
+  } else { updateCloudUI('☁️ 离线/本地模式', 'ok'); }
+}
+
+async function manualCloudPull() {
+    await silentCloudPull();
 }
 
 function sha1Hex(str) { return crypto.subtle.digest('SHA-1', new TextEncoder().encode(str)).then(buf => Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('')); }
 
-// ===== 启动主程序 =====
+// ===== 极速启动程序 (离线优先) =====
 (async function init() {
-  updateCloudUI('☁️ 连接云端...', 'syncing');
   await loadDevPool(); 
-  
-  let restored = await cloudifyLoad();
-  if (restored) { updateCloudUI('✅ 团队数据已同步', 'ok'); } 
-  else { restored = await loadTabs(); updateCloudUI('☁️ 本地模式', 'syncing'); }
+  let localRestored = await loadTabs();
   
   // 注入超级节点：数据看板
   if (!tabs.has('dashboard')) tabs.set('dashboard', { id: 'dashboard', name: '数据看板', isGroup: true, children: [] });
   
-  if (restored) {
+  if (localRestored) {
     activeTabId = 'dashboard'; renderTabList(); renderMain('dashboard');
   } else {
     activeTabId = 'dashboard';
-    const defaultGroupId = addTab('默认测试模块', {isGroup: true}); addChildTab(defaultGroupId);
-    autoCloudify(); 
+    const defaultGroupId = addTab('默认测试板块', {isGroup: true}); addChildTab(defaultGroupId);
   }
+
+  // UI渲染完毕后，后台无感静默拉取云端数据
+  silentCloudPull();
 })();
 </script>
 </body>
