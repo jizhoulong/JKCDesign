@@ -1,497 +1,627 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html>
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📊</text></svg>">
-<title>VisionGuard | Team Workspace</title>
+<title>VisionGuard</title>
 <style>
-/* ===== Google Material Design 3 全局样式规范 ===== */
-@import url('https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&family=Roboto:wght@400;500&display=swap');
-
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html, body { height: 100%; overflow: hidden; font-family: 'Google Sans', 'Roboto', -apple-system, BlinkMacSystemFont, sans-serif; background: #F8F9FA; color: #202124; -webkit-font-smoothing: antialiased; }
+html, body { height: 100%; overflow: hidden; font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', sans-serif; background: #f2f2f7; color: #1c1c1e; -webkit-font-smoothing: antialiased; }
 
 .app { display: flex; height: 100vh; }
 
-/* ===== 左侧导航栏 ===== */
-.tabbar { width: 280px; background: #FFFFFF; display: flex; flex-direction: column; flex-shrink: 0; border-right: 1px solid #DADCE0; z-index: 10; }
-.tabbar-header { padding: 20px 24px 16px; border-bottom: 1px solid #DADCE0; display: flex; flex-direction: column; gap: 8px; }
-.tabbar-header h3 { color: #202124; font-size: 20px; font-weight: 500; letter-spacing: -0.5px; display: flex; align-items: center; gap: 8px; }
-.tabbar-header h3 span { font-size: 12px; font-weight: 500; color: #1A73E8; background: #E8F0FE; padding: 2px 8px; border-radius: 12px; }
-
-.tabbar-actions { padding: 12px 16px 4px; }
-.btn-add-group { width: 100%; padding: 10px 16px; font-size: 14px; font-weight: 500; font-family: 'Google Sans', sans-serif; border: 1px solid #DADCE0; border-radius: 24px; background: #FFFFFF; color: #1A73E8; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; transition: all 0.2s; box-shadow: 0 1px 2px 0 rgba(60,64,67,0.1); }
-.btn-add-group:hover { background: #F8F9FA; box-shadow: 0 1px 3px 1px rgba(60,64,67,0.15); }
-
-.tab-list { flex: 1; overflow-y: auto; padding: 8px 0; }
-.tab-list .tab-item { display: flex; align-items: center; gap: 12px; padding: 10px 16px 10px 24px; cursor: pointer; user-select: none; transition: background 0.15s; margin: 2px 12px 2px 0; border-radius: 0 24px 24px 0; color: #3C4043; }
-.tab-list .tab-item:hover { background: #F1F3F4; }
-.tab-list .tab-item.active { background: #E8F0FE; color: #1A73E8; }
-.tab-list .tab-item .tab-icon { font-size: 16px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; width: 20px; }
-.tab-list .tab-item .tab-name { font-size: 14px; font-weight: 500; flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-family: 'Google Sans', sans-serif; }
-.tab-list .tab-item.active .tab-name { font-weight: 700; }
-.tab-list .tab-item .tab-actions { display: none; gap: 4px; flex-shrink: 0; }
+/* ===== 左侧 Tab 栏（iOS 侧栏风格） ===== */
+.tabbar { width: 290px; background: #1c1c1e; display: flex; flex-direction: column; flex-shrink: 0; border-right: 1px solid #2c2c2e; }
+.tabbar-header { padding: 24px 16px 10px; border-bottom: 1px solid #2c2c2e; }
+.tabbar-header h3 { color: #ffffff; font-size: 17px; font-weight: 700; letter-spacing: -.3px; }
+.tabbar-header h3 span { font-size: 14px; font-weight: 400; color: #8e8e93; }
+.tabbar-stats { display: none; padding: 4px 12px 6px; font-size: 11px; color: #636366; gap: 6px; flex-wrap: wrap; border-bottom: 1px solid #2c2c2e; }
+.tabbar-stats.show { display: flex; }
+.tabbar-stats .stat-item { display: inline-flex; align-items: center; gap: 3px; }
+.tabbar-stats .stat-dot { width: 6px; height: 6px; border-radius: 50%; display: inline-block; }
+.tabbar-actions { padding: 6px 12px; border-bottom: 1px solid #2c2c2e; }
+.btn-add-group { width: 100%; padding: 8px 12px; font-size: 13px; border: none; border-radius: 8px; background: #2c2c2e; color: #8e8e93; cursor: pointer; display: flex; align-items: center; gap: 6px; transition: all .15s; font-weight: 500; }
+.btn-add-group:hover { background: #3a3a3c; color: #c7c7cc; }
+.tab-list { flex: 1; overflow-y: auto; padding: 6px 12px; }
+.tab-list .tab-item { display: flex; align-items: center; gap: 8px; padding: 8px 10px; border-radius: 10px; cursor: pointer; margin-bottom: 2px; user-select: none; transition: all .1s; }
+.tab-list .tab-item:hover { background: #2c2c2e; }
+.tab-list .tab-item.active { background: #3a3a3c; }
+.tab-list .tab-item .tab-icon { font-size: 14px; flex-shrink: 0; width: 20px; text-align: center; }
+.tab-list .tab-item .tab-name { font-size: 14px; color: #c7c7cc; flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.tab-list .tab-item.active .tab-name { color: #ffffff; font-weight: 600; }
+.tab-list .tab-item .tab-actions { display: none; gap: 2px; flex-shrink: 0; }
 .tab-list .tab-item:hover .tab-actions { display: flex; }
-.tab-list .tab-item .tab-actions button { width: 24px; height: 24px; border: none; border-radius: 50%; background: transparent; color: #5F6368; cursor: pointer; font-size: 13px; display: flex; align-items: center; justify-content: center; transition: background 0.2s; }
-.tab-list .tab-item .tab-actions button:hover { background: rgba(60,64,67,0.1); color: #202124; }
-.tab-list .tab-item .tab-actions .del-btn:hover { background: #FCE8E6; color: #D93025; }
-.tab-list .tab-item .inline-edit { flex: 1; background: #FFFFFF; border: 1px solid #1A73E8; border-radius: 4px; color: #202124; font-size: 14px; padding: 4px 8px; outline: none; min-width: 0; font-family: 'Google Sans', sans-serif; }
-.tab-list .sub-page-wrap { padding-left: 20px; border-left: 2px solid transparent; }
+.tab-list .tab-item .tab-actions button { width: 20px; height: 20px; border: none; border-radius: 6px; background: transparent; color: #636366; cursor: pointer; font-size: 12px; display: flex; align-items: center; justify-content: center; padding: 0; transition: all .1s; }
+.tab-list .tab-item .tab-actions button:hover { background: rgba(255,255,255,.08); color: #c7c7cc; }
+.tab-list .tab-item .tab-actions .del-btn:hover { background: rgba(239,68,68,.15); color: #ef4444; }
+.tab-list .tab-item .inline-edit { flex: 1; background: #1c1c1e; border: 1px solid #636366; border-radius: 6px; color: #ffffff; font-size: 14px; padding: 3px 8px; outline: none; min-width: 0; }
+.tab-list .sub-page-wrap { padding-left: 14px; border-left: 1px solid #2c2c2e; margin-left: 4px; }
 
-/* ===== 云端控制面板 UI ===== */
-.cloud-panel { background: #FFFFFF; border-top: 1px solid #DADCE0; padding: 16px 24px; flex-shrink: 0; }
-.cloud-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
-.cloud-status { font-size: 13px; font-weight: 500; font-family: 'Google Sans', sans-serif; display: flex; align-items: center; gap: 6px; padding: 4px 10px; border-radius: 16px; background: #F1F3F4; color: #5F6368; }
-.cloud-status.ok { background: #E6F4EA; color: #137333; }
-.cloud-status.syncing { background: #FEF7E0; color: #B06000; }
-.cloud-status.err { background: #FCE8E6; color: #C5221F; }
-.cloud-btns { display: flex; gap: 8px; }
-.cloud-btn { flex: 1; padding: 8px; font-size: 12px; font-weight: 500; font-family: 'Google Sans', sans-serif; border: 1px solid #DADCE0; border-radius: 4px; cursor: pointer; transition: all 0.2s; background: #FFFFFF; color: #3C4043; }
-.cloud-btn:hover { background: #F8F9FA; box-shadow: 0 1px 2px 0 rgba(60,64,67,0.1); }
-.btn-push { background: #1A73E8; color: #FFFFFF; border: none; }
-.btn-push:hover { background: #1B66C9; color: #FFFFFF; box-shadow: 0 1px 2px 0 rgba(60,64,67,0.3), 0 1px 3px 1px rgba(60,64,67,0.15); }
+/* ===== 主内容 ===== */
+.main { flex: 1; display: flex; flex-direction: column; min-width: 0; background: #f2f2f7; }
 
-/* ===== 主内容工作区 ===== */
-.main { flex: 1; display: flex; flex-direction: column; min-width: 0; background: #F8F9FA; }
+/* ===== 上传栏（iOS 毛玻璃风格） ===== */
+.upload-bar { display: flex; gap: 10px; align-items: center; padding: 10px 20px; background: rgba(255,255,255,.95); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border-bottom: .5px solid #d1d1d6; flex-shrink: 0; flex-wrap: wrap; }
+.upload-bar .file-label { display: flex; align-items: center; gap: 6px; padding: 6px 12px; background: #f2f2f7; border: 1.5px solid #d1d1d6; border-radius: 10px; cursor: pointer; font-size: 13px; color: #3a3a3c; font-weight: 500; transition: all .15s; }
+.upload-bar .file-label:hover { border-color: #0a84ff; background: #e8f0fe; }
+.upload-bar .file-label.has-img { border-color: #30d158; background: #f0fdf4; }
+.upload-bar .file-label input { display: none; }
+.upload-bar .detect-btn { padding: 6px 16px; border-radius: 10px; border: none; background: #0a84ff; color: #fff; font-size: 13px; cursor: pointer; font-weight: 600; transition: all .15s; }
+.upload-bar .detect-btn:hover { background: #0063ce; }
+.upload-bar .detect-btn:disabled { opacity: .4; cursor: not-allowed; }
+.upload-bar .status { font-size: 13px; color: #8e8e93; }
 
-/* ===== 统一页面控制栏 ===== */
-.upload-bar { display: flex; gap: 12px; align-items: center; padding: 12px 24px; background: #FFFFFF; border-bottom: 1px solid #DADCE0; flex-shrink: 0; flex-wrap: wrap; z-index: 5; }
-.upload-bar .cloud-action-btn { display: flex; align-items: center; gap: 6px; padding: 8px 16px; background: #FFFFFF; border: 1px solid #DADCE0; border-radius: 4px; cursor: pointer; font-size: 13px; font-weight: 500; color: #3C4043; transition: all 0.2s; }
-.upload-bar .cloud-action-btn:hover { background: #F8F9FA; border-color: #1A73E8; color: #1A73E8; }
-.upload-bar .cloud-action-btn.has-img { border-color: #34A853; background: #E6F4EA; color: #137333; }
-.upload-bar .detect-btn { padding: 8px 20px; border-radius: 4px; border: none; background: #1A73E8; color: #fff; font-size: 14px; font-weight: 500; font-family: 'Google Sans', sans-serif; cursor: pointer; transition: all 0.2s; box-shadow: 0 1px 2px 0 rgba(60,64,67,0.3); }
-.upload-bar .detect-btn:hover { background: #1B66C9; box-shadow: 0 1px 3px 1px rgba(60,64,67,0.15); }
-.upload-bar .detect-btn:disabled { background: #F1F3F4; color: #9AA0A6; box-shadow: none; cursor: not-allowed; }
-.upload-bar .status { font-size: 13px; color: #5F6368; font-weight: 500; }
-
-/* ===== 单页走查四格视图 ===== */
-.compare-4 { display: flex; height: 50%; min-height: 260px; gap: 16px; flex-shrink: 0; padding: 16px 24px 0; }
-.compare-4 .cell { flex: 1; display: flex; align-items: center; justify-content: center; background: #FFFFFF; overflow: hidden; position: relative; border-radius: 8px; cursor: pointer; border: 1px solid #DADCE0; box-shadow: 0 1px 2px 0 rgba(60,64,67,0.1); }
-.compare-4 .cell .cell-enlarge { position: absolute; top: 10px; right: 10px; font-size: 16px; color: #5F6368; background: #FFFFFF; width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.2s; z-index: 4; box-shadow: 0 1px 2px 0 rgba(60,64,67,0.3); border: 1px solid #DADCE0; }
+/* ===== 四列对比（圆角卡片） ===== */
+.compare-4 { display: flex; height: 55%; min-height: 260px; gap: 8px; flex-shrink: 0; padding: 8px 12px 0; }
+.compare-4 .cell { flex: 1; display: flex; align-items: center; justify-content: center; background: #fff; overflow: hidden; position: relative; border-radius: 12px; min-width: 0; cursor: pointer; box-shadow: 0 1px 3px rgba(0,0,0,.06); }
+.compare-4 .cell:last-child { border-right: none; }
 .compare-4 .cell:hover .cell-enlarge { opacity: 1; }
-.compare-4 .cell .drop-zone { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; width: 100%; height: 100%; color: #80868B; background: #F8F9FA; }
-.compare-4 .cell .drop-zone.dragover { background: #E8F0FE; border: 2px dashed #1A73E8; color: #1A73E8; }
-.compare-4 .cell .cell-label { position: absolute; top: 10px; left: 12px; font-size: 11px; font-weight: 600; padding: 4px 10px; border-radius: 12px; background: rgba(255,255,255,0.9); color: #3C4043; z-index: 3; border: 1px solid #DADCE0; box-shadow: 0 1px 2px 0 rgba(60,64,67,0.1); }
+.compare-4 .cell .cell-enlarge { position: absolute; top: 6px; right: 8px; font-size: 14px; color: #fff; background: rgba(0,0,0,.45); width: 28px; height: 28px; border-radius: 8px; display: flex; align-items: center; justify-content: center; opacity: 0; transition: opacity .15s; z-index: 4; }
+.compare-4 .cell .cell-enlarge:hover { background: rgba(0,0,0,.75); }
+.compare-4 .cell .drop-zone { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; width: 100%; height: 100%; color: #aeaeb2; cursor: pointer; border-radius: 12px; }
+.compare-4 .cell .drop-zone.dragover { background: #e8f0fe; }
+.compare-4 .cell .drop-zone .dz-icon { font-size: 32px; }
+.compare-4 .cell .drop-zone .dz-text { font-size: 12px; color: #aeaeb2; }
+.compare-4 .cell .drop-zone input { display: none; }
+.compare-4 .cell .cell-label { position: absolute; top: 6px; left: 10px; font-size: 11px; font-weight: 600; padding: 2px 10px; border-radius: 6px; background: rgba(0,0,0,.5); color: #fff; z-index: 3; pointer-events: none; backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px); }
+
+/* 图片填满 + 可放大 */
 .compare-4 .cell .cell-img { width: 100%; height: 100%; object-fit: contain; }
-.overlay-wrap { position: relative; width: 100%; height: 100%; }
+
+/* 叠图层 */
+.overlay-wrap { position: relative; width: 100%; height: 100%; border-radius: 12px; overflow: hidden; background: #fff; }
 .overlay-wrap img { position: absolute; max-width: 100%; max-height: 100%; left: 50%; top: 50%; transform: translate(-50%,-50%); }
-.overlay-slider { position: absolute; bottom: 12px; left: 50%; transform: translateX(-50%); z-index: 5; display: flex; align-items: center; gap: 10px; background: #FFFFFF; border-radius: 20px; padding: 6px 16px; border: 1px solid #DADCE0; box-shadow: 0 1px 2px 0 rgba(60,64,67,0.3); }
-.overlay-slider input[type="range"] { width: 100px; height: 4px; -webkit-appearance: none; appearance: none; background: #E8EAED; border-radius: 2px; outline: none; }
-.overlay-slider input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 16px; height: 16px; border-radius: 50%; background: #1A73E8; cursor: pointer; box-shadow: 0 1px 3px rgba(0,0,0,0.3); }
-.overlay-slider .slider-val { font-size: 12px; font-weight: 500; color: #3C4043; min-width: 30px; text-align: right; }
+.overlay-wrap .overlay-bg { z-index: 1; }
+.overlay-wrap .overlay-top { z-index: 2; }
 
-.resize-bar { position: relative; height: 16px; cursor: row-resize; flex-shrink: 0; display: flex; align-items: center; justify-content: center; z-index: 5; margin: 4px 0; }
-.resize-bar::after { content: ''; width: 40px; height: 4px; background: #DADCE0; border-radius: 2px; }
+.overlay-slider { position: absolute; bottom: 8px; left: 50%; transform: translateX(-50%); z-index: 5; display: flex; align-items: center; gap: 6px; background: rgba(0,0,0,.55); border-radius: 10px; padding: 4px 12px; backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px); }
+.overlay-slider input[type="range"] { width: 80px; height: 4px; -webkit-appearance: none; appearance: none; background: #636366; border-radius: 2px; outline: none; }
+.overlay-slider input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 16px; height: 16px; border-radius: 50%; background: #0a84ff; cursor: pointer; border: 2px solid #fff; box-shadow: 0 1px 4px rgba(0,0,0,.2); }
+.overlay-slider .slider-val { font-size: 11px; color: #e5e5ea; min-width: 24px; text-align: center; }
 
-/* ===== 缺陷报告表格 ===== */
-.issue-panel { flex: 1; display: flex; flex-direction: column; background: #FFFFFF; border: 1px solid #DADCE0; border-radius: 8px; margin: 0 24px 24px; box-shadow: 0 1px 2px 0 rgba(60,64,67,0.1); overflow: hidden; }
-.issue-header { display: flex; align-items: center; justify-content: space-between; padding: 16px 20px; border-bottom: 1px solid #DADCE0; background: #FFFFFF; }
-.issue-header h3 { font-size: 16px; font-weight: 500; font-family: 'Google Sans', sans-serif; color: #202124; }
-.issue-header .stats { font-size: 13px; color: #5F6368; font-weight: 500; }
+/* ===== 带手柄的行号拖拽 ===== */
+.resize-bar { position: relative; height: 20px; background: #f2f2f7; border-top: .5px solid #d1d1d6; border-bottom: .5px solid #d1d1d6; cursor: row-resize; flex-shrink: 0; display: flex; align-items: center; justify-content: center; gap: 6px; user-select: none; z-index: 5; }
+.resize-bar:hover { background: #e5e5ea; }
+.resize-bar .grip { display: flex; align-items: center; gap: 4px; color: #aeaeb2; font-size: 12px; pointer-events: none; }
+.resize-bar .grip i { font-size: 12px; color: #aeaeb2; }
+.resize-bar:active { background: #d1d1d6; }
+
+/* ===== 下方问题汇总（iOS 面板） ===== */
+.issue-panel { flex: 1; display: flex; flex-direction: column; background: #fff; border-top: .5px solid #d1d1d6; min-height: 0; border-radius: 0; }
+.issue-header { display: flex; align-items: center; justify-content: space-between; padding: 10px 20px; border-bottom: .5px solid #d1d1d6; flex-shrink: 0; }
+.issue-header h3 { font-size: 15px; font-weight: 700; }
+.issue-header .stats { font-size: 13px; color: #8e8e93; }
 .issue-list-wrap { overflow-y: auto; flex: 1; }
 
-.issue-table { width: 100%; border-collapse: collapse; text-align: left; }
-.issue-table th { position: sticky; top: 0; background: #F8F9FA; padding: 12px 16px; font-size: 12px; font-weight: 500; color: #5F6368; border-bottom: 1px solid #DADCE0; z-index: 1; }
-.issue-table td { padding: 12px 16px; font-size: 13px; color: #3C4043; border-bottom: 1px solid #E8EAED; vertical-align: middle; }
-.issue-table tr { transition: background 0.15s; }
-.issue-table tr:hover { background: #F8F9FA; cursor: pointer; }
-.issue-table tr.active { background: #E8F0FE; }
-.issue-table .preview-img { height: 28px; width: auto; max-width: 140px; object-fit: contain; border: 1px solid #DADCE0; border-radius: 4px; background: #F8F9FA; cursor: zoom-in; display: block; }
+.issue-table { width: 100%; border-collapse: collapse; }
+.issue-table th { position: sticky; top: 0; z-index: 1; background: #f9f9fb; padding: 8px 14px; font-size: 11px; font-weight: 600; color: #8e8e93; text-transform: uppercase; text-align: left; border-bottom: .5px solid #e5e5ea; letter-spacing: .5px; }
+.issue-table td { padding: 8px 14px; font-size: 13px; border-bottom: .5px solid #f2f2f7; vertical-align: middle; }
+.issue-table tr { cursor: pointer; }
+.issue-table tr:hover { background: #f9f9fb; }
+.issue-table tr.active { background: #e8f0fe; }
+.issue-table .tag { display: inline-block; font-size: 11px; padding: 2px 8px; border-radius: 20px; font-weight: 600; }
+.tag-P0 { background: #fef2f2; color: #dc2626; }
+.tag-P1 { background: #fff8e6; color: #d97706; }
+.tag-P2 { background: #e8f0fe; color: #0a84ff; }
+.issue-table .id-col { width: 36px; color: #aeaeb2; text-align: center; font-size: 12px; }
+.issue-table .prio-col { width: 52px; }
+.issue-table .type-col { width: 80px; color: #8e8e93; font-weight: 600; }
+.issue-table .preview-img { width: 70px; height: 40px; object-fit: cover; border-radius: 6px; border: .5px solid #e5e5ea; cursor: pointer; transition: transform .1s; }
+.issue-table .preview-img:hover { transform: scale(1.4); box-shadow: 0 4px 16px rgba(0,0,0,.12); }
 
-/* 缺陷被忽略后的行内样式 */
-.issue-table tr.closed-issue { opacity: 0.55; background: #F8F9FA !important; }
-.issue-table tr.closed-issue td { color: #9AA0A6 !important; text-decoration: line-through; }
-.issue-table tr.closed-issue .preview-img { filter: grayscale(100%); opacity: 0.6; pointer-events: none; }
-.issue-table tr.closed-issue .tag { background: #E8EAED !important; color: #80868B !important; text-decoration: none; }
-.btn-toggle-issue { padding: 4px 10px; border: 1px solid #DADCE0; border-radius: 12px; background: #FFFFFF; color: #5F6368; font-size: 12px; font-weight: 500; cursor: pointer; transition: all 0.2s; box-shadow: 0 1px 2px rgba(0,0,0,0.05); }
-.btn-toggle-issue:hover { background: #F1F3F4; color: #202124; }
-.closed-issue .btn-toggle-issue { color: #1A73E8; border-color: #1A73E8; background: #E8F0FE; }
+.no-issues { display: flex; align-items: center; justify-content: center; flex: 1; color: #30d158; font-size: 15px; gap: 8px; }
+.loading-state { display: flex; align-items: center; justify-content: center; height: 100%; color: #aeaeb2; font-size: 14px; gap: 8px; }
+.spinner { width: 20px; height: 20px; border: 2.5px solid #e5e5ea; border-top-color: #0a84ff; border-radius: 50%; animation: spin .6s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
 
-.group-table { width: 100%; border-collapse: separate; border-spacing: 0; background: #FFFFFF; border: 1px solid #DADCE0; border-radius: 8px; overflow: hidden; box-shadow: 0 1px 2px 0 rgba(60,64,67,0.1); margin-bottom: 24px;}
-.group-table th { background: #F8F9FA; padding: 12px 16px; font-size: 12px; font-weight: 500; color: #5F6368; border-bottom: 1px solid #DADCE0; text-align: left; }
-.group-table td { padding: 12px 16px; font-size: 13px; color: #3C4043; border-bottom: 1px solid #E8EAED; vertical-align: middle; }
-.group-table tr:last-child td { border-bottom: none; }
-.group-table .page-name { font-weight: 500; color: #1A73E8; cursor: pointer; display: flex; align-items: center; gap: 8px; }
-.group-table .page-name:hover { text-decoration: underline; }
-.group-table .thumb-box { width: 120px; height: 60px; background: #F8F9FA; border: 1px solid #DADCE0; border-radius: 4px; display: flex; align-items: center; justify-content: center; overflow: hidden; cursor: zoom-in; position: relative; }
-.group-table .thumb-box img { width: 100%; height: 100%; object-fit: contain; }
-.group-table .thumb-box .empty { font-size: 11px; color: #9AA0A6; }
+/* ===== Modal 放大 ===== */
+.modal-overlay { display: none; position: fixed; inset: 0; z-index: 1000; background: rgba(0,0,0,.85); cursor: zoom-out; backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); }
+.modal-overlay.open { display: flex; align-items: center; justify-content: center; }
+.modal-overlay img { max-width: 90vw; max-height: 90vh; object-fit: contain; border-radius: 14px; box-shadow: 0 8px 40px rgba(0,0,0,.3); }
 
-/* 看板大屏 */
-.dashboard-wrap { padding: 24px; overflow-y: auto; flex: 1; }
-.card-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 24px; }
-.stat-card { background: #FFFFFF; border: 1px solid #DADCE0; border-radius: 8px; padding: 20px; box-shadow: 0 1px 2px 0 rgba(60,64,67,0.1); display: flex; flex-direction: column; justify-content: center; position: relative; overflow: hidden;}
-.stat-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px; }
-.stat-card.card-p0::before { background: #C5221F; }
-.stat-card.card-p1::before { background: #F29900; }
-.stat-card.card-p2::before { background: #1A73E8; }
-.stat-card.card-pages::before { background: #137333; }
-.stat-card .val { font-size: 36px; font-weight: 500; font-family: 'Google Sans', sans-serif; line-height: 1.2;}
-.stat-card .lbl { font-size: 13px; color: #5F6368; margin-top: 4px; font-weight: 500; }
+/* ===== iOS 风格滚动条 ===== */
+.tabbar-version { text-align: center; padding: 8px 12px; font-size: 11px; color: rgba(255,255,255,0.6); border-top: 1px solid #2c2c2e; flex-shrink: 0; }
+.tab-list::-webkit-scrollbar,
+.issue-list-wrap::-webkit-scrollbar,
+.compare-4::-webkit-scrollbar { width: 4px; height: 4px; }
+.tab-list::-webkit-scrollbar-track,
+.issue-list-wrap::-webkit-scrollbar-track { background: transparent; }
+.tab-list::-webkit-scrollbar-thumb,
+.issue-list-wrap::-webkit-scrollbar-thumb { background: #3a3a3c; border-radius: 2px; }
+.issue-list-wrap::-webkit-scrollbar-thumb { background: #d1d1d6; }
 
-.no-issues { display: flex; align-items: center; justify-content: center; flex: 1; color: #137333; font-size: 14px; font-weight: 500; background: #E6F4EA; margin: 24px; border-radius: 8px; border: 1px dashed #34A853; }
-.loading-state { display: flex; align-items: center; justify-content: center; height: 100%; color: #80868B; font-size: 14px; font-weight: 500; }
+input, select, textarea { font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', sans-serif; }
 </style>
 </head>
 <body>
 <div class="app" id="app">
   <div class="tabbar">
     <div class="tabbar-header">
-      <h3>
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 2L2 7L12 12L22 7L12 2Z" fill="#1A73E8"/><path d="M2 17L12 22L22 17M2 12L12 17L22 12" stroke="#1A73E8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        VisionGuard <span>Team</span>
-      </h3>
+      <h3>JKC 设计走查<span> 小龙虾增强版</span></h3>
     </div>
+    <div class="tabbar-stats" id="tabbarStats"></div>
     <div class="tabbar-actions">
-      <button class="btn-add-group" onclick="addTab('新走查模块',{isGroup:true})">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg> 新建走查模块
-      </button>
+      <button class="btn-add-group" onclick="addTab('新板块',{isGroup:true})">📁 新增板块</button>
     </div>
-    
     <div class="tab-list" id="tabList"></div>
-
-    <div class="cloud-panel">
-        <div class="cloud-header">
-            <span id="cloudStatusText" class="cloud-status">☁️ 初始化...</span>
-            <button onclick="openCloudSettings()" style="border:none;background:transparent;cursor:pointer;font-size:16px;" title="配置云端密钥">⚙️</button>
-        </div>
-        <div class="cloud-btns">
-            <button onclick="manualCloudPull()" class="cloud-btn btn-pull">强制拉取</button>
-            <button onclick="manualCloudPush()" class="cloud-btn btn-push">立即同步</button>
-        </div>
-    </div>
+    <div class="tabbar-version" id="versionLabel">v?</div>
   </div>
   <div class="main" id="mainArea"></div>
 </div>
 
 <div class="modal-overlay" id="modalOverlay" onclick="closeModal()"><img id="modalImg"></div>
 
-<div class="modal-overlay" id="settingsModal" style="z-index:2000; align-items:center; justify-content:center;">
-    <div style="background:#FFF; width:420px; border-radius:8px; box-shadow:0 12px 24px rgba(0,0,0,0.2); overflow:hidden;">
-        <div style="padding:16px 24px; border-bottom:1px solid #DADCE0; font-size:16px; font-weight:500; font-family:'Google Sans',sans-serif; display:flex; justify-content:space-between; align-items:center;">
-            <span>配置 Cloudinary 云端协作网络</span>
-            <span style="cursor:pointer; color:#5F6368;" onclick="closeCloudSettings()">✕</span>
-        </div>
-        <div style="padding:24px; display:flex; flex-direction:column; gap:16px;">
-            <div style="display:flex; flex-direction:column; gap:6px;">
-                <label style="font-size:12px;font-weight:500;color:#5F6368;">Cloud Name</label>
-                <input type="text" id="cfgCloudName" style="padding:10px;border:1px solid #DADCE0;border-radius:4px;font-family:monospace;">
-            </div>
-            <div style="display:flex; flex-direction:column; gap:6px;">
-                <label style="font-size:12px;font-weight:500;color:#5F6368;">API Key</label>
-                <input type="text" id="cfgApiKey" style="padding:10px;border:1px solid #DADCE0;border-radius:4px;font-family:monospace;">
-            </div>
-            <div style="display:flex; flex-direction:column; gap:6px;">
-                <label style="font-size:12px;font-weight:500;color:#5F6368;">API Secret</label>
-                <input type="password" id="cfgApiSecret" style="padding:10px;border:1px solid #DADCE0;border-radius:4px;font-family:monospace;">
-            </div>
-            <div style="display:flex; flex-direction:column; gap:6px;">
-                <label style="font-size:12px;font-weight:500;color:#5F6368;">存储集名称 (Data ID)</label>
-                <input type="text" id="cfgDataName" style="padding:10px;border:1px solid #DADCE0;border-radius:4px;font-family:monospace;">
-            </div>
-        </div>
-        <div style="padding:16px 24px; border-top:1px solid #DADCE0; display:flex; justify-content:flex-end; gap:12px; background:#F8F9FA;">
-            <button onclick="closeCloudSettings()" style="padding:8px 24px;border:none;background:transparent;cursor:pointer;color:#5F6368;">取消</button>
-            <button onclick="saveCloudSettings()" style="padding:8px 24px;border:none;background:#1A73E8;color:#fff;border-radius:4px;cursor:pointer;">保存并重载</button>
-        </div>
-    </div>
-</div>
-
 <script>
 // ====================================================================
-// VisionGuard Detection Engine v9 — 底层核心机器视觉分析引擎 (高精度原版)
+// VisionGuard Detection Engine v9 — 全内联底层核心算法
 // ====================================================================
-(function(){function e(r,g,b){return'#'+[r,g,b].map(v=>Math.max(0,Math.min(255,Math.round(v))).toString(16).padStart(2,'0')).join('').toUpperCase()}function d(r1,g1,b1,r2,g2,b2){return Math.sqrt(Math.pow(r1-r2,2)+Math.pow(g1-g2,2)+Math.pow(b1-b2,2))/Math.sqrt(Math.pow(255,2)*3)}function l(r,g,b){return.299*r+.587*g+.114*b}function loadCanvas(url){return new Promise(resolve=>{const img=new Image;if(!url.startsWith('data:'))img.crossOrigin='anonymous';img.onload=()=>{const c=document.createElement('canvas');c.width=img.width;c.height=img.height;const ctx=c.getContext('2d');ctx.drawImage(img,0,0);resolve({w:img.width,h:img.height,data:ctx.getImageData(0,0,img.width,img.height),ctx,canvas:c})};img.onerror=()=>resolve({w:0,h:0,data:null});img.src=url})}function alignImages(d,v){const dd=d.data.data,vd=v.data.data,vW=v.w,vH=v.h;function s(ox,oy,tdx,tdy){const rw=Math.min(40,d.w-ox),rh=Math.min(40,d.h-oy);let s=0,n=0;for(let y=oy;y<oy+rh;y+=4)for(let x=ox;x<ox+rw;x+=4){const py=y+tdy,px=x+tdx;if(py<0||px<0||py>=vH||px>=vW)continue;const piD=(y*d.w+x)*4,piV=(py*vW+px)*4;s+=Math.abs(dd[piD]-vd[piV])+Math.abs(dd[piD+1]-vd[piV+1])+Math.abs(dd[piD+2]-vd[piV+2]);n++}return n>0?s/n:1/0}let bDx=0,bDy=0,bS=1/0;for(let dy=-12;dy<=12;dy+=2)for(let dx=-12;dx<=12;dx+=2){let t=0,c=0;for(const[ox,oy]of[[0,0],[Math.max(0,d.w-60),0],[0,Math.max(0,d.h-60)]]){const sc=s(ox,oy,dx,dy);if(sc<1/0){t+=sc;c++}}const avg=c>0?t/c:1/0;if(avg<bS){bS=avg;bDx=dx;bDy=dy}}for(let dy=-1;dy<=1;dy++)for(let dx=-1;dx<=1;dx++){let t=0,c=0;for(const[ox,oy]of[[0,0],[Math.max(0,d.w-60),0],[0,Math.max(0,d.h-60)]]){const sc=s(ox,oy,bDx+dx,bDy+dy);if(sc<1/0){t+=sc;c++}}const avg=c>0?t/c:1/0;if(avg<bS){bS=avg;bDx+=dx;bDy+=dy}}return{dx:bDx,dy:bDy}}function enhanceContrast(imgData,iW,iH){const data=new Uint8ClampedArray(imgData),ts=64,tx=Math.ceil(iW/ts),ty=Math.ceil(iH/ts);for(let by=0;by<ty;by++)for(let bx=0;bx<tx;bx++){const x1=bx*ts,y1=by*ts,x2=Math.min(x1+ts,iW),y2=Math.min(y1+ts,iH),hist=new Int32Array(256);for(let y=y1;y<y2;y++)for(let x=x1;x<x2;x++){const pi=(y*iW+x)*4;hist[Math.round(l(imgData[pi],imgData[pi+1],imgData[pi+2]))]++}const tp=(x2-x1)*(y2-y1),lim=Math.max(3,tp*.01);let ex=0;for(let i=0;i<256;i++){if(hist[i]>lim){ex+=hist[i]-lim;hist[i]=lim}}const rd=Math.floor(ex/256);for(let i=0;i<256;i++)hist[i]+=rd;const cdf=new Int32Array(256);cdf[0]=hist[0];for(let i=1;i<256;i++)cdf[i]=cdf[i-1]+hist[i];const cdfMin=cdf[0],cdfR=cdf[255]-cdfMin;for(let y=y1;y<y2;y++)for(let x=x1;x<x2;x++){const pi=(y*iW+x)*4,lu=Math.round(l(imgData[pi],imgData[pi+1],imgData[pi+2])),mp=cdfR>0?Math.round((cdf[lu]-cdfMin)*255/cdfR):lu,nl=lu+(mp-lu)*.7*Math.min(2,Math.max(1,cdfR>0?255/cdfR:1));data[pi]=data[pi+1]=data[pi+2]=Math.max(0,Math.min(255,nl))}}let mL=255,xL=0;for(let i=0;i<data.length;i+=4){const lv=data[i];if(lv<mL)mL=lv;if(lv>xL)xL=lv}const rg=xL-mL;if(rg>10)for(let i=0;i<data.length;i+=4){data[i]=(data[i]-mL)*255/rg;data[i+1]=data[i+2]=data[i]}return data}function clusterDiffs(d,v,w,h,al){const dd=d.data.data,vd=v.data.data,vW=v.w,vH=v.h,dm=new Uint8Array(w*h);for(let y=0;y<h;y++)for(let x=0;x<w;x++){const vy=y+al.dy,vx=x+al.dx;if(vx<0||vx>=vW||vy<0||vy>=vH)continue;const piD=(y*w+x)*4,piV=(vy*vW+vx)*4;if(Math.abs(dd[piD]-vd[piV])+Math.abs(dd[piD+1]-vd[piV+1])+Math.abs(dd[piD+2]-vd[piV+2])>30)dm[y*w+x]=1}const bs=8,bw=Math.ceil(w/bs),bh=Math.ceil(h/bs),bm=new Uint8Array(bw*bh);for(let by=0;by<bh;by++)for(let bx=0;bx<bw;bx++){let dc=0,tp=0;for(let dy=0;dy<bs&&by*bs+dy<h;dy++)for(let dx=0;dx<bs&&bx*bs+dx<w;dx++){tp++;if(dm[(by*bs+dy)*w+(bx*bs+dx)])dc++}if(dc>tp*.03)bm[by*bw+bx]=1}const vis=new Uint8Array(bw*bh),clusters=[];for(let by=0;by<bh;by++)for(let bx=0;bx<bw;bx++){const idx=by*bw+bx;if(!bm[idx]||vis[idx])continue;const q=[[bx,by]];vis[idx]=1;let mnX=bx,mxX=bx,mnY=by,mxY=by;while(q.length){const cp=q.shift();const cx=cp[0],cy=cp[1];mnX=Math.min(mnX,cx);mxX=Math.max(mxX,cx);mnY=Math.min(mnY,cy);mxY=Math.max(mxY,cy);for(let dy=-1;dy<=1;dy++)for(let dx=-1;dx<=1;dx++){const nx=cx+dx,ny=cy+dy;if(nx<0||nx>=bw||ny<0||ny>=bh)continue;const ni=ny*bw+nx;if(bm[ni]&&!vis[ni]){vis[ni]=1;q.push([nx,ny])}}}clusters.push({x:mnX*bs,y:mnY*bs,w:Math.min((mxX-mnX+1)*bs,w-mnX*bs),h:Math.min((mxY-mnY+1)*bs,h-mnY*bs)})}return clusters}function classifyRegionType(id,ld,rx,ry,rw,rh,iW,iH){if(rw<6||rh<6)return'noise';const cs=new Set;let te=0,he=0,ve=0,tp=0,ls=0;const lh=new Int32Array(256);for(let y=ry;y<ry+rh;y++)for(let x=rx;x<rx+rw;x++){tp++;const pi=(y*iW+x)*4,lu=Math.round(l(id[pi],id[pi+1],id[pi+2]));ls+=lu;lh[lu]++;cs.add(((id[pi]>>3)<<3)+','+((id[pi+1]>>3)<<3)+','+((id[pi+2]>>3)<<3))}const cr=cs.size/tp;for(let y=ry+1;y<ry+rh-1;y++)for(let x=rx+1;x<rx+rw-1;x++){const lv=ld[y*iW+x],hg=Math.abs(lv-ld[y*iW+x-1])+Math.abs(lv-ld[y*iW+x+1]),vg=Math.abs(lv-ld[(y-1)*iW+x])+Math.abs(lv-ld[(y+1)*iW+x]);he+=hg;ve+=vg}const ed=Math.min(100,(he+ve)/tp),hv=Math.min(10,he/Math.max(ve,.001));let mn=255,mx=0;for(let i=0;i<256;i++)if(lh[i]>0){if(i<mn)mn=i;if(i>mx)mx=i}const lr=mx-mn;if(cr>.12&&ed>5&&lr>80)return'image';if(cr<.03&&ed<2&&lr<50&&rh>12)return'button_bg';if(ed<.3&&cs.size<5&&rh>12&&rw>24)return'button_bg';if(cr<.04&&ed<4&&rh>10&&rw>20){if(rw*.4<rh&&rh<rw*2.5)return'button_bg'}if(rw<60&&rh<60&&ed>1.5){if(hv>.6&&hv<1.8){if(rw*.3<rh&&rh<rw*3)return'icon'}}if(cr<.06&&ed>.8&&hv>.8){if(hv>1.3&&rh>5&&rw>rh*.4&&rh<rw*3)return'text';if(lr>40&&ed>3&&rh>4&&rh<60)return'text'}if(rw<15&&rh>4&&rh<25&&ed>.5){if(rw*.3<rh&&rh<rw*3)return'text'}if(ed>2&&cr<.08&&rh>4&&rh<40)return'text';if(ed>1&&rw<80&&rh<80&&cr<.1){if(hv>.5&&hv<2)return'icon'}return'unknown'}function mserDetectInRegion(ld,iW,iH,rx,ry,rw,rh){const g=new Uint8Array(rw*rh);for(let y=ry+1;y<ry+rh-1;y++)for(let x=rx+1;x<rx+rw-1;x++){const idx=(y-ry)*rw+(x-rx),gx=Math.abs(ld[y*iW+x+1]-ld[y*iW+x-1]),gy=Math.abs(ld[(y+1)*iW+x]-ld[(y-1)*iW+x]);g[idx]=Math.min(255,Math.round(Math.sqrt(gx*gx*.6+gy*gy*.4)))}const bn=new Uint8Array(rw*rh),h=new Uint32Array(256);let tp=0;for(let i=0;i<rw*rh;i++){const v=g[i];if(v>5){h[v]++;tp++}}let s=0;for(let i=0;i<256;i++)s+=i*h[i];let sB=0,wB=0,wF=0,mV=0,oT=12;for(let t=0;t<256;t++){wB+=h[t];if(!wB)continue;wF=tp-wB;if(!wF)break;sB+=t*h[t];const mB=sB/wB,mF=(s-sB)/wF,bV=wB*wF*(mB-mF)*(mB-mF);if(bV>mV){mV=bV;oT=t}}const bT=Math.max(oT,10,Math.min(oT*1.5,120));for(let i=0;i<rw*rh;i++)bn[i]=g[i]>=bT?255:0;const mo=new Uint8Array(rw*rh);for(let y=0;y<rh;y++)for(let x=0;x<rw;x++){let mV=bn[y*rw+x];if(x>0&&bn[y*rw+x-1]>mV)mV=bn[y*rw+x-1];if(x<rw-1&&bn[y*rw+x+1]>mV)mV=bn[y*rw+x+1];mo[y*rw+x]=mV}const vs=new Uint8Array(rw*rh),cs=[];for(let y=0;y<rh;y++)for(let x=0;x<rw;x++){const idx=y*rw+x;if(mo[idx]!==255||vs[idx])continue;const q=[idx];vs[idx]=1;let mn=x,mx=x,mnY=y,mxY=y,cnt=0;while(q.length){const ci=q.shift();cnt++;const cx=ci%rw,cy=Math.floor(ci/rw);if(cx<mn)mn=cx;if(cx>mx)mx=cx;if(cy<mnY)mnY=cy;if(cy>mxY)mxY=cy;for(let dy=-1;dy<=1;dy++)for(let dx=-1;dx<=1;dx++){if(!dx&&!dy)continue;const nx=cx+dx,ny=cy+dy;if(nx<0||nx>=rw||ny<0||ny>=rh)continue;const ni=ny*rw+nx;if(vs[ni]||mo[ni]!==255)continue;vs[ni]=1;q.push(ni)}}}const bw=mx-mn+1,bh=mxY-mnY+1;if(bw<5||bh<4||cnt<6)continue;const r=bw/Math.max(bh,1);if(r<.4||r>20)continue;if(cnt/(bw*bh)<.02||cnt/(bw*bh)>.95)continue;let ep=0;for(let sy=mnY;sy<=mxY;sy++)for(let sx=mn;sx<=mx;sx++)if(bn[sy*rw+sx]===255)ep++;if(ep/(bw*bh)<.01)continue;cs.push({x:mn+rx,y:mnY+ry,w:bw,h:bh,cnt,density:ep/(bw*bh),ratio:r})}if(!cs.length)return[];for(let i=0;i<cs.length;i++){const c=cs[i],lY=c.y-ry,lH=c.h;let t=lY;for(let y=lY;y<lY+lH;y++){let he=!1;for(let sx=c.x-rx;sx<c.x-rx+c.w;sx+=2)if(bn[y*rw+sx]===255){he=!0;break}if(he){t=y;break}}let b=lY+lH-1;for(let y=lY+lH-1;y>=t;y--){let he=!1;for(let sx=c.x-rx;sx<c.x-rx+c.w;sx+=2)if(bn[y*rw+sx]===255){he=!0;break}if(he){b=y;break}}const nh=b-t+1;if(nh>=4){c.y=t+ry;c.h=nh}}if(!cs.length)return[];const sH=[...cs].sort((a,b)=>a.h-b.h),mI=Math.floor(cs.length/2),bH=Math.max(sH[mI].h,10),st=[...cs].sort((a,b)=>(a.y+a.h/2)-(b.y+b.h/2)),yT=bH*1.0,rows=[];for(let i=0; i<st.length; i++){const c=st[i],cy=c.y+c.h/2;let f=!1;for(let ri=rows.length-1;ri>=0;ri--){const r=rows[ri];let sss=0;for(let k=0;k<r.comps.length;k++)sss+=r.comps[k].y+r.comps[k].h/2;const mY=sss/r.comps.length;if(Math.abs(cy-mY)<=yT){r.comps.push(c);f=!0;break}}if(!f)rows.push({comps:[c]})}const ln=[];for(let i=0; i<rows.length; i++){const r=rows[i];if(r.comps.length<1)continue;let mn=9999,mx=0,mnY=9999,mxY=0;for(let k=0;k<r.comps.length;k++){const c=r.comps[k];if(c.x<mn)mn=c.x;if(c.x+c.w>mx)mx=c.x+c.w;if(c.y<mnY)mnY=c.y;if(c.y+c.h>mxY)mxY=c.y+c.h}ln.push({x:mn,y:mnY,w:mx-mn,h:mxY-mnY,comps:r.comps.length})}ln.sort((a,b)=>a.y-b.y);for(let i=0;i<ln.length;i++)for(let j=i+1;j<ln.length;j++){const vo=Math.min(ln[i].y+ln[i].h,ln[j].y+ln[j].h)-Math.max(ln[i].y,ln[j].y);if(vo>Math.min(ln[i].h,ln[j].h)*.5&&vo>4){ln[i].x=Math.min(ln[i].x,ln[j].x);ln[i].y=Math.min(ln[i].y,ln[j].y);const x2=Math.max(ln[i].x+ln[i].w,ln[j].x+ln[j].w),y2=Math.max(ln[i].y+ln[i].h,ln[j].y+ln[j].h);ln[i].w=x2-ln[i].x;ln[i].h=y2-ln[i].y;ln[i].comps+=ln[j].comps;ln.splice(j,1);j--}}const out=[];for(let i=0; i<ln.length; i++){const l=ln[i];if(l.w<20||l.h<8)continue;if(l.comps<2&&l.h<20&&l.w<40)continue;if(l.w/l.h>30&&l.h<8)continue;out.push(l)}return out}function sSIR(d,tx,ty,tw,th,iW,iH){const s=[];for(let py=ty;py<ty+th;py+=2)for(let px=tx;px<tx+tw;px+=2){const pi=(py*iW+px)*4;let mG=0;for(let dy=-2;dy<=2;dy++)for(let dx=-2;dx<=2;dx++){const nx=px+dx,ny=py+dy;if(nx<0||nx>=iW||ny<0||ny>=iH)continue;const ni=(ny*iW+nx)*4,gv=Math.abs(d[pi]-d[ni])+Math.abs(d[pi+1]-d[ni+1])+Math.abs(d[pi+2]-d[ni+2]);if(gv>mG)mG=gv}}if(s.length<3)return null;s.sort((a,b)=>l(a.r,a.g,a.b)-l(b.r,b.g,b.b));const n=Math.min(5,s.length);let sr=0,sg=0,sb=0;for(let i=0;i<n;i++){sr+=s[i].r;sg+=s[i].g;sb+=s[i].b}return{r:sr/n,g:sg/n,b:sb/n,count:s.length}}function dualTrackAnalyze(cl,dO,vO,w,h,al,dL,vL){const x1=cl.x,y1=cl.y,x2=Math.min(x1+cl.w,w),y2=Math.min(y1+cl.h,h),cw=x2-x1,ch=y2-y1;if(cw<6||ch<6)return null;const dd=dO.data.data,vd=vO.data?vO.data.data:null,vW=vO.w,vH=vO.h,res=[],regs=[];const ss=Math.max(4,Math.floor(Math.min(cw,ch)/6));for(let sy=y1;sy<y2;sy+=ss)for(let sx=x1;sx<x2;sx+=ss){const sz=Math.min(ss*2,x2-sx,y2-sy);if(sz<8)continue;const tp=classifyRegionType(dd,dL,sx,sy,sz,sz,dO.w,dO.h);let mr=!1;for(let i=0; i<regs.length; i++){const r=regs[i];if(r.type!==tp)continue;if(Math.max(0,Math.min(sy+sz,r.y+r.h)-Math.max(sy,r.y))>0&&Math.abs(sx-(r.x+r.w))<ss*2){r.x=Math.min(r.x,sx);r.y=Math.min(r.y,sy);r.w=Math.max(r.x+r.w,sx+sz)-r.x;r.h=Math.max(r.y+r.h,sy+sz)-r.y;mr=!0;break}}if(!mr)regs.push({type:tp,x:sx,y:sy,w:sz,h:sz})}for(let i=0; i<regs.length; i++){const r=regs[i];
-  // ⚡ 强行穿透机制：取消对 'noise' (背景图全错) 的阻断，即使大面积背景全错，文字探测器也能强行下潜深挖！
-  const dL2=mserDetectInRegion(dL,dO.w,dO.h,r.x,r.y,r.w,r.h),vL2=vd?mserDetectInRegion(vL,vO.w,vO.h,r.x+al.dx,r.y+al.dy,r.w,r.h):[];for(let j=0;j<dL2.length;j++){const dl=dL2[j];let bV=null,bD=Infinity;for(let k=0;k<vL2.length;k++){const vl=vL2[k],vd2=Math.abs(dl.y-(vl.y-al.dy));if(vd2<dl.h&&vd2<bD){bD=vd2;bV=vl}}if(!bV)continue;const vxD=bV.x-al.dx,vyD=bV.y-al.dy,dC=sSIR(dd,dl.x,dl.y,dl.w,dl.h,dO.w,dO.h),vC=vd?sSIR(vd,bV.x,bV.y,bV.w,bV.h,vO.w,vO.h):null;if(dC&&vC&&dC.count>=3&&vC.count>=3){const de=d(dC.r,dC.g,dC.b,vC.r,vC.g,vC.b);if(de>.05)res.push({type:'font',priority:de>.2?'P0':de>.12?'P1':'P2',desc:'文字颜色偏差',detail:'设计: '+e(Math.round(dC.r),Math.round(dC.g),Math.round(dC.b))+' → 还原: '+e(Math.round(vC.r),Math.round(vC.g),Math.round(vC.b))+' (ΔE='+Math.round(de*100)+'%)',design:e(Math.round(dC.r),Math.round(dC.g),Math.round(dC.b)),actual:e(Math.round(vC.r),Math.round(vC.g),Math.round(vC.b)),pxDiff:Math.round(de*100)+'%'})}const hB=Math.abs(vxD-dl.x),vB=Math.abs(vyD-dl.y);if(hB>=2||vB>=2){const p=[];hB>=2&&p.push('水平偏差'+hB+'px');vB>=2&&p.push('垂直偏差'+vB+'px');res.push({type:'position',priority:hB>=4||vB>=4?'P1':'P2',desc:'文字位置偏移',detail:p.join('，'),design:'('+dl.x+','+dl.y+')',actual:'('+vxD+','+vyD+')',pxDiff:p.join('，')})}if(Math.abs(bV.w-dl.w)>=3||Math.abs(bV.h-dl.h)>=3)res.push({type:'size',priority:Math.abs(bV.w-dl.w)>=6||Math.abs(bV.h-dl.h)>=6?'P1':'P2',desc:'文字大小偏差',detail:'设计 '+dl.w+'×'+dl.h+'px → 还原 '+bV.w+'×'+bV.h+'px',design:dl.w+'×'+dl.h+'px',actual:bV.w+'×'+bV.h+'px',pxDiff:'水平 '+Math.abs(bV.w-dl.w)+'px, 垂直 '+Math.abs(bV.h-dl.h)+'px'})}}if(!res.length){let dR=0,dG=0,dB=0,vR=0,vG=0,vB=0,cnt=0;for(let y=y1;y<y2;y+=2)for(let x=x1;x<x2;x+=2){const pi=(y*w+x)*4;(dR+=dd[pi]),(dG+=dd[pi+1]),(dB+=dd[pi+2]);const vy=y+al.dy,vx=x+al.dx;if(vy>=0&&vy<vH&&vx>=0&&vx<vW){const piV=(vy*vW+vx)*4;(vR+=vd[piV]),(vG+=vd[piV+1]),(vB+=vd[piV+2]);cnt++}}if(cnt>0){const de=d(dR/cnt,dG/cnt,dB/cnt,vR/cnt,vG/cnt,vB/cnt);if(de>.04)res.push({type:'color',priority:'P2',desc:'颜色偏差',detail:'ΔE='+Math.round(de*100)+'%',design:e(Math.round(dR/cnt),Math.round(dG/cnt),Math.round(dB/cnt)),actual:e(Math.round(vR/cnt),Math.round(vG/cnt),Math.round(vB/cnt)),pxDiff:Math.round(de*100)+'%'})}}}return res.length?res:null}function cropIssueImages(d,v,w,h,al,is){const mgX=Math.ceil(Math.max(is.w,10)),mgY=Math.ceil(Math.max(is.h,10)),cx=Math.max(0,is.x-mgX),cy=Math.max(0,is.y-mgY),cw=Math.min(is.w+mgX*2,w-cx),ch=Math.min(is.h+mgY*2,h-cy),ds=document.createElement('canvas');ds.width=cw;ds.height=ch;ds.getContext('2d').drawImage(d.canvas,cx,cy,cw,ch,0,0,cw,ch);const dv=document.createElement('canvas');dv.width=cw;dv.height=ch;dv.getContext('2d').drawImage(v.canvas,cx-al.dx,cy-al.dy,cw,ch,0,0,cw,ch);const rx=is.x-cx,ry=is.y-cy,rw=is.w,rh=is.h;const c1=ds.getContext('2d');c1.strokeStyle='#ef4444';c1.lineWidth=2;c1.strokeRect(rx,ry,rw,rh);c1.lineWidth=3;c1.strokeRect(rx,ry,rw,rh);const c2=dv.getContext('2d');c2.strokeStyle='#ef4444';c2.lineWidth=2;c2.strokeRect(rx,ry,rw,rh);c2.lineWidth=3;c2.strokeRect(rx,ry,rw,rh);const gap=6,lh=22,out=document.createElement('canvas');out.width=cw*2+gap;out.height=ch+lh;const ctx=out.getContext('2d');ctx.fillStyle='#f8fafc';ctx.fillRect(0,0,out.width,out.height);ctx.drawImage(ds,0,0,cw,ch,0,lh,cw,ch);ctx.drawImage(dv,0,0,cw,ch,cw+gap,lh,cw,ch);ctx.fillStyle='#6b7280';ctx.font='12px sans-serif';ctx.textAlign='center';ctx.fillText('🎨 设计稿',cw/2,15);ctx.fillText('🛠 还原稿',cw+gap+cw/2,15);return out.toDataURL('image/png')}function generateDiffOverlay(d,v,w,h,al){const c=document.createElement('canvas');c.width=w;c.height=h;const ctx=c.getContext('2d');ctx.drawImage(d.canvas,0,0,w,h);const id=ctx.getImageData(0,0,w,h),o=id.data,dd=d.data.data,vd=v.data.data;for(let y=0;y<h;y++)for(let x=0;x<w;x++){const vy=y+al.dy,vx=x+al.dx;if(vx<0||vx>=v.w||vy<0||vy>=v.h)continue;const piD=(y*w+x)*4,piV=(vy*v.w+vx)*4;if(Math.abs(dd[piD]-vd[piV])+Math.abs(dd[piD+1]-vd[piV+1])+Math.abs(dd[piD+2]-vd[piV+2])>80){o[(y*w+x)*4]=255;o[(y*w+x)*4+1]=0;o[(y*w+x)*4+2]=0;o[(y*w+x)*4+3]=255}}ctx.putImageData(id,0,0);return c.toDataURL('image/png')}async function vgDetect(designUrl,devUrl){try{const[d,v]=await Promise.all([loadCanvas(designUrl),loadCanvas(devUrl)]);if(!d.data||!v.data)return{issues:[],align:{dx:0,dy:0},cropUrls:[],diffOverlay:null};const w=Math.min(d.w,v.w),h=Math.min(d.h,v.h);if(w<10||h<10)return{issues:[],align:{dx:0,dy:0},cropUrls:[],diffOverlay:null};const al=alignImages(d,v),dEn=enhanceContrast(d.data.data,d.data.width,d.data.height),vEn=enhanceContrast(v.data.data,v.data.width,v.data.height),dLum=new Uint8Array(d.w*d.h),vLum=new Uint8Array(v.w*v.h);for(let i=0;i<d.w*d.h;i++)dLum[i]=dEn[i*4];for(let i=0;i<v.w*v.h;i++)vLum[i]=vEn[i*4];const cls=clusterDiffs(d,v,w,h,al),issues=[];for(let i=0;i<cls.length;i++){const c=cls[i];const list=dualTrackAnalyze(c,d,v,w,h,al,dLum,vLum);if(list)for(let j=0;j<list.length;j++)issues.push({x:c.x,y:c.y,w:c.w,h:c.h,category:list[j].type,priority:list[j].priority,description:list[j].desc,detail:list[j].detail})}const merged=[];for(let i=0;i<issues.length;i++){const is=issues[i];let dup=!1;for(let j=0;j<merged.length;j++){const m=merged[j];if(m.category===is.category&&Math.hypot(is.x-m.x,is.y-m.y)<24){dup=!0;break}}if(!dup)merged.push(is)}const final=[];for(let i=0;i<merged.length;i++){const is=merged[i];let ad=!1;for(let j=0;j<final.length;j++){const g=final[j];if(g.category!==is.category)continue;var gx2=Math.max(g.x+g.w,is.x+is.w),gy2=Math.max(g.y+g.h,is.y+is.h),ix=Math.max(g.x,is.x),iy=Math.max(g.y,is.y),ix2=Math.min(g.x+g.w,is.x+is.w),iy2=Math.min(g.y+g.h,is.y+is.h);if(ix<ix2&&iy<iy2){var ov=(ix2-ix)*(iy2-iy),tu=g.w*g.h+is.w*is.h-ov;if(tu>0&&ov/tu>.15){g.x=Math.min(g.x,is.x);g.y=Math.min(g.y,is.y);g.w=gx2-g.x;g.h=gy2-g.y;g.regionCount=(g.regionCount||1)+1;if(g.regionCount===2)g.description=is.category==='font'?'文字/字体差异':is.category==='position'?'位置偏差':is.category==='size'?'尺寸偏差':'颜色偏差';ad=!0;break}}}if(!ad){is.regionCount=1;final.push(is)}}for(let i=0;i<final.length;i++)final[i].regionIndex=i+1;const po={P0:0,P1:1,P2:2,P3:3},sorted=final.sort((a,b)=>(po[a.priority]!==undefined?po[a.priority]:99)-(po[b.priority]!==undefined?po[b.priority]:99)),cropUrls=sorted.map(is=>{try{return cropIssueImages(d,v,w,h,al,is)}catch(e){return null}}),diffOverlay=generateDiffOverlay(d,v,w,h,al);return{issues:sorted,align:al,cropUrls:cropUrls,diffOverlay:diffOverlay}}catch(e){return{issues:[],align:{dx:0,dy:0},cropUrls:[],diffOverlay:null}}}window.vgDetect=vgDetect;})();
-</script>
-
+(function(){function e(r,g,b){return'#'+[r,g,b].map(v=>Math.max(0,Math.min(255,Math.round(v))).toString(16).padStart(2,'0')).join('').toUpperCase()}function d(r1,g1,b1,r2,g2,b2){return Math.sqrt((r1-r2)**2+(g1-g2)**2+(b1-b2)**2)/Math.sqrt(255**2*3)}function l(r,g,b){return.299*r+.587*g+.114*b}function loadCanvas(url){return new Promise(resolve=>{const img=new Image;if(!url.startsWith('data:'))img.crossOrigin='anonymous';img.onload=()=>{const c=document.createElement('canvas');c.width=img.width;c.height=img.height;const ctx=c.getContext('2d');ctx.drawImage(img,0,0);resolve({w:img.width,h:img.height,data:ctx.getImageData(0,0,img.width,img.height),ctx,canvas:c})};img.onerror=()=>resolve({w:0,h:0,data:null});img.src=url})}function alignImages(d,v){const dd=d.data.data,vd=v.data.data,vW=v.w,vH=v.h;function s(ox,oy,tdx,tdy){const rw=Math.min(40,d.w-ox),rh=Math.min(40,d.h-oy);let s=0,n=0;for(let y=oy;y<oy+rh;y+=4)for(let x=ox;x<ox+rw;x+=4){const py=y+tdy,px=x+tdx;if(py<0||px<0||py>=vH||px>=vW)continue;const piD=(y*d.w+x)*4,piV=(py*vW+px)*4;s+=Math.abs(dd[piD]-vd[piV])+Math.abs(dd[piD+1]-vd[piV+1])+Math.abs(dd[piD+2]-vd[piV+2]);n++}return n>0?s/n:1/0}let bDx=0,bDy=0,bS=1/0;for(let dy=-12;dy<=12;dy+=2)for(let dx=-12;dx<=12;dx+=2){let t=0,c=0;for(const[ox,oy]of[[0,0],[Math.max(0,d.w-60),0],[0,Math.max(0,d.h-60)]]){const sc=s(ox,oy,dx,dy);if(sc<1/0){t+=sc;c++}}const avg=c>0?t/c:1/0;if(avg<bS){bS=avg;bDx=dx;bDy=dy}}for(let dy=-1;dy<=1;dy++)for(let dx=-1;dx<=1;dx++){let t=0,c=0;for(const[ox,oy]of[[0,0],[Math.max(0,d.w-60),0],[0,Math.max(0,d.h-60)]]){const sc=s(ox,oy,bDx+dx,bDy+dy);if(sc<1/0){t+=sc;c++}}const avg=c>0?t/c:1/0;if(avg<bS){bS=avg;bDx+=dx;bDy+=dy}}return{dx:bDx,dy:bDy}}function enhanceContrast(imgData,iW,iH){const data=new Uint8ClampedArray(imgData),ts=64,tx=Math.ceil(iW/ts),ty=Math.ceil(iH/ts);for(let by=0;by<ty;by++)for(let bx=0;bx<tx;bx++){const x1=bx*ts,y1=by*ts,x2=Math.min(x1+ts,iW),y2=Math.min(y1+ts,iH),hist=new Int32Array(256);for(let y=y1;y<y2;y++)for(let x=x1;x<x2;x++){const pi=(y*iW+x)*4;hist[Math.round(l(imgData[pi],imgData[pi+1],imgData[pi+2]))]++}const tp=(x2-x1)*(y2-y1),lim=Math.max(3,tp*.01);let ex=0;for(let i=0;i<256;i++){if(hist[i]>lim){ex+=hist[i]-lim;hist[i]=lim}}const rd=Math.floor(ex/256);for(let i=0;i<256;i++)hist[i]+=rd;const cdf=new Int32Array(256);cdf[0]=hist[0];for(let i=1;i<256;i++)cdf[i]=cdf[i-1]+hist[i];const cdfMin=cdf[0],cdfR=cdf[255]-cdfMin;for(let y=y1;y<y2;y++)for(let x=x1;x<x2;x++){const pi=(y*iW+x)*4,lu=Math.round(l(imgData[pi],imgData[pi+1],imgData[pi+2])),mp=cdfR>0?Math.round((cdf[lu]-cdfMin)*255/cdfR):lu,nl=lu+(mp-lu)*.7*Math.min(2,Math.max(1,cdfR>0?255/cdfR:1));data[pi]=data[pi+1]=data[pi+2]=Math.max(0,Math.min(255,nl))}}let mL=255,xL=0;for(let i=0;i<data.length;i+=4){const lv=data[i];if(lv<mL)mL=lv;if(lv>xL)xL=lv}const rg=xL-mL;if(rg>10)for(let i=0;i<data.length;i+=4){data[i]=(data[i]-mL)*255/rg;data[i+1]=data[i+2]=data[i]}return data}function clusterDiffs(d,v,w,h,al){const dd=d.data.data,vd=v.data.data,vW=v.w,vH=v.h,dm=new Uint8Array(w*h);for(let y=0;y<h;y++)for(let x=0;x<w;x++){const vy=y+al.dy,vx=x+al.dx;if(vx<0||vx>=vW||vy<0||vy>=vH)continue;const piD=(y*w+x)*4,piV=(vy*vW+vx)*4;if(Math.abs(dd[piD]-vd[piV])+Math.abs(dd[piD+1]-vd[piV+1])+Math.abs(dd[piD+2]-vd[piV+2])>30)dm[y*w+x]=1}const bs=8,bw=Math.ceil(w/bs),bh=Math.ceil(h/bs),bm=new Uint8Array(bw*bh);for(let by=0;by<bh;by++)for(let bx=0;bx<bw;bx++){let dc=0,tp=0;for(let dy=0;dy<bs&&by*bs+dy<h;dy++)for(let dx=0;dx<bs&&bx*bs+dx<w;dx++){tp++;if(dm[(by*bs+dy)*w+(bx*bs+dx)])dc++}if(dc>tp*.03)bm[by*bw+bx]=1}const vis=new Uint8Array(bw*bh),clusters=[];for(let by=0;by<bh;by++)for(let bx=0;bx<bw;bx++){const idx=by*bw+bx;if(!bm[idx]||vis[idx])continue;const q=[[bx,by]];vis[idx]=1;let mnX=bx,mxX=bx,mnY=by,mxY=by;while(q.length){const[cx,cy]=q.shift();mnX=Math.min(mnX,cx);mxX=Math.max(mxX,cx);mnY=Math.min(mnY,cy);mxY=Math.max(mxY,cy);for(let dy=-1;dy<=1;dy++)for(let dx=-1;dx<=1;dx++){const nx=cx+dx,ny=cy+dy;if(nx<0||nx>=bw||ny<0||ny>=bh)continue;const ni=ny*bw+nx;if(bm[ni]&&!vis[ni]){vis[ni]=1;q.push([nx,ny])}}}clusters.push({x:mnX*bs,y:mnY*bs,w:Math.min((mxX-mnX+1)*bs,w-mnX*bs),h:Math.min((mxY-mnY+1)*bs,h-mnY*bs)})}return clusters}function classifyRegionType(id,ld,rx,ry,rw,rh,iW,iH){if(rw<6||rh<6)return'noise';const cs=new Set;let te=0,he=0,ve=0,tp=0,ls=0;const lh=new Int32Array(256);for(let y=ry;y<ry+rh;y++)for(let x=rx;x<rx+rw;x++){tp++;const pi=(y*iW+x)*4,lu=Math.round(l(id[pi],id[pi+1],id[pi+2]));ls+=lu;lh[lu]++;cs.add(((id[pi]>>3)<<3)+','+((id[pi+1]>>3)<<3)+','+((id[pi+2]>>3)<<3))}const cr=cs.size/tp;for(let y=ry+1;y<ry+rh-1;y++)for(let x=rx+1;x<rx+rw-1;x++){const lv=ld[y*iW+x],hg=Math.abs(lv-ld[y*iW+x-1])+Math.abs(lv-ld[y*iW+x+1]),vg=Math.abs(lv-ld[(y-1)*iW+x])+Math.abs(lv-ld[(y+1)*iW+x]);he+=hg;ve+=vg}const ed=Math.min(100,(he+ve)/tp),hv=Math.min(10,he/Math.max(ve,.001));let mn=255,mx=0;for(let i=0;i<256;i++)if(lh[i]>0){if(i<mn)mn=i;if(i>mx)mx=i}const lr=mx-mn;if(cr>.12&&ed>5&&lr>80)return'image';if(cr<.03&&ed<2&&lr<50&&rh>12)return'button_bg';if(ed<.3&&cs.size<5&&rh>12&&rw>24)return'button_bg';if(cr<.04&&ed<4&&rh>10&&rw>20){if(rw*.4<rh&&rh<rw*2.5)return'button_bg'}if(rw<60&&rh<60&&ed>1.5){if(hv>.6&&hv<1.8){if(rw*.3<rh&&rh<rw*3)return'icon'}}if(cr<.06&&ed>.8&&hv>.8){if(hv>1.3&&rh>5&&rw>rh*.4&&rh<rw*3)return'text';if(lr>40&&ed>3&&rh>4&&rh<60)return'text'}if(rw<15&&rh>4&&rh<25&&ed>.5){if(rw*.3<rh&&rh<rw*3)return'text'}if(ed>2&&cr<.08&&rh>4&&rh<40)return'text';if(ed>1&&rw<80&&rh<80&&cr<.1){if(hv>.5&&hv<2)return'icon'}return'unknown'}function mserDetectInRegion(ld,iW,iH,rx,ry,rw,rh){const g=new Uint8Array(rw*rh);for(let y=ry+1;y<ry+rh-1;y++)for(let x=rx+1;x<rx+rw-1;x++){const idx=(y-ry)*rw+(x-rx),gx=Math.abs(ld[y*iW+x+1]-ld[y*iW+x-1]),gy=Math.abs(ld[(y+1)*iW+x]-ld[(y-1)*iW+x]);g[idx]=Math.min(255,Math.round(Math.sqrt(gx*gx*.6+gy*gy*.4)))}const bn=new Uint8Array(rw*rh),h=new Uint32Array(256);let tp=0;for(let i=0;i<rw*rh;i++){const v=g[i];if(v>5){h[v]++;tp++}let s=0;for(let i=0;i<256;i++)s+=i*h[i];let sB=0,wB=0,wF=0,mV=0,oT=12;for(let t=0;t<256;t++){wB+=h[t];if(!wB)continue;wF=tp-wB;if(!wF)break;sB+=t*h[t];const mB=sB/wB,mF=(s-sB)/wF,bV=wB*wF*(mB-mF)*(mB-mF);if(bV>mV){mV=bV;oT=t}}const bT=Math.max(oT,10,Math.min(oT*1.5,120));for(let i=0;i<rw*rh;i++)bn[i]=g[i]>=bT?255:0;const mo=new Uint8Array(rw*rh);for(let y=0;y<rh;y++)for(let x=0;x<rw;x++){let mV=bn[y*rw+x];if(x>0&&bn[y*rw+x-1]>mV)mV=bn[y*rw+x-1];if(x<rw-1&&bn[y*rw+x+1]>mV)mV=bn[y*rw+x+1];mo[y*rw+x]=mV}const vs=new Uint8Array(rw*rh),cs=[];for(let y=0;y<rh;y++)for(let x=0;x<rw;x++){const idx=y*rw+x;if(mo[idx]!==255||vs[idx])continue;const q=[idx];vs[idx]=1;let mn=x,mx=x,mnY=y,mxY=y,cnt=0;while(q.length){const ci=q.shift();cnt++;const cx=ci%rw,cy=Math.floor(ci/rw);if(cx<mn)mn=cx;if(cx>mx)mx=cx;if(cy<mnY)mnY=cy;if(cy>mxY)mxY=cy;for(let dy=-1;dy<=1;dy++)for(let dx=-1;dx<=1;dx++){if(!dx&&!dy)continue;const nx=cx+dx,ny=cy+dy;if(nx<0||nx>=rw||ny<0||ny>=rh)continue;const ni=ny*rw+nx;if(vs[ni]||mo[ni]!==255)continue;vs[ni]=1;q.push(ni)}}}const bw=mx-mn+1,bh=mxY-mnY+1;if(bw<5||bh<4||cnt<6)continue;const r=bw/Math.max(bh,1);if(r<.4||r>20)continue;if(cnt/(bw*bh)<.02||cnt/(bw*bh)>.95)continue;let ep=0;for(let sy=mnY;sy<=mxY;sy++)for(let sx=mn;sx<=mx;sx++)if(bn[sy*rw+sx]===255)ep++;if(ep/(bw*bh)<.01)continue;cs.push({x:mn+rx,y:mnY+ry,w:bw,h:bh,cnt,density:ep/(bw*bh),ratio:r})}if(!cs.length)return[];for(const c of cs){const lY=c.y-ry,lH=c.h;let t=lY;for(let y=lY;y<lY+lH;y++){let he=!1;for(let sx=c.x-rx;sx<c.x-rx+c.w;sx+=2)if(bn[y*rw+sx]===255){he=!0;break}if(he){t=y;break}}let b=lY+lH-1;for(let y=lY+lH-1;y>=t;y--){let he=!1;for(let sx=c.x-rx;sx<c.x-rx+c.w;sx+=2)if(bn[y*rw+sx]===255){he=!0;break}if(he){b=y;break}}const nh=b-t+1;if(nh>=4){c.y=t+ry;c.h=nh}}if(!cs.length)return[];const sH=[...cs].sort((a,b)=>a.h-b.h),mI=Math.floor(cs.length/2),bH=Math.max(sH[mI].h,10),st=[...cs].sort((a,b)=>(a.y+a.h/2)-(b.y+b.h/2)),yT=bH*1.0,rows=[];for(const c of st){const cy=c.y+c.h/2;let f=!1;for(let ri=rows.length-1;ri>=0;ri--){const r=rows[ri],mY=r.comps.reduce((s,cc)=>s+cc.y+cc.h/2,0)/r.comps.length;if(Math.abs(cy-mY)<=yT){r.comps.push(c);f=!0;break}}if(!f)rows.push({comps:[c]})}const ln=[];for(const r of rows){if(r.comps.length<1)continue;const mn=Math.min(...r.comps.map(c=>c.x)),mx=Math.max(...r.comps.map(c=>c.x+c.w)),mnY=Math.min(...r.comps.map(c=>c.y)),mxY=Math.max(...r.comps.map(c=>c.y+c.h));ln.push({x:mn,y:mnY,w:mx-mn,h:mxY-mnY,comps:r.comps.length})}ln.sort((a,b)=>a.y-b.y);for(let i=0;i<ln.length;i++)for(let j=i+1;j<ln.length;j++){const vo=Math.min(ln[i].y+ln[i].h,ln[j].y+ln[j].h)-Math.max(ln[i].y,ln[j].y);if(vo>Math.min(ln[i].h,ln[j].h)*.5&&vo>4){ln[i].x=Math.min(ln[i].x,ln[j].x);ln[i].y=Math.min(ln[i].y,ln[j].y);const x2=Math.max(ln[i].x+ln[i].w,ln[j].x+ln[j].w),y2=Math.max(ln[i].y+ln[i].h,ln[j].y+ln[j].h);ln[i].w=x2-ln[i].x;ln[i].h=y2-ln[i].y;ln[i].comps+=ln[j].comps;ln.splice(j,1);j--}}return ln.filter(l=>{if(l.w<20||l.h<8)return!1;if(l.comps<2&&l.h<20&&l.w<40)return!1;if(l.w/l.h>30&&l.h<8)return!1;return!0})}function detectContainers(id,iW,iH){const vs=new Uint8Array(iW*iH),cs=[];for(let y=8;y<iH-8;y+=4)for(let x=8;x<iW-8;x+=4){const i=y*iW+x;if(vs[i])continue;const pi=i*4,cr=id[pi],cg=id[pi+1],cb=id[pi+2],mC=Math.max(cr,cg,cb),mn=Math.min(cr,cg,cb),st=mC>30?mC-mn:0;if(st<10)continue;const lv=l(cr,cg,cb);if(lv>200||lv<20)continue;vs[i]=1;const q=[[x,y]];let mnX=x,mxX=x,mnY=y,mxY=y,pc=0;while(q.length){const[cx,cy]=q.shift();pc++;if(cx<mnX)mnX=cx;if(cx>mxX)mxX=cx;if(cy<mnY)mnY=cy;if(cy>mxY)mxY=cy;for(let dy=-4;dy<=4;dy+=4)for(let dx=-4;dx<=4;dx+=4){const nx=cx+dx,ny=cy+dy;if(nx<0||nx>=iW||ny<0||ny>=iH)continue;const ni=ny*iW+nx;if(vs[ni])continue;const npi=ni*4;if(Math.abs(id[npi]-cr)+Math.abs(id[npi+1]-cg)+Math.abs(id[npi+2]-cb)>60)continue;vs[ni]=1;q.push([nx,ny])}}const bw=mxX-mnX+1,bh=mxY-mnY+1;if(bw<20||bw>300||bh<15||bh>150)continue;const r=bw/Math.max(bh,1);if(r<.3||r>5)continue;if(pc/(bw*bh)<.03||pc/(bw*bh)>.6)continue;cs.push({x:mnX,y:mnY,w:bw,h:bh})}return cs}function detectButtons(rd,ld,iW,iH,tl){var b=[],d={gridW:0,gridH:0,colorSeeds:0,candidates:0,filtered:[]};if(iW<10||iH<10)return{buttons:b,debug:d};var sp=2,gW=Math.ceil(iW/sp),gH=Math.ceil(iH/sp);d.gridW=gW;d.gridH=gH;var vs=new Uint8Array(gW*gH),cT=45,ac=[];for(var gy=0;gy<gH;gy++)for(var gx=0;gx<gW;gx++){var gi=gy*gW+gx;if(vs[gi])continue;var px=gx*sp,py=gy*sp,pi=(py*iW+px)*4,sR=rd[pi],sG=rd[pi+1],sB=rd[pi+2],sA=rd[pi+3];if(sA<128)continue;if(l(sR,sG,sB)>245||l(sR,sG,sB)<10)continue;var q=[gi];vs[gi]=1;var mGX=gx,mxGX=gx,mGY=gy,mxGY=gy,cnt=0,rSum=0,gSum=0,bSum=0;while(q.length){var ci=q.shift();cnt++;var cx=ci%gW,cy=Math.floor(ci/gW);if(cx<mGX)mGX=cx;if(cx>mxGX)mxGX=cx;if(cy<mGY)mGY=cy;if(cy>mxGY)mxGY=cy;var cip=(cy*sp*iW+cx*sp)*4;rSum+=rd[cip];gSum+=rd[cip+1];bSum+=rd[cip+2];for(var dy=-1;dy<=1;dy++)for(var dx=-1;dx<=1;dx++){if(!dx&&!dy)continue;var nx=cx+dx,ny=cy+dy;if(nx<0||nx>=gW||ny<0||ny>=gH)continue;var ni=ny*gW+nx;if(vs[ni])continue;var npx=(ny*sp*iW+nx*sp)*4,aR=rSum/cnt,aG=gSum/cnt,aB=bSum/cnt;if(Math.sqrt((rd[npx]-aR)**2+(rd[npx+1]-aG)**2+(rd[npx+2]-aB)**2)<cT){vs[ni]=1;q.push(ni)}}}var x=mGX*sp,y=mGY*sp,bw=(mxGX-mGX+1)*sp,bh=(mxGY-mGY+1)*sp;if(cnt<6||bw<8||bh<8)continue;if(bw>iW*.85&&bh>iH*.85)continue;ac.push({x:x,y:y,w:bw,h:bh,count:cnt,avgR:rSum/cnt,avgG:gSum/cnt,avgB:bSum/cnt,ratio:bw/Math.max(bh,1)})}d.colorSeeds=ac.length;for(var ci=0;ci<ac.length;ci++){var c=ac[ci];if(c.w<24||c.h<18)continue;if(c.ratio<.6||c.ratio>5)continue;var cR=Math.min(8,Math.round(Math.min(c.w,c.h)*.15)),cES=0,cEC=0;for(var sy=c.y;sy<c.y+cR+2&&sy<iH;sy+=2)for(var sx=c.x;sx<c.x+cR+2&&sx<iW;sx+=2){var si=sy*iW+sx;cES+=Math.abs(ld[si]-ld[Math.min(si+1,iW*iH-1)])+Math.abs(ld[si]-ld[Math.min(si+iW,iW*iH-1)]);cEC+=2}for(var sy=c.y+c.h-cR-2;sy<c.y+c.h&&sy<iH;sy+=2)for(var sx=c.x;sx<c.x+cR+2&&sx<iW;sx+=2){var si=sy*iW+sx;cES+=Math.abs(ld[si]-ld[Math.min(si+1,iW*iH-1)])+Math.abs(ld[si]-ld[Math.min(si+iW,iW*iH-1)]);cEC+=2}for(var sy=c.y;sy<c.y+cR+2&&sy<iH;sy+=2)for(var sx=c.x+c.w-cR-2;sx<c.x+c.w&&sx<iW;sx+=2){var si=sy*iW+sx;cES+=Math.abs(ld[si]-ld[Math.min(si+1,iW*iH-1)])+Math.abs(ld[si]-ld[Math.min(si+iW,iW*iH-1)]);cEC+=2}for(var sy=c.y+c.h-cR-2;sy<c.y+c.h&&sy<iH;sy+=2)for(var sx=c.x+c.w-cR-2;sx<c.x+c.w&&sx<iW;sx+=2){var si=sy*iW+sx;cES+=Math.abs(ld[si]-ld[Math.min(si+1,iW*iH-1)])+Math.abs(ld[si]-ld[Math.min(si+iW,iW*iH-1)]);cEC+=2}var aCE=cEC>0?cES/cEC:0,iFC=0,iSC=0,iEC=0,hIT=!1;for(var sy=c.y+3;sy<c.y+c.h-3;sy+=3)for(var sx=c.x+3;sx<c.x+c.w-3;sx+=3){iSC++;var si=sy*iW+sx,gv=Math.abs(ld[si]-ld[si-1])+Math.abs(ld[si]-ld[si+1])+Math.abs(ld[si]-ld[si-iW])+Math.abs(ld[si]-ld[si+iW]);if(gv>20)iEC++;if(gv<8)iFC++}var iFR=iSC>0?iFC/iSC:0;for(var ti=0;ti<tl.length;ti++){var tl2=tl[ti],ix=Math.max(c.x,tl2.x),iy=Math.max(c.y,tl2.y),ix2=Math.min(c.x+c.w,tl2.x+tl2.w),iy2=Math.min(c.y+c.h,tl2.y+tl2.h);if(ix<ix2&&iy<iy2){hIT=!0;break}}if((iFR>.25&&aCE>18&&c.ratio>=.8&&c.ratio<=4)||(hIT&&iFR>.15)||(iFR>.35&&c.w>=40&&c.h>=24&&c.ratio>=.8&&c.ratio<=4)){var dup=!1;for(var bi=0;bi<b.length;bi++){var bt=b[bi],ix=Math.max(c.x,bt.x),iy=Math.max(c.y,bt.y),ix2=Math.min(c.x+c.w,bt.x+bt.w),iy2=Math.min(c.y+c.h,bt.y+bt.h);if(ix<ix2&&iy<iy2){var ov=(ix2-ix)*(iy2-iy);if(ov/Math.min(c.w*c.h,bt.w*bt.h)>.5){dup=!0;break}}}if(!dup)b.push({x:c.x,y:c.y,w:c.w,h:c.h,color:e(Math.round(c.avgR),Math.round(c.avgG),Math.round(c.avgB)),hasText:hIT,confidence:Math.min(1,(hIT?.3:0)+Math.min(.5,iFR/1.5)+(aCE>18?.2:0))})}}return{buttons:b,debug:d}}function detectCards(rd,ld,iW,iH,tl){var cards=[],bgSamples=[];for(var sy=0;sy<iH;sy+=Math.max(1,iH/8))for(var sx=0;sx<iW;sx+=Math.max(1,iW/8)){var si=sx,sj=sy;if(sj>=iH)sj=iH-1;if(si>=iW)si=iW-1;var spi=(sj*iW+si)*4;bgSamples.push({r:rd[spi],g:rd[spi+1],b:rd[spi+2]})}var bR=0,bG=0,bB=0;for(var i=0;i<bgSamples.length;i++){bR+=bgSamples[i].r;bG+=bgSamples[i].g;bB+=bgSamples[i].b}if(bgSamples.length>0){bR=Math.round(bR/bgSamples.length);bG=Math.round(bG/bgSamples.length);bB=Math.round(bB/bgSamples.length)}var vs=new Uint8Array(iW*iH);for(var sy=0;sy<iH-4;sy+=4)for(var sx=0;sx<iW-4;sx+=4){var idx=sy*iW+sx;if(vs[idx])continue;var pi=idx*4,cr=rd[pi],cg=rd[pi+1],cb=rd[pi+2],cl=l(cr,cg,cb);if(cl<30||cl>240)continue;var nb=0;for(var dy=-4;dy<=4;dy+=4)for(var dx=-4;dx<=4;dx+=4){if(!dx&&!dy)continue;var nx=sx+dx,ny=sy+dy;if(nx<0||nx>=iW||ny<0||ny>=iH)continue;var npi=(ny*iW+nx)*4;if(Math.abs(rd[npi]-cr)+Math.abs(rd[npi+1]-cg)+Math.abs(rd[npi+2]-cb)>60)nb++}if(nb<2)continue;vs[idx]=1;var q=[[sx,sy]],mnX=sx,mxX=sx,mnY=sy,mxY=sy,cnt=0,rSum=0,gSum=0,bSum=0;while(q.length){var cp=q.shift();cnt++;var cx=cp[0],cy=cp[1];if(cx<mnX)mnX=cx;if(cx>mxX)mxX=cx;if(cy<mnY)mnY=cy;if(cy>mxY)mxY=cy;var cpi=(cy*iW+cx)*4;rSum+=rd[cpi];gSum+=rd[cpi+1];bSum+=rd[cpi+2];for(var dy=-4;dy<=4;dy+=4)for(var dx=-4;dx<=4;dx+=4){if(!dx&&!dy)continue;var nx=cx+dx,ny=cy+dy;if(nx<0||nx>=iW||ny<0||ny>=iH)continue;var ni=ny*iW+nx;if(vs[ni])continue;var npi=(ny*iW+nx)*4;if(Math.abs(rd[npi]-cr)+Math.abs(rd[npi+1]-cg)+Math.abs(rd[npi+2]-cb)<50){vs[ni]=1;q.push([nx,ny])}}}var bw=mxX-mnX+1,bh=mxY-mnY+1;if(bw<80||bw>600||bh<60||bh>600)continue;if(cnt/(bw*bh)<.03||cnt/(bw*bh)>.95)continue;var ar=bw/Math.max(bh,1);if(ar<.5||ar>3)continue;if(bw*bh>iW*iH*.45)continue;var aR=rSum/cnt,aG=gSum/cnt,aB=bSum/cnt;if(Math.abs(aR-bR)<20&&Math.abs(aG-bG)<20&&Math.abs(aB-bB)<20)continue;var variance=0;for(var py=mnY;py<=mxY;py+=3)for(var px=mnX;px<=mxX;px+=3){var pi2=(py*iW+px)*4;variance+=Math.abs(rd[pi2]-aR)+Math.abs(rd[pi2+1]-aG)+Math.abs(rd[pi2+2]-aB)}if(variance>cnt*120)continue;var edgeP=0,edgeC=0;for(var py=Math.max(0,mnY-2);py<=Math.min(iH-1,mxY+2);py++)for(var px=Math.max(0,mnX-2);px<=Math.min(iW-1,mxX+2);px++){var inside=px>=mnX&&px<=mxX&&py>=mnY&&py<=mxY,edge=!inside&&px>=mnX-2&&px<=mxX+2&&py>=mnY-2&&py<=mxY+2;if(!edge)continue;edgeC++;var pi3=(py*iW+px)*4,gv=Math.abs(rd[pi3]-rd[Math.min(pi3+4,rd.length-4)])+Math.abs(rd[pi3+1]-rd[Math.min(pi3+5,rd.length-3)])+Math.abs(rd[pi3+2]-rd[Math.min(pi3+6,rd.length-2)]);if(gv>60)edgeP++}if(edgeC>0&&edgeP/edgeC<.05)continue;cards.push({x:mnX,y:mnY,w:bw,h:bh,bgColor:e(Math.round(aR),Math.round(aG),Math.round(aB)),hasImage:false,innerItems:[]})}if(!cards.length)return[];var merged=true;while(merged){merged=false;for(var i=0;i<cards.length&&!merged;i++)for(var j=i+1;j<cards.length&&!merged;j++){var ci=cards[i],cj=cards[j],ix=Math.max(ci.x,cj.x),iy=Math.max(ci.y,cj.y),ix2=Math.min(ci.x+ci.w,cj.x+cj.w),iy2=Math.min(ci.y+ci.h,cj.y+cj.h);if(ix<ix2&&iy<iy2){var ov=(ix2-ix)*(iy2-iy),minA=Math.min(ci.w*ci.h,cj.w*cj.h);if(ov/minA>.3){ci.x=Math.min(ci.x,cj.x);ci.y=Math.min(ci.y,cj.y);ci.w=Math.max(ci.x+ci.w,cj.x+cj.w)-ci.x;ci.h=Math.max(ci.y+ci.h,cj.y+cj.h)-ci.y;cards.splice(j,1);merged=true}}}for(var ci=0;ci<cards.length;ci++){var hasImg=false,inner=[];for(var ti=0;ti<tl.length;ti++){var t=tl[ti],tx=Math.max(cards[ci].x,t.x),ty=Math.max(cards[ci].y,t.y),tx2=Math.min(cards[ci].x+cards[ci].w,t.x+t.w),ty2=Math.min(cards[ci].y+cards[ci].h,t.y+t.h);if(tx<tx2&&ty<ty2)inner.push({type:'text',x:t.x-cards[ci].x,y:t.y-cards[ci].y,w:t.w,h:t.h})}cards[ci].innerItems=inner}return cards}}function sSIR(d,tx,ty,tw,th,iW,iH){const s=[];for(let py=ty;py<ty+th;py+=2)for(let px=tx;px<tx+tw;px+=2){const pi=(py*iW+px)*4;let mG=0;for(let dy=-2;dy<=2;dy++)for(let dx=-2;dx<=2;dx++){const nx=px+dx,ny=py+dy;if(nx<0||nx>=iW||ny<0||ny>=iH)continue;const ni=(ny*iW+nx)*4,gv=Math.abs(d[pi]-d[ni])+Math.abs(d[pi+1]-d[ni+1])+Math.abs(d[pi+2]-d[ni+2]);if(gv>mG)mG=gv}}if(s.length<3)return null;s.sort((a,b)=>l(a.r,a.g,a.b)-l(b.r,b.g,b.b));const n=Math.min(5,s.length);let sr=0,sg=0,sb=0;for(let i=0;i<n;i++){sr+=s[i].r;sg+=s[i].g;sb+=s[i].b}return{r:sr/n,g:sg/n,b:sb/n,count:s.length}}function dualTrackAnalyze(cl,dO,vO,w,h,al,dL,vL){const x1=cl.x,y1=cl.y,x2=Math.min(x1+cl.w,w),y2=Math.min(y1+cl.h,h),cw=x2-x1,ch=y2-y1;if(cw<6||ch<6)return null;const dd=dO.data.data,vd=vO.data?vO.data.data:null,vW=vO.w,vH=vO.h,res=[],regs=[];const ss=Math.max(4,Math.floor(Math.min(cw,ch)/6));for(let sy=y1;sy<y2;sy+=ss)for(let sx=x1;sx<x2;sx+=ss){const sz=Math.min(ss*2,x2-sx,y2-sy);if(sz<8)continue;const tp=classifyRegionType(dd,dL,sx,sy,sz,sz,w,h);let mr=!1;for(const r of regs){if(r.type!==tp)continue;if(Math.max(0,Math.min(sy+sz,r.y+r.h)-Math.max(sy,r.y))>0&&Math.abs(sx-(r.x+r.w))<ss*2){r.x=Math.min(r.x,sx);r.y=Math.min(r.y,sy);r.w=Math.max(r.x+r.w,sx+sz)-r.x;r.h=Math.max(r.y+r.h,sy+sz)-r.y;mr=!0;break}}if(!mr)regs.push({type:tp,x:sx,y:sy,w:sz,h:sz})}for(const r of regs){
+    // 🎨 核心修正：取消对其他类型背景的彻底过滤阻断，允许大面积背景发生错位、报错时，MSER文本扫描器穿透下潜进行强行提取。
+    if(r.type === 'noise') continue;
+    const dL2=mserDetectInRegion(dL,w,h,r.x,r.y,r.w,r.h),vL2=vd?mserDetectInRegion(vL,vW,vH,r.x+al.dx,r.y+al.dy,r.w,r.h):[];for(const dl of dL2){let bV=null,bD=Infinity;for(const vl of vL2){const vd2=Math.abs(dl.y-(vl.y-al.dy));if(vd2<dl.h&&vd2<bD){bD=vd2;bV=vl}}if(!bV)continue;const vxD=bV.x-al.dx,vyD=bV.y-al.dy,dC=sSIR(dd,dl.x,dl.y,dl.w,dl.h,w,h),vC=vd?sSIR(vd,bV.x,bV.y,bV.w,bV.h,vW,vH):null;if(dC&&vC&&dC.count>=3&&vC.count>=3){const de=d(dC.r,dC.g,dC.b,vC.r,vC.g,vC.b);if(de>.05)res.push({type:'font',priority:de>.2?'P0':de>.12?'P1':'P2',desc:'文字颜色偏差',detail:'设计: '+e(Math.round(dC.r),Math.round(dC.g),Math.round(dC.b))+' → 还原: '+e(Math.round(vC.r),Math.round(vC.g),Math.round(vC.b))+' (ΔE='+Math.round(de*100)+'%)',design:e(Math.round(dC.r),Math.round(dC.g),Math.round(dC.b)),actual:e(Math.round(vC.r),Math.round(vC.g),Math.round(vC.b)),pxDiff:Math.round(de*100)+'%'})}const hB=Math.abs(vxD-dl.x),vB=Math.abs(vyD-dl.y);if(hB>=2||vB>=2){const p=[];hB>=2&&p.push('水平偏差'+hB+'px');vB>=2&&p.push('垂直偏差'+vB+'px');res.push({type:'position',priority:hB>=4||vB>=4?'P1':'P2',desc:'文字位置偏移',detail:p.join('，'),design:'('+dl.x+','+dl.y+')',actual:'('+vxD+','+vyD+')',pxDiff:p.join('，')})}if(Math.abs(bV.w-dl.w)>=3||Math.abs(bV.h-dl.h)>=3)res.push({type:'size',priority:Math.abs(bV.w-dl.w)>=6||Math.abs(bV.h-dl.h)>=6?'P1':'P2',desc:'文字大小偏差',detail:'设计 '+dl.w+'×'+dl.h+'px → 还原 '+bV.w+'×'+bV.h+'px',design:dl.w+'×'+dl.h+'px',actual:bV.w+'×'+bV.h+'px',pxDiff:'水平 '+Math.abs(bV.w-dl.w)+'px, 垂直 '+Math.abs(bV.h-dl.h)+'px'})}}const dCs=detectContainers(dd,w,h);for(const dc of dCs){if(Math.max(dc.x,x1)-Math.min(dc.x+dc.w,x2)>0||Math.max(dc.y,y1)-Math.min(dc.y+dc.h,y2)>0)continue;let bV=null,bVC=0;for(const vc of detectContainers(vd,vW,vH)){const vov=Math.min(vc.x+vc.w,dc.x+al.dx+dc.w)-Math.max(vc.x,dc.x+al.dx),vov2=Math.min(vc.y+vc.h,dc.y+al.dy+dc.h)-Math.max(vc.y,dc.y+al.dy);if(vov>0&&vov2>0){const c2=(vov*vov2)/(dc.w*dc.h);if(c2>bVC){bVC=c2;bV=vc}}}if(!bV||bVC<.3)continue;const vcxR=bV.x-al.dx,vcyR=bV.y-al.dy,hB=Math.round(Math.abs(vcxR-dc.x)),vB=Math.round(Math.abs(vcyR-dc.y));if(hB>=2||vB>=2)res.push({type:'position',priority:hB>=5||vB>=5?'P1':'P2',desc:'按钮容器位置偏移',detail:'水平偏差 '+hB+'px, 垂直偏差 '+vB+'px',design:'('+dc.x+','+dc.y+') '+dc.w+'×'+dc.h+'px',actual:'('+bV.x+','+bV.y+') '+bV.w+'×'+bV.h+'px',pxDiff:'水平 '+hB+'px, 垂直 '+vB+'px'});if(Math.abs(bV.w-dc.w)>=3||Math.abs(bV.h-dc.h)>=3)res.push({type:'size',priority:Math.abs(bV.w-dc.w)>=6||Math.abs(bV.h-dc.h)>=6?'P1':'P2',desc:'按钮容器大小偏差',detail:'设计 '+dc.w+'×'+dc.h+'px → 还原 '+bV.w+'×'+bV.h+'px',design:dc.w+'×'+dc.h+'px',actual:bV.w+'×'+bV.h+'px',pxDiff:'水平 '+Math.abs(bV.w-dc.w)+'px, 垂直 '+Math.abs(bV.h-dc.h)+'px'});const dIn=mserDetectInRegion(dL,w,h,dc.x,dc.y,dc.w,dc.h),vIn=mserDetectInRegion(vL,vW,vH,bV.x,bV.y,bV.w,bV.h);for(const dil of dIn){let bV2=null,bD2=1/0;for(const vil of vIn){const dd2=Math.abs(dil.y-(vil.y-al.dy));if(dd2<dil.h*.8&&dd2<bD2){bD2=dd2;bV2=vil}}if(!bV2)continue;const dC2=sSIR(dd,dil.x+dc.x,dil.y+dc.y,dil.w,dil.h,w,h),vC2=vd?sSIR(vd,bV2.x+bV.x+al.dx,bV2.y+bV.y+al.dy,bV2.w,bV2.h,vW,vH):null;if(dC2&&vC2){const de2=d(dC2.r,dC2.g,dC2.b,vC2.r,vC2.g,vC2.b);if(de2>.05)res.push({type:'font',priority:de2>.2?'P0':de2>.12?'P1':'P2',desc:'容器内文字颜色偏差',detail:'设计: '+e(Math.round(dC2.r),Math.round(dC2.g),Math.round(dC2.b))+' → 还原: '+e(Math.round(vC2.r),Math.round(vC2.g),Math.round(vC2.b))+' (ΔE='+Math.round(de2*100)+'%)',design:e(Math.round(dC2.r),Math.round(dC2.g),Math.round(dC2.b)),actual:e(Math.round(vC2.r),Math.round(vC2.g),Math.round(vC2.b)),pxDiff:Math.round(de2*100)+'%'})}const hB2=Math.abs(bV2.x-dil.x),vB2=Math.abs(bV2.y-dil.y);if(hB2>=2||vB2>=2)res.push({type:'position',priority:hB2>=4||vB2>=4?'P1':'P2',desc:'容器内文字位置偏移',detail:(hB2>=2?'水平'+hB2+'px ':'')+(vB2>=2?'垂直'+vB2+'px':''),design:'('+dil.x+','+dil.y+')',actual:'('+bV2.x+','+bV2.y+')',pxDiff:(hB2>=2?'水平偏差'+hB2+'px ':'')+(vB2>=2?'垂直偏差'+vB2+'px':'')});if(Math.abs(bV2.w-dil.w)>=3||Math.abs(bV2.h-dil.h)>=3)res.push({type:'size',priority:'P2',desc:'容器内文字大小偏差',detail:'设计 '+dil.w+'×'+dil.h+'px → 还原 '+bV2.w+'×'+bV2.h+'px',design:dil.w+'×'+dil.h+'px',actual:bV2.w+'×'+bV2.h+'px',pxDiff:'水平 '+Math.abs(bV2.w-dil.w)+'px, 垂直 '+Math.abs(bV2.h-dil.h)+'px'})}}if(!res.length){let dR=0,dG=0,dB=0,vR=0,vG=0,vB=0,cnt=0;for(let y=y1;y<y2;y+=2)for(let x=x1;x<x2;x+=2){const pi=(y*w+x)*4;(dR+=dd[pi]),(dG+=dd[pi+1]),(dB+=dd[pi+2]);const vy=y+al.dy,vx=x+al.dx;if(vy>=0&&vy<vH&&vx>=0&&vx<vW){const piV=(vy*vW+vx)*4;(vR+=vd[piV]),(vG+=vd[piV+1]),(vB+=vd[piV+2]);cnt++}}if(cnt>0){const de=d(dR/cnt,dG/cnt,dB/cnt,vR/cnt,vG/cnt,vB/cnt);de>.04&&res.push({type:'color',priority:'P2',desc:'颜色偏差',detail:'ΔE='+Math.round(de*100)+'%',design:e(Math.round(dR/cnt),Math.round(dG/cnt),Math.round(dB/cnt)),actual:e(Math.round(vR/cnt),Math.round(vG/cnt),Math.round(vB/cnt)),pxDiff:Math.round(de*100)+'%'})}}return res.length?res:null}function cropIssueImages(d,v,w,h,al,is){const mgX=Math.ceil(Math.max(is.w,10)),mgY=Math.ceil(Math.max(is.h,10)),cx=Math.max(0,is.x-mgX),cy=Math.max(0,is.y-mgY),cw=Math.min(is.w+mgX*2,w-cx),ch=Math.min(is.h+mgY*2,h-cy),ds=document.createElement('canvas');ds.width=cw;ds.height=ch;ds.getContext('2d').drawImage(d.canvas,cx,cy,cw,ch,0,0,cw,ch);const dv=document.createElement('canvas');dv.width=cw;dv.height=ch;dv.getContext('2d').drawImage(v.canvas,cx-al.dx,cy-al.dy,cw,ch,0,0,cw,ch);const rx=is.x-cx,ry=is.y-cy,rw=is.w,rh=is.h;[ds,dv].forEach(c=>{const ctx=c.getContext('2d');ctx.strokeStyle='#ef4444';ctx.lineWidth=2;ctx.strokeRect(rx,ry,rw,rh);ctx.lineWidth=3;ctx.strokeRect(rx,ry,rw,rh)});const gap=6,lh=22,out=document.createElement('canvas');out.width=cw*2+gap;out.height=ch+lh;const ctx=out.getContext('2d');ctx.fillStyle='#f8fafc';ctx.fillRect(0,0,out.width,out.height);ctx.drawImage(ds,0,0,cw,ch,0,lh,cw,ch);ctx.drawImage(dv,0,0,cw,ch,cw+gap,lh,cw,ch);ctx.fillStyle='#6b7280';ctx.font='12px sans-serif';ctx.textAlign='center';ctx.fillText('🎨 设计稿',cw/2,15);ctx.fillText('🛠 还原稿',cw+gap+cw/2,15);return out.toDataURL('image/png')}function generateDiffOverlay(d,v,w,h,al){const c=document.createElement('canvas');c.width=w;c.height=h;const ctx=c.getContext('2d');ctx.drawImage(d.canvas,0,0,w,h);const id=ctx.getImageData(0,0,w,h),o=id.data,dd=d.data.data,vd=v.data.data;for(let y=0;y<h;y++)for(let x=0;x<w;x++){const vy=y+al.dy,vx=x+al.dx;if(vx<0||vx>=v.w||vy<0||vy>=v.h)continue;const piD=(y*w+x)*4,piV=(vy*v.w+vx)*4;if(Math.abs(dd[piD]-vd[piV])+Math.abs(dd[piD+1]-vd[piV+1])+Math.abs(dd[piD+2]-vd[piV+2])>80){o[(y*w+x)*4]=255;o[(y*w+x)*4+1]=0;o[(y*w+x)*4+2]=0;o[(y*w+x)*4+3]=255} }ctx.putImageData(id,0,0);return c.toDataURL('image/png')}async function vgDetect(designUrl,devUrl){const t0=performance.now();try{const[d,v]=await Promise.all([loadCanvas(designUrl),loadCanvas(devUrl)]);if(!d.data||!v.data)return{issues:[],align:{dx:0,dy:0},cropUrls:[],diffOverlay:null};const w=Math.min(d.w,v.w),h=Math.min(d.h,v.h);if(w<10||h<10)return{issues:[],align:{dx:0,dy:0},cropUrls:[],diffOverlay:null};const al=alignImages(d,v),dEn=enhanceContrast(d.data.data,d.data.width,d.data.height),vEn=enhanceContrast(v.data.data,v.data.width,v.data.height),dLum=new Uint8Array(d.w*d.h),vLum=new Uint8Array(v.w*v.h);for(let i=0;i<d.w*d.h;i++)dLum[i]=dEn[i*4];for(let i=0;i<v.w*v.h;i++)vLum[i]=vEn[i*4];const textLines=[];try{const raw=mserDetectInRegion(dLum,d.w,d.h,0,0,d.w,d.h);for(const l of raw)if(l.w>20&&l.h>6)textLines.push({x:l.x,y:l.y,w:l.w,h:l.h,comps:l.comps||1})}catch(e){}const cls=clusterDiffs(d,v,w,h,al),issues=[];for(const c of cls){const list=dualTrackAnalyze(c,d,v,w,h,al,dLum,vLum);if(list)for(const is of list)issues.push({x:c.x,y:c.y,w:c.w,h:c.h,category:is.type,priority:is.priority,description:is.desc,detail:is.detail,designValue:is.design||'',actualValue:is.actual||'',pxDiff:is.pxDiff||''})}const merged=[];for(const is of issues){let dup=!1;for(const m of merged)if(m.category===is.category&&Math.hypot(is.x-m.x,is.y-m.y)<24){dup=!0;break}dup||merged.push(is)}const final=[];for(const is of merged){let ad=!1;for(const g of final){if(g.category!==is.category)continue;var gx2=Math.max(g.x+g.w,is.x+is.w),gy2=Math.max(g.y+g.h,is.y+is.h),ix=Math.max(g.x,is.x),iy=Math.max(g.y,is.y),ix2=Math.min(g.x+g.w,is.x+is.w),iy2=Math.min(g.y+g.h,is.y+is.h);if(ix<ix2&&iy<iy2){var ov=(ix2-ix)*(iy2-iy),tu=g.w*g.h+is.w*is.h-ov;if(tu>0&&ov/tu>.15){g.x=Math.min(g.x,is.x);g.y=Math.min(g.y,is.y);g.w=gx2-g.x;g.h=gy2-g.y;g.regionCount=(g.regionCount||1)+1;if(g.regionCount===2)g.description=is.category==='font'?'文字/字体差异':is.category==='position'?'位置偏差':is.category==='size'?'尺寸偏差':'颜色偏差';ad=!0;break}}}ad||(is.regionCount=1,final.push(is))}final.forEach((is,i)=>is.regionIndex=i+1);const po={P0:0,P1:1,P2:2,P3:3},sorted=final.sort((a,b)=>po[a.priority]-po[b.priority]),cropUrls=sorted.map(is=>{try{return cropIssueImages(d,v,w,h,al,is)}catch(e){return null}}),diffOverlay=generateDiffOverlay(d,v,w,h,al),btnResult=detectButtons(d.data.data,dLum,d.w,d.h,textLines);const cards=detectCards(d.data.data,dLum,d.w,d.h,textLines);return{issues:sorted,align:al,cropUrls,diffOverlay,textLines,buttons:btnResult.buttons,cards,btnDebug:btnResult.debug}}catch(e){return{issues:[],align:{dx:0,dy:0},cropUrls:[],diffOverlay:null,textLines:[],buttons:[],btnDebug:{}}}}window.vgDetect=vgDetect;})();</script>
 <script>
-// ====================================================================
-// 🔧 云端配置与同步中心
-// ====================================================================
-let cloudConfig = JSON.parse(localStorage.getItem('vgCloudConfig'));
-if (!cloudConfig || !cloudConfig.cloudName) {
-    cloudConfig = {
-        cloudName: 'dxm3bwnzi', apiKey: '713313811327755', apiSecret: 'QIBVvLSSePJW5-1UVYECknvBLBQ', dataName: 'vg_prod_final_v3'
-    };
-}
-
-function openCloudSettings() {
-    document.getElementById('cfgCloudName').value = cloudConfig.cloudName; document.getElementById('cfgApiKey').value = cloudConfig.apiKey; document.getElementById('cfgApiSecret').value = cloudConfig.apiSecret; document.getElementById('cfgDataName').value = cloudConfig.dataName; document.getElementById('settingsModal').classList.add('open');
-}
-function closeCloudSettings() { document.getElementById('settingsModal').classList.remove('open'); }
-function saveCloudSettings() {
-    cloudConfig.cloudName = document.getElementById('cfgCloudName').value.trim(); cloudConfig.apiKey = document.getElementById('cfgApiKey').value.trim(); cloudConfig.apiSecret = document.getElementById('cfgApiSecret').value.trim(); cloudConfig.dataName = document.getElementById('cfgDataName').value.trim(); localStorage.setItem('vgCloudConfig', JSON.stringify(cloudConfig)); closeCloudSettings(); location.reload();
-}
-
-// ====================================================================
-// 🚀 核心状态管理 (离线秒开架构)
-// ====================================================================
+// ===== State =====
 let tabIdCounter = 1;
-let activeTabId = 'dashboard';
+let activeTabId = null;
+const VERSION = '525v6';
 const tabs = new Map();
-const collapsedGroups = new Set(); 
-let devPool = []; 
+const collapsedGroups = new Set(); // 存储已折叠的板块 ID
 
+// ===== Tab Mgmt =====
 function addTab(name, opts) {
   const id = 'tab_' + (tabIdCounter++);
   const isGroup = opts && opts.isGroup;
-  tabs.set(id, { id, name: name || (isGroup ? '新板块 ' + (tabIdCounter-1) : '新页面 ' + (tabIdCounter-1)), isGroup: !!isGroup, children: (opts && opts.children) || [], designImg: null, devImg: null, result: null, selectedIdx: -1, overlayOpacity: 0.5 });
-  renderTabList(); activateTab(id);
-  return id;
+  tabs.set(id, {
+    id,
+    name: name || (isGroup ? '新板块 ' + (tabIdCounter-1) : '新 Tab ' + (tabIdCounter-1)),
+    isGroup: !!isGroup,
+    children: (opts && opts.children) || [],
+    designImg: null, devImg: null, result: null, selectedIdx: -1, overlayOpacity: 0.5
+  });
+  renderTabList();
+  activateTab(id);
 }
-
 function removeTab(id) {
-  if (id === 'dashboard') return;
-  const tab = tabs.get(id); if (tabs.size <= 1 || !tab) return;
-  if (tab.isGroup && tab.children.length > 0) { 
-    for (let i=0; i<tab.children.length; i++) tabs.delete(tab.children[i]); 
+  const tab = tabs.get(id);
+  if (tabs.size <= 1 || !tab) return;
+  if (tab.isGroup && tab.children.length > 0) {
+    for (const cid of tab.children) tabs.delete(cid);
   }
-  tabs.delete(id); if (activeTabId === id) activateTab('dashboard'); 
-  renderTabList(); autoSave();
+  tabs.delete(id);
+  if (activeTabId === id) activateTab(tabs.keys().next().value);
+  renderTabList();
+  autoSave();
 }
-
-function renameTab(id, n) { 
-  if (id === 'dashboard') return;
-  const t=tabs.get(id); if(t) { t.name = n || t.name; renderTabList(); } 
-}
-
-function removeDesignImg(id) { const t=tabs.get(id); if(!t)return; t.designImg = null; t.result = null; renderMain(id); }
-function removeDevImg(id) { const t=tabs.get(id); if(!t)return; t.devImg = null; t.result = null; renderMain(id); }
-function activateTab(id) { activeTabId = id; renderTabList(); renderMain(id); }
-
+function renameTab(id, n) { const t=tabs.get(id); if(t){t.name=n||t.name;renderTabList();} }
+function removeDesignImg(id) { const t=tabs.get(id); if(!t)return; t.designImg=null; t.result=null; renderMain(id); }
+function removeDevImg(id) { const t=tabs.get(id); if(!t)return; t.devImg=null; t.result=null; renderMain(id); }
+function activateTab(id) { activeTabId=id; renderTabList(); renderMain(id); }
 function addChildTab(groupId) {
-  if (groupId === 'dashboard') return;
-  const g = tabs.get(groupId); if (!g) return;
+  const g = tabs.get(groupId);
+  if (!g) return;
   const cid = 'tab_' + (tabIdCounter++);
-  tabs.set(cid, { id: cid, name: '子页面 ' + (tabIdCounter-1), isGroup: false, children: [], designImg: null, devImg: null, result: null, selectedIdx: -1, overlayOpacity: 0.5 });
-  g.children.push(cid); renderTabList(); activateTab(cid);
+  tabs.set(cid, {
+    id: cid, name: '子页面 ' + (tabIdCounter-1), isGroup: false, children: [],
+    designImg: null, devImg: null, result: null, selectedIdx: -1, overlayOpacity: 0.5
+  });
+  g.children.push(cid);
+  renderTabList();
+  activateTab(cid);
 }
 
-// ===== 左侧栏导航渲染 =====
 function renderTabList() {
-  const list = document.getElementById('tabList'); list.innerHTML = '';
-  
-  // 强力硬编码约束：第一项必为全局大屏
-  const dbItem = document.createElement('div');
-  dbItem.className = 'tab-item' + (activeTabId === 'dashboard' ? ' active' : '');
-  dbItem.innerHTML = '<span style="width:16px;display:inline-block;"></span><span class="tab-icon">📊</span><span class="tab-name" style="font-weight:700;color:#1A73E8;">数据看板</span>';
-  dbItem.onclick = function() { activateTab('dashboard'); };
-  list.appendChild(dbItem);
-
-  const groups = [], leafTabs = []; const childrenSet = new Set();
-  tabs.forEach(function(t) { if (t.isGroup && t.id !== 'dashboard') { for (let i = 0; i < t.children.length; i++) childrenSet.add(t.children[i]); } });
-  tabs.forEach(function(tab) { if (tab.isGroup && tab.id !== 'dashboard') groups.push(tab); else if (!childrenSet.has(tab.id) && tab.id !== 'dashboard') leafTabs.push(tab); });
-
-  for (let idx = 0; idx < groups.length; idx++) {
-    const g = groups[idx]; const isCollapsed = collapsedGroups.has(g.id);
-    list.appendChild(createTabItem(g, true, isCollapsed));
-    
-    const childWrap = document.createElement('div'); childWrap.className = 'sub-page-wrap';
+  const list = document.getElementById('tabList');
+  list.innerHTML = '';
+  const groups = [], leafTabs = [];
+  const childrenSet = new Set();
+  for (const [, t] of tabs) { if (t.isGroup) for (const cid of t.children) childrenSet.add(cid); }
+  for (const [, tab] of tabs) {
+    if (tab.isGroup) groups.push(tab);
+    else if (!childrenSet.has(tab.id)) leafTabs.push(tab);
+  }
+  // 数据面板排到最前
+  const dataPanelIdx = groups.findIndex(g => g.name === '数据面板');
+  if (dataPanelIdx > 0) {
+    const [dp] = groups.splice(dataPanelIdx, 1);
+    groups.unshift(dp);
+  }
+  for (const g of groups) {
+    const isCollapsed = collapsedGroups.has(g.id);
+    appendTabItem(list, g, true, isCollapsed);
+    const childWrap = document.createElement('div');
+    childWrap.className = 'sub-page-wrap';
     if (isCollapsed) childWrap.style.display = 'none';
-    for (let cidx = 0; cidx < g.children.length; cidx++) { const ct = tabs.get(g.children[cidx]); if (ct) childWrap.appendChild(createTabItem(ct, false)); }
-    
+    for (const cid of g.children) {
+      const ct = tabs.get(cid);
+      if (ct) childWrap.appendChild(createTabItem(ct, false));
+    }
     const addBtn = document.createElement('div');
-    addBtn.style.cssText = 'padding:8px 16px; font-size:13px; color:#1A73E8; cursor:pointer; font-weight:500; font-family:"Google Sans",sans-serif; margin-left:12px; border-radius:16px; transition:0.2s; display:inline-block;';
-    addBtn.textContent = '+ 新增子页面'; addBtn.onclick = function(e) { e.stopPropagation(); addChildTab(g.id); };
-    addBtn.onmouseenter = function() { addBtn.style.background = '#E8F0FE'; }; addBtn.onmouseleave = function() { addBtn.style.background = 'transparent'; };
-    childWrap.appendChild(addBtn); list.appendChild(childWrap);
+    if (g.name !== '数据面板') {
+      addBtn.style.cssText = 'padding:3px 10px 3px 22px;font-size:10px;color:#64748b;cursor:pointer;border-radius:4px;margin:1px 0;';
+      addBtn.textContent = '+ 新增走查设计稿';
+      addBtn.onclick = e => { e.stopPropagation(); addChildTab(g.id); };
+      addBtn.onmouseenter = () => addBtn.style.background = '#334155';
+      addBtn.onmouseleave = () => addBtn.style.background = 'transparent';
+    }
+    if (g.name !== '数据面板') childWrap.appendChild(addBtn);
+    list.appendChild(childWrap);
   }
-  for (let lidx = 0; lidx < leafTabs.length; lidx++) { list.appendChild(createTabItem(leafTabs[lidx], false)); }
+  for (const t of leafTabs) {
+    appendTabItem(list, t, false);
+  }
 }
-
+function appendTabItem(list, tab, isGroup, isCollapsed) {
+  const el = createTabItem(tab, isGroup, isCollapsed);
+  list.appendChild(el);
+}
 function createTabItem(tab, isGroup, isCollapsed) {
-  const el = document.createElement('div'); el.className = 'tab-item' + (tab.id === activeTabId ? ' active' : '');
+  const el = document.createElement('div');
+  el.className = 'tab-item' + (tab.id === activeTabId ? ' active' : '');
+  
+  // 判断是否子页面（属于某个板块）
+  const isChild = !isGroup && (() => {
+    for (const [, t] of tabs) if (t.isGroup && t.children.includes(tab.id)) return true;
+    return false;
+  })();
+  
+  // 板块：加折叠箭头
   if (isGroup) {
-      const arrow = isCollapsed ? '▶' : '▼';
-      el.innerHTML = '<span class="collapse-arrow" onclick="event.stopPropagation();toggleCollapse(\''+tab.id+'\')" style="width:16px;display:inline-flex;align-items:center;justify-content:center;font-size:10px;color:#5F6368;cursor:pointer;">'+arrow+'</span><span class="tab-icon">📁</span><span class="tab-name">'+tab.name+'</span><span class="tab-actions"><button onclick="event.stopPropagation();startRename(\''+tab.id+'\',this.parentElement.parentElement.querySelector(\'.tab-name\'))" title="重命名">✏️</button>'+(tabs.size>1 ?`<button class="del-btn" onclick="event.stopPropagation();removeTab(\''+tab.id+'\')" title="删除">✕</button>`:'')+'</span>';
-      el.onclick = function() { activateTab(tab.id); }; return el;
+    const arrow = isCollapsed ? '▶' : '▼';
+    el.innerHTML =
+      '<span class="collapse-arrow" onclick="event.stopPropagation();toggleCollapse(\''+tab.id+'\')" style="width:14px;display:inline-flex;align-items:center;justify-content:center;font-size:8px;color:#8b8fa3;cursor:pointer;flex-shrink:0;">'+arrow+'</span>' +
+      '<span class="tab-icon">📁</span>' +
+      '<span class="tab-name">' + tab.name + '</span>' +
+      '<span class="tab-actions">' +
+        '<button class="edit-btn" onclick="event.stopPropagation();startRename(\'' + tab.id + '\',this.parentElement.parentElement.querySelector(\'.tab-name\'))" title="重命名">✏️</button>' +
+        (tabs.size > 1 ? '<button class="del-btn" onclick="event.stopPropagation();removeTab(\'' + tab.id + '\')" title="删除">✕</button>' : '') +
+      '</span>';
+    el.onclick = () => activateTab(tab.id);
+    return el;
   }
-  let innerIconHtml = tab.designImg ? '<span class="tab-icon" style="width:24px;height:24px;border-radius:4px;overflow:hidden;border:1px solid #DADCE0;"><img src="'+tab.designImg+'" style="width:100%;height:100%;object-fit:cover;"></span>' : '<span class="tab-icon">📄</span>';
-  let badgeHtml = (tab.designImg && tab.devImg) ? '<span style="font-size:10px;padding:2px 6px;border-radius:12px;background:#E6F4EA;color:#137333;">已传</span>' : '<span style="font-size:10px;padding:2px 6px;border-radius:12px;background:#FCE8E6;color:#C5221F;">未传</span>';
-  el.innerHTML = innerIconHtml + '<span class="tab-name">'+tab.name+'</span>'+badgeHtml+'<span class="tab-actions"><button onclick="event.stopPropagation();startRename(\''+tab.id+'\',this.parentElement.parentElement.querySelector(\'.tab-name\'))">✏️</button><button class="del-btn" onclick="event.stopPropagation();removeTab(\''+tab.id+'\')">✕</button></span>';
-  el.onclick = function() { activateTab(tab.id); }; return el;
+  
+  // 子页面或独立 tab：有设计稿缩略图 + 标签
+  let innerIconHtml = '';
+  if (!isGroup && tab.designImg) {
+    innerIconHtml = '<span class="tab-icon" style="width:44px;height:44px;border-radius:4px;overflow:hidden;flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;border:1px solid #e2e8f0;cursor:pointer;position:relative;" onmouseenter="showTabPreview(event,\''+tab.designImg+'\',\''+tab.name.replace(/'/g,"\\'")+'\')" onmouseleave="hideTabPreview()"><img src="'+tab.designImg+'" style="width:100%;height:100%;object-fit:cover;"></span>';
+  } else {
+    const icon = isGroup ? '📁' : (tab.result ? (tab.result.issues.length > 0 ? '⚠️' : '✅') : '📄');
+    innerIconHtml = '<span class="tab-icon">' + icon + '</span>';
+  }
+  
+  // 标签：已上传/未上传（针对还原稿）
+  let badgeHtml = '';
+  if (isChild) {
+    if (tab.designImg && tab.devImg) {
+      badgeHtml = '<span class="tab-badge" style="font-size:10px;padding:2px 5px;border-radius:3px;background:#166534;color:#86efac;flex-shrink:0;">已上传</span>';
+    } else {
+      badgeHtml = '<span class="tab-badge" style="font-size:10px;padding:2px 5px;border-radius:3px;background:#dc2626;color:#fff;font-weight:500;flex-shrink:0;">未上传</span>';
+    }
+  }
+  
+  // 研发负责人标签（子页面）
+  let devTagHtml = '';
+  if (isChild) {
+    const devName = tab.developer || '';
+    if (devName) {
+      devTagHtml = '<span class="tab-devtag" style="font-size:10px;padding:2px 5px;border-radius:3px;background:#1e3a5f;color:#93c5fd;flex-shrink:0;max-width:55px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">'+devName+'</span>';
+    }
+  }
+  
+  el.innerHTML =
+    innerIconHtml +
+    '<span class="tab-name">' + tab.name + '</span>' +
+    badgeHtml +
+    devTagHtml +
+    '<span class="tab-actions">' +
+      '<button class="edit-btn" onclick="event.stopPropagation();startRename(\'' + tab.id + '\',this.parentElement.parentElement.querySelector(\'.tab-name\'))" title="重命名">✏️</button>' +
+      (tabs.size > 1 ? '<button class="del-btn" onclick="event.stopPropagation();removeTab(\'' + tab.id + '\')" title="删除">✕</button>' : '') +
+    '</span>';
+  el.onclick = () => activateTab(tab.id);
+  return el;
 }
 
-// ===== 核心图片上传与清除原生输入缓存机制 =====
-function handleDropFile(e, id, key) { 
-    const file = e.target.files[0]; if (!file) return; 
-    readImgToTab(id, key, file); 
-    e.target.value = ''; // 🚀 完美解决二次上传失效：清空 input 缓存，允许连续选同一张图并立刻触发
+/* ===== 各个面板与统计渲染 ===== */
+function toggleCollapse(groupId) {
+  if (collapsedGroups.has(groupId)) { collapsedGroups.delete(groupId); } else { collapsedGroups.add(groupId); }
+  renderTabList();
 }
-function handleDrop(e, id, key) { e.preventDefault(); e.currentTarget.classList.remove('dragover'); const file = e.dataTransfer.files[0]; if (file && file.type.indexOf('image/') !== -1) { readImgToTab(id, key, file); } }
-function readImgToTab(id, key, file) { 
-    const tab = tabs.get(id); if (!tab) return; 
-    const reader = new FileReader(); 
-    reader.onload = function(e) { 
-        if (key === 'design') tab.designImg = e.target.result; else if (key === 'dev') tab.devImg = e.target.result; 
-        renderMain(id); renderTabList(); autoSave();
-        if (tab.designImg && tab.devImg) runDetect(id); 
-    }; 
-    reader.readAsDataURL(file); 
+
+function startRename(id, nameEl) {
+  const tab = tabs.get(id); if (!tab || !nameEl) return;
+  const input = document.createElement('input'); input.className = 'inline-edit'; input.value = tab.name;
+  input.onblur = () => { renameTab(id,input.value); }; input.onkeydown = e => { if(e.key==='Enter')input.blur(); if(e.key==='Escape'){input.value=tab.name;input.blur();} };
+  nameEl.replaceWith(input); input.focus(); input.select();
 }
-function makeDropZone(id, key, icon, label) { return '<div class="drop-zone" id="dz_'+id+'_'+key+'" onclick="document.getElementById(\'fi_'+id+'_'+key+'\').click()" ondragover="e.preventDefault();this.classList.add(\'dragover\')" ondrop="handleDrop(event,\''+id+'\',\''+key+'\')" ondragleave="this.classList.remove(\'dragover\')"><div class="dz-icon">'+icon+'</div><div class="dz-text">'+label+'</div><input type="file" accept="image/*" id="fi_'+id+'_'+key+'" onchange="handleDropFile(event,\''+id+'\',\''+key+'\')" onclick="event.stopPropagation()"></div>'; }
 
-// ===== 缺陷忽略开关切换 =====
-window.toggleIssueStatus = function(id, idx) {
-    const tab = tabs.get(id); if (!tab || !tab.result || !tab.result.issues[idx]) return;
-    tab.result.issues[idx].closed = !tab.result.issues[idx].closed; autoSave();
-    renderIssueTable(id, tab); buildUploadBar(id); drawMarkers(id, tab);
-};
-
-// ===== 路由渲染大厅 =====
+// ===== Main =====
 function renderMain(id) {
-  const main = document.getElementById('mainArea'); if (id === 'dashboard') { renderDashboard(); return; }
-  const tab = tabs.get(id); if (!tab) return; if (tab.isGroup) { renderGroupMain(tab); return; }
-  
-  const hasResult = !!tab.result; let activeIssuesCount = 0;
-  if (hasResult && tab.result.issues) { for(let i=0; i<tab.result.issues.length; i++) { if (!tab.result.issues[i].closed) activeIssuesCount++; } }
-  
-  const dCellHtml = tab.designImg ? '<span class="cell-label">🎨 设计稿</span><button onclick="event.stopPropagation();removeDesignImg(\''+id+'\')" style="position:absolute;top:10px;right:45px;z-index:5;width:28px;height:28px;border:none;border-radius:50%;background:#FFFFFF;color:#5F6368;font-size:14px;cursor:pointer;box-shadow:0 1px 2px rgba(60,64,67,0.3);">✕</button><img class="cell-img" src="'+tab.designImg+'" id="dImg_'+id+'" onclick="event.stopPropagation();openModal(\''+tab.designImg+'\')"><span class="cell-enlarge" onclick="event.stopPropagation();openModal(\''+tab.designImg+'\')">🔍</span>' : makeDropZone(id,'design','🎨','点击或拖拽设计稿');
-  const vCellHtml = tab.devImg ? '<span class="cell-label">🛠 还原稿</span><button onclick="event.stopPropagation();removeDevImg(\''+id+'\')" style="position:absolute;top:10px;right:45px;z-index:5;width:28px;height:28px;border:none;border-radius:50%;background:#FFFFFF;color:#5F6368;font-size:14px;cursor:pointer;box-shadow:0 1px 2px rgba(60,64,67,0.3);">✕</button><img class="cell-img" src="'+tab.devImg+'" id="vImg_'+id+'" onclick="event.stopPropagation();openModal(\''+tab.devImg+'\')"><span class="cell-enlarge" onclick="event.stopPropagation();openModal(\''+tab.devImg+'\')">🔍</span>' : makeDropZone(id,'dev','🛠','点击或拖拽还原稿');
-  const overlaySrc = (tab.result && tab.result.diffOverlay) ? tab.result.diffOverlay : null;
-  const oCellHtml = tab.designImg && tab.devImg ? '<div class="overlay-wrap" id="ow_'+id+'"><span class="cell-label">🔀 叠图对比</span><img class="overlay-bg" src="'+tab.designImg+'" style="opacity:1;"><img class="overlay-top" src="'+tab.devImg+'" style="opacity:'+tab.overlayOpacity+'"><span class="cell-enlarge" onclick="event.stopPropagation();enlargeOverlay(\''+id+'\')">🔍</span><div class="overlay-slider"><span class="slider-val">透明度</span><input type="range" min="0" max="100" value="'+Math.round(tab.overlayOpacity*100)+'" oninput="setOverlay(\''+id+'\', this.value/100)"><span class="slider-val">'+Math.round(tab.overlayOpacity*100)+'%</span></div></div>' : '<div class="overlay-wrap" id="ow_'+id+'"><span class="cell-label">🔀 叠图对比</span><div class="drop-zone"><div class="dz-icon">🔀</div><div class="dz-text">需同时上传两图</div></div></div>';
-  const hCellHtml = hasResult && overlaySrc ? '<span class="cell-label">🔥 差异热图</span><img class="cell-img" src="'+overlaySrc+'" onclick="event.stopPropagation();openModal(\''+overlaySrc+'\')"><span class="cell-enlarge" onclick="event.stopPropagation();openModal(\''+overlaySrc+'\')">🔍</span>' : '<div style="display:flex;flex-direction:column;align-items:center;justify-content:center;width:100%;height:100%;color:#80868B;background:#F8F9FA;"><div class="dz-icon">🔥</div><div class="dz-text" style="margin-top:12px;">对比后自动生成</div></div>';
+  const main = document.getElementById('mainArea');
+  const tab = tabs.get(id);
+  if (!tab) return;
+  if (tab.isGroup && tab.name === '数据面板') { renderDashboard(tab); return; }
+  if (tab.isGroup) { renderGroupMain(tab); return; }
+  const hasResult = !!tab.result;
 
-  main.innerHTML = '<div class="upload-bar" id="ub_'+id+'"></div><div class="compare-4" id="c4_'+id+'"><div class="cell" id="dCell_'+id+'">'+dCellHtml+'</div><div class="cell" id="vCell_'+id+'">'+vCellHtml+'</div><div class="cell" id="oCell_'+id+'">'+oCellHtml+'</div><div class="cell" id="hCell_'+id+'">'+hCellHtml+'</div></div><div class="resize-bar" id="resizeBar_'+id+'"></div><div class="issue-panel" id="ip_'+id+'"><div class="issue-header" id="ih_'+id+'"><h3>📋 缺陷报告</h3><span class="stats">'+(hasResult ? '' : '暂无数据')+'</span></div><div class="issue-list-wrap" id="ilw_'+id+'"><div class="loading-state"><span>'+(hasResult && activeIssuesCount===0 ? '🎉 完美还原！没有未修复的问题。' : hasResult ? '渲染中…' : '请在上方点击「开始走查」')+'</span></div></div></div>';
-  buildUploadBar(id); if (hasResult) renderIssueTable(id, tab);
+  const dCellHtml = tab.designImg
+    ? `<span class="cell-label">🎨 设计稿</span><button onclick="event.stopPropagation();removeDesignImg('${id}')" style="position:absolute;top:5px;right:26px;z-index:5;width:18px;height:18px;border:none;border-radius:3px;background:rgba(239,68,68,.6);color:#fff;font-size:9px;cursor:pointer;display:flex;align-items:center;justify-content:center;">✕</button><img class="cell-img" src="${tab.designImg}" id="dImg_${id}" onclick="event.stopPropagation();openModal('${tab.designImg}')"><span class="cell-enlarge" onclick="event.stopPropagation();openModal('${tab.designImg}')">🔍</span>`
+    : makeDropZone(id,'design','🎨','设计稿');
+  const vCellHtml = tab.devImg
+    ? `<span class="cell-label">🛠 还原稿</span><button onclick="event.stopPropagation();removeDevImg('${id}')" style="position:absolute;top:5px;right:26px;z-index:5;width:18px;height:18px;border:none;border-radius:3px;background:rgba(239,68,68,.6);color:#fff;font-size:9px;cursor:pointer;display:flex;align-items:center;justify-content:center;">✕</button><img class="cell-img" src="${tab.devImg}" id="vImg_${id}" onclick="event.stopPropagation();openModal('${tab.devImg}')"><span class="cell-enlarge" onclick="event.stopPropagation();openModal('${tab.devImg}')">🔍</span>`
+    : makeDropZone(id,'dev','🛠','还原稿');
+
+  const oCellHtml = tab.designImg && tab.devImg
+    ? `<div class="overlay-wrap" id="ow_${id}"><span class="cell-label">🔀 叠图</span>
+        <img class="overlay-bg" src="${tab.designImg}" style="opacity:1;">
+        <img class="overlay-top" src="${tab.devImg}" style="opacity:${tab.overlayOpacity}">
+        ${makeEnlargeBtn(id,'overlay')}
+        <div class="overlay-slider">
+          <span class="slider-icon">☀</span>
+          <input type="range" min="0" max="100" value="${Math.round(tab.overlayOpacity*100)}" oninput="setOverlay('${id}', this.value/100)">
+          <span class="slider-val">${Math.round(tab.overlayOpacity*100)}%</span>
+        </div></div>`
+    : `<div class="overlay-wrap" id="ow_${id}"><span class="cell-label">🔀 叠图</span><div class="drop-zone"><div class="dz-icon">🔀</div><div class="dz-text">需同时上传两图</div></div></div>`;
+
+  const hCellHtml = hasResult && tab.result.diffOverlay
+    ? `<span class="cell-label">🔥 差异热力图</span><img class="cell-img" src="${tab.result.diffOverlay}" onclick="event.stopPropagation();openModal('${tab.result.diffOverlay}')"><span class="cell-enlarge" onclick="event.stopPropagation();openModal('${tab.result.diffOverlay}')">🔍</span>`
+    : `<div style="display:flex;flex-direction:column;align-items:center;justify-content:center;width:100%;height:100%;color:#94a3b8;gap:8px;"><div class="dz-icon">🔥</div><div class="dz-text">上传两张图后自动生成</div></div>`;
+
+  function makeEnlargeBtn(tid, key) {
+    return `<span class="cell-enlarge" onclick="event.stopPropagation();enlargeOverlay('${tid}')">🔍</span>`;
+  }
+
+  main.innerHTML = `
+    <div class="upload-bar" id="ub_${id}"></div>
+    <div class="compare-4" id="c4_${id}">
+      <div class="cell" id="dCell_${id}">${dCellHtml}</div>
+      <div class="cell" id="vCell_${id}">${vCellHtml}</div>
+      <div class="cell" id="oCell_${id}" onclick="enlargeOverlay('${id}')">${oCellHtml}</div>
+      <div class="cell" id="hCell_${id}">${hCellHtml}</div>
+    </div>
+    <div class="resize-bar" id="resizeBar_${id}"><div class="grip">⋮⋮⋮ 拖拽调整</div></div>
+    <div class="issue-panel" id="ip_${id}">
+      <div class="issue-header" id="ih_${id}">
+        <h3>📋 差异问题</h3>
+        <span class="stats">${hasResult ? '已检测' : '请上传并点击「检测」'}</span>
+      </div>
+      <div class="issue-list-wrap" id="ilw_${id}">
+        <div class="loading-state"><span>${hasResult && tab.result.issues.length===0 ? '✅ 未发现差异' : hasResult ? '加载中…' : '等待检测'}</span></div>
+      </div>
+    </div>`;
+
+  buildUploadBar(id);
+  if (hasResult) renderIssueTable(id, tab);
 }
 
-// ===== 视图渲染：全局数据看板 =====
-function renderDashboard() {
-  const main = document.getElementById('mainArea'); const allTabsWithResult = []; const seenIds = new Set();
-  tabs.forEach(t => {
-    if (t.id === 'dashboard') return;
-    if (t.isGroup) {
-      t.children.forEach(cid => { const ct = tabs.get(cid); if (ct && ct.result && !seenIds.has(ct.id)) { seenIds.add(ct.id); allTabsWithResult.push(ct); } });
-    } else { if (t.result && !seenIds.has(t.id)) { seenIds.add(t.id); allTabsWithResult.push(t); } }
+function buildUploadBar(id) {
+  const ub = document.getElementById('ub_'+id);
+  const tab = tabs.get(id);
+  if (!ub||!tab) return;
+  const dOk=!!tab.designImg, vOk=!!tab.devImg;
+  const devName = tab.developer || '';
+  ub.innerHTML = `
+    <div style="display:flex;align-items:center;gap:6px;padding:2px 6px 2px 10px;background:#f1f5f9;border-radius:6px;flex-shrink:0;">
+      <span style="font-size:11px;color:#475569;font-weight:500;">👤 研发负责人</span>
+      ${devName
+        ? `<span style="font-size:12px;font-weight:600;color:#1e40af;padding:0 4px;">${devName}</span><button onclick="event.stopPropagation();openDevSelector('${id}')" style="border:none;background:transparent;cursor:pointer;font-size:11px;color:#64748b;padding:0 2px;" title="修改">✏️</button>`
+        : `<button onclick="event.stopPropagation();openDevSelector('${id}')" style="border:1px dashed #cbd5e1;border-radius:4px;background:transparent;font-size:11px;color:#64748b;cursor:pointer;padding:3px 10px;">+ 设置</button>`}
+    </div>
+    <label class="file-label${dOk?' has-img':''}">🎨 设计稿 ${dOk?'✅':'选择'}<input type="file" accept="image/*" onchange="handleDropFile(event,'${id}','design')"></label>
+    <label class="file-label${vOk?' has-img':''}">🛠 还原稿 ${vOk?'✅':'选择'}<input type="file" accept="image/*" onchange="handleDropFile(event,'${id}','dev')"></label>
+    <button class="detect-btn" onclick="runDetect('${id}')" ${dOk&&vOk?'':'disabled'}>🔍 检测</button>
+    <span class="status">${tab.result ? '✅ '+tab.result.issues.length+' 个问题' : '等待检测'}</span>
+  `;
+}
+
+function openDevSelector(id) {
+  const tab = tabs.get(id); if (!tab) return;
+  document.querySelectorAll('.dev-selector-overlay').forEach(el => el.remove());
+  const rect = document.getElementById('ub_'+id); if (!rect) return;
+  const overlay = document.createElement('div'); overlay.className = 'dev-selector-overlay'; overlay.style.cssText = 'position:fixed;inset:0;z-index:999;'; overlay.onclick = (e) => { if (e.target === overlay) overlay.remove(); };
+  const panel = document.createElement('div'); panel.style.cssText = 'position:absolute;background:#fff;border:1px solid #e2e8f0;border-radius:8px;box-shadow:0 4px 16px rgba(0,0,0,.12);padding:8px;min-width:180px;z-index:1000;display:flex;flex-direction:column;gap:4px;';
+  document.body.appendChild(overlay); overlay.appendChild(panel);
+  const br = rect.getBoundingClientRect(); panel.style.left = Math.min(br.left, window.innerWidth - 200) + 'px'; panel.style.top = (br.bottom + 4) + 'px';
+  const currentName = tab.developer || ''; const allNames = [...new Set(devPool)].sort();
+  const searchInput = document.createElement('input'); searchInput.type = 'text'; searchInput.placeholder = '搜索或输入新名字...'; searchInput.value = currentName; searchInput.style.cssText = 'width:100%;padding:6px 8px;border:1px solid #d1d5db;border-radius:6px;font-size:12px;outline:none;box-sizing:border-box;'; searchInput.oninput = filterList; panel.appendChild(searchInput);
+  const list = document.createElement('div'); list.style.cssText = 'max-height:160px;overflow-y:auto;display:flex;flex-direction:column;gap:2px;'; panel.appendChild(list);
+  function filterList() {
+    const q = searchInput.value.trim().toLowerCase(); list.innerHTML = ''; const matched = allNames.filter(n => n.toLowerCase().includes(q));
+    if (q && !allNames.some(n => n.toLowerCase() === q)) {
+      const item = document.createElement('div'); item.style.cssText = 'padding:6px 8px;border-radius:4px;font-size:12px;color:#3b82f6;cursor:pointer;display:flex;align-items:center;gap:6px;'; item.innerHTML = '<span style="font-size:14px;">+</span> 新建 "' + searchInput.value.trim() + '"';
+      item.onmouseenter = () => item.style.background = '#eff6ff'; item.onmouseleave = () => item.style.background = ''; item.onclick = () => { selectDev(id, searchInput.value.trim()); overlay.remove(); }; list.appendChild(item);
+    }
+    for (const n of matched) {
+      const item = document.createElement('div'); item.style.cssText = 'padding:6px 8px;border-radius:4px;font-size:12px;color:#334155;cursor:pointer;display:flex;align-items:center;gap:6px;'; if (n === currentName) item.style.background = '#eff6ff'; item.innerHTML = '<span style="font-size:12px;color:#94a3b8;">👤</span> ' + n + (n === currentName ? ' <span style="font-size:10px;color:#3b82f6;">(当前)</span>' : ''); item.onmouseenter = () => { if (n !== currentName) item.style.background = '#f1f5f9'; }; item.onmouseleave = () => { if (n !== currentName) item.style.background = ''; }; item.onclick = () => { selectDev(id, n); overlay.remove(); }; list.appendChild(item);
+    }
+  }
+  filterList(); setTimeout(() => searchInput.focus(), 50);
+}
+function selectDev(id, name) { const tab = tabs.get(id); if (!tab) return; tab.developer = name || ''; if (name) addToDevPool(name); buildUploadBar(id); autoSave(); }
+function setOverlay(id, val) { const tab = tabs.get(id); if (!tab) return; tab.overlayOpacity = val; const topImg = document.querySelector(`#ow_${id} .overlay-top`); if (topImg) topImg.style.opacity = val; const vEl = document.querySelector(`#ow_${id} .slider-val`); if (vEl) vEl.textContent = Math.round(val*100)+'%'; }
+
+// =========================================================
+// 🚀 核心检测引擎 (整合纠偏与文字细化逻辑)
+// =========================================================
+async function runDetect(id) {
+  const tab = tabs.get(id); if (!tab || !tab.designImg || !tab.devImg) return;
+  tab.result = null; tab.selectedIdx = -1; renderMain(id);
+  const s = document.querySelector(`#ub_${id} .status`); if (s) s.textContent = '⏳ 小龙虾正在进行结构感知走查…';
+  try {
+    let rawResult = await window.vgDetect(tab.designImg, tab.devImg);
+    if (rawResult && rawResult.issues) {
+      let wrappedIssues = rawResult.issues.map(is => ({ ...is, box: { x: is.x, y: is.y, w: is.w, h: is.h } }));
+      let refinedIssues = applyStructuralCorrection(wrappedIssues);
+      rawResult.issues = refinedIssues.map(is => ({ ...is, x: is.box.x, y: is.box.y, w: is.box.w, h: is.box.h }));
+      rawResult.issues.forEach((is, i) => is.regionIndex = i + 1);
+    }
+    tab.result = rawResult; renderMain(id); renderTabList(); if(typeof autoSave === 'function') autoSave();
+    if (s) s.textContent = `✅ 检测完成，共发现 ${rawResult.issues.length} 个有效偏差`;
+    triggerJoyFeedback(rawResult.issues);
+  } catch(e) { if (s) s.textContent = '❌ '+e.message; console.error(e); }
+}
+
+function applyStructuralCorrection(issues) {
+  let clusters = []; const MERGE_RADIUS = 40;
+  issues.forEach(issue => {
+    let merged = false;
+    for (let cluster of clusters) {
+      if (!(issue.box.x > cluster.box.x + cluster.box.w + MERGE_RADIUS || issue.box.x + issue.box.w + MERGE_RADIUS < cluster.box.x || issue.box.y > cluster.box.y + cluster.box.h + MERGE_RADIUS || issue.box.y + issue.box.h + MERGE_RADIUS < cluster.box.y)) {
+        cluster.box = { x: Math.min(cluster.box.x, issue.box.x), y: Math.min(cluster.box.y, issue.box.y), w: Math.max(cluster.box.x + cluster.box.w, issue.box.x + issue.box.w) - Math.min(cluster.box.x, issue.box.x), h: Math.max(cluster.box.y + cluster.box.h, issue.box.y + issue.box.h) - Math.min(cluster.box.y, issue.box.y) };
+        cluster.rawIssues.push(issue); merged = true; break;
+      }
+    }
+    if (!merged) { clusters.push({ box: issue.box, rawIssues: [issue] }); }
   });
 
-  let p0 = 0, p1 = 0, p2 = 0; const catMap = {}; 
-  allTabsWithResult.forEach(ct => {
-    if (ct.result && ct.result.issues) {
-      ct.result.issues.forEach(is => {
-        if (!is.closed) { 
-            if (is.priority === 'P0') p0++; else if (is.priority === 'P1') p1++; else if (is.priority === 'P2') p2++;
-            const c = is.category || 'unknown'; catMap[c] = (catMap[c] || 0) + 1;
+  let refined = [];
+  clusters.forEach(cluster => {
+    let box = cluster.box; let mainIssue = cluster.rawIssues.sort((a,b) => (a.priority<b.priority?-1:1))[0]; let area = box.w * box.h;
+    let category = mainIssue.category; let description = mainIssue.description || mainIssue.desc || ''; let detail = mainIssue.detail || ''; let priority = mainIssue.priority || 'P1';
+    const isLargeArea = area > 8000; const isSquareish = (Math.max(box.w, box.h) / Math.min(box.w, box.h)) < 1.8;
+    const hasFontError = cluster.rawIssues.some(i => i.category === 'font' || i.category === 'text' || (i.desc && i.desc.includes('文字')));
+    const isSmallText = area < 3500;
+
+    if (isLargeArea) {
+      category = isSquareish ? '图片问题' : '容器模块'; description = isSquareish ? '插画/大图模块差异' : '卡片/容器整体偏差';
+      const hasColorError = cluster.rawIssues.some(i => i.category === 'color');
+      if (hasColorError) { description = '整体位置偏移'; detail = '检测到大卡片或图片发生整体位移，导致原位比对出现大面积报错。'; priority = 'P0'; }
+    } else if (hasFontError || (isSmallText && mainIssue.category === 'color')) {
+       category = '文字问题';
+       if (mainIssue.category === 'color' || cluster.rawIssues.some(i => i.category === 'color')) { description = '颜色差异'; detail = `文字颜色或对比度发生变化 (底层推测: ${detail})`; priority = 'P1'; }
+       else if (mainIssue.category === 'size' || cluster.rawIssues.some(i => i.category === 'size')) { description = '字号差异'; detail = `字号大小或粗细(Weight)发生变化 (底层推测: ${detail})`; priority = 'P1'; }
+       else { description = '排版差异'; detail = `文字对齐、行高或间距出现偏移 (底层推测: ${detail})`; priority = 'P2'; }
+    }
+    refined.push({ ...mainIssue, box: box, category: category, description: description, detail: detail, priority: priority });
+
+    // ⚡ 核心修复：如果是大面积背景错位报错，但里面同时抓到了文字子弹，直接把文字错误捞出来单独追加，防止文字淹没在背景框里。
+    if (isLargeArea) {
+      cluster.rawIssues.forEach(is => {
+        if (is.category === 'font' || is.category === 'size' || is.category === 'text' || (is.description && is.description.includes('文字'))) {
+          refined.push({ ...is, box: is.box || box, category: '文字问题', description: is.description || (is.category === 'font' ? '颜色差异' : '字号差异'), detail: is.detail, priority: 'P1' });
         }
       });
     }
   });
+  return refined;
+}
 
-  main.innerHTML = '<div class="upload-bar" style="justify-content: space-between;"><div style="font-size: 18px; font-weight: 500; font-family: \'Google Sans\', sans-serif;">📊 全局数据看板</div><div class="status">统计数据实时更新</div></div><div class="dashboard-wrap"><div class="card-grid"><div class="stat-card card-p0"><div class="val" style="color:#C5221F;">'+p0+'</div><div class="lbl">P0 严重破坏</div></div><div class="stat-card card-p1"><div class="val" style="color:#F29900;">'+p1+'</div><div class="lbl">P1 样式异常</div></div><div class="stat-card card-p2"><div class="val" style="color:#1A73E8;">'+p2+'</div><div class="lbl">P2 体验瑕疵</div></div><div class="stat-card card-pages"><div class="val" style="color:#137333;">'+allTabsWithResult.length+'</div><div class="lbl">已走查页面数</div></div></div><div style="display:grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 24px;"><div class="stat-card"><div class="lbl" style="margin-bottom:12px;">缺陷分类分布</div><canvas id="dashboardPieChart" width="400" height="200" style="width:200px;height:100px;"></canvas></div><div class="stat-card"><div class="lbl" style="margin-bottom:12px;">严重级趋势</div><canvas id="dashboardBarChart" width="400" height="200" style="width:200px;height:100px;"></canvas></div></div><div style="background:#FFFFFF; border:1px solid #DADCE0; border-radius:8px; padding:20px; box-shadow:0 1px 2px 0 rgba(60,64,67,0.1); margin-bottom:24px;"><div style="font-size:14px; font-weight:500; font-family:\'Google Sans\',sans-serif; color:#202124; margin-bottom:16px;">👨‍💻 研发责任人效能统计</div><div id="devStatsSection"></div></div><div style="background:#FFFFFF; border:1px solid #DADCE0; border-radius:8px; padding:20px; box-shadow:0 1px 2px 0 rgba(60,64,67,0.1);"><div style="font-size:14px; font-weight:500; font-family:\'Google Sans\',sans-serif; color:#202124; margin-bottom:16px;">🖼️ 全局检测页面池</div><div id="allPagesImagesSection"></div></div></div>';
+function triggerJoyFeedback(issues) {
+  const oldJoy = document.getElementById('joy-feedback-widget'); if (oldJoy) oldJoy.remove();
+  const p0Count = issues.filter(i => i.priority === 'P0').length; const textCount = issues.filter(i => i.category === '文字问题').length;
+  const joyEl = document.createElement('div'); joyEl.id = 'joy-feedback-widget';
+  joyEl.style.cssText = 'position:fixed;bottom:30px;right:30px;z-index:9999;background:rgba(255,255,255,0.95);backdrop-filter:blur(10px);padding:16px 20px;border-radius:16px;box-shadow:0 12px 32px rgba(0,0,0,0.12);display:flex;align-items:center;gap:16px;transition:all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);transform:translateY(100px);opacity:0;border:1px solid rgba(255,255,255,0.5);';
+  let emoji, title, desc, titleColor;
+  if (issues.length === 0) { emoji = '🐶✨'; title = 'Joy 欢呼！'; desc = '完美还原，确定性拉满！'; titleColor = '#22c55e'; }
+  else if (p0Count > 0) { emoji = '🐶💧'; title = 'Joy 很担心...'; desc = `发现 ${p0Count} 个 P0 级严重整体偏差！`; titleColor = '#ef4444'; }
+  else if (textCount > 0) { emoji = '🐶📝'; title = 'Joy 在核对排版'; desc = `发现了 ${textCount} 处文字样式或排版差异。`; titleColor = '#3b82f6'; }
+  else { emoji = '🐶👀'; title = 'Joy 正在注视'; desc = `有 ${issues.length} 个细节偏差，建议调整。`; titleColor = '#f59e0b'; }
+  joyEl.innerHTML = `<div style="font-size:36px;filter:drop-shadow(0 4px 6px rgba(0,0,0,0.1));">${emoji}</div><div style="display:flex;flex-direction:column;gap:4px;"><b style="font-size:15px;color:${titleColor};letter-spacing:0.5px;">${title}</b><span style="font-size:12px;color:#64748b;font-weight:500;">${desc}</span></div>`;
+  document.body.appendChild(joyEl); requestAnimationFrame(() => { joyEl.style.transform = 'translateY(0)'; joyEl.style.opacity = '1'; });
+  setTimeout(() => { joyEl.style.transform = 'translateY(20px)'; joyEl.style.opacity = '0'; setTimeout(() => joyEl.remove(), 400); }, 4000);
+}
 
-  setTimeout(function() {
+function renderIssueTable(id, tab) {
+  const r = tab.result; if (!r) return; const rawIssues = r.issues || []; const cr = r.cropUrls || [];
+  const issues = sortByPriority(rawIssues); const idxMap = rawIssues.map((iss,i)=>i);
+  idxMap.sort((a,b) => (po[rawIssues[a].priority]??99) - (po[rawIssues[b].priority]??99));
+  const sortedCr = idxMap.map(i=>cr[i]);
+  const h = document.getElementById('ih_'+id);
+  if (h) { const p0=rawIssues.filter(x=>x.priority==='P0').length; const p1=rawIssues.filter(x=>x.priority==='P1').length; const p2=rawIssues.filter(x=>x.priority==='P2').length; h.innerHTML = `<h3>📋 差异问题</h3><span class="stats">共 ${rawIssues.length} 项 · P0: ${p0} · P1: ${p1} · P2: ${p2}</span>`; }
+  const wrap = document.getElementById('ilw_'+id); if (!wrap) return;
+  if (issues.length === 0) { wrap.innerHTML = '<div class="no-issues">✅ 未发现差异</div>'; return; }
+  let html = `<table class="issue-table"><thead><tr><th class="id-col">#</th><th class="prio-col">级别</th><th class="type-col">类型</th><th>描述</th><th>预览</th><th>详情</th></tr></thead><tbody>`;
+  const typeMap = { font:'字体', position:'位置', size:'尺寸', color:'颜色' };
+  issues.forEach((iss,i) => {
+    const src = sortedCr[i] || ''; const previewHtml = src ? `<img class="preview-img" src="${src}" onclick="event.stopPropagation();openModal('${src}')">` : '🔍';
+    let subTypeStyle = ''; if (iss.category === '文字问题') { if (iss.description === '颜色差异') subTypeStyle = 'color: #dc2626; font-weight: 600;'; else if (iss.description === '字号差异') subTypeStyle = 'color: #d97706; font-weight: 600;'; else subTypeStyle = 'color: #2563eb; font-weight: 600;'; }
+    html += `<tr class="${i===tab.selectedIdx?'active':''}" data-idx="${idxMap[i]}" onclick="selectIssue('${id}',${idxMap[i]})"><td class="id-col">${i+1}</td><td class="prio-col"><span class="tag tag-${iss.priority||'P2'}">${iss.priority||'P2'}</span></td><td class="type-col">${typeMap[iss.category]||iss.category}</td><td style="${subTypeStyle}">${iss.description || ''}</td><td>${previewHtml}</td><td style="color:#64748b;font-size:11px;">${iss.detail||''}</td></tr>`;
+  });
+  html += '</tbody></table>'; wrap.innerHTML = html;
+  if (issues.length > 0 && tab.selectedIdx < 0) selectIssue(id, idxMap[0]); else if (tab.selectedIdx >= 0) drawMarkers(id, tab);
+}
+
+// ===== 看板与普通树列表功能组件 =====
+function renderDashboard(group) {
+  const main = document.getElementById('mainArea'); const allTabsWithResult = []; const seenIds = new Set();
+  tabs.forEach(t => { if (t.isGroup && t.name !== '数据面板') { t.children.forEach(cid => { const ct = tabs.get(cid); if (ct && ct.result && !seenIds.has(ct.id)) { seenIds.add(ct.id); allTabsWithResult.push(ct); } }); } else { if (t.result && !seenIds.has(t.id)) { seenIds.add(t.id); allTabsWithResult.push(t); } } });
+  const allIssues = allTabsWithResult.flatMap(ct => (ct.result ? ct.result.issues : [])); const p0 = allIssues.filter(i => i.priority === 'P0').length; const p1 = allIssues.filter(i => i.priority === 'P1').length; const p2 = allIssues.filter(i => i.priority === 'P2').length;
+  const catMap = {}; for (const i of allIssues) { const c = i.category || 'unknown'; catMap[c] = (catMap[c] || 0) + 1; }
+  const catColors = { font: '#3b82f6', position: '#f59e0b', size: '#8b5cf6', color: '#22c55e', text: '#3b82f6', container: '#06b6d4', image: '#a855f7' }; const catNames = { font: '文字颜色', position: '位置偏移', size: '大小偏差', color: '颜色偏差', text: '文字问题', container: '容器模块', image: '图片问题' };
+
+  main.innerHTML = `<div style="padding:10px 20px;font-size:13px;font-weight:600;color:#334155;border-bottom:1px solid #e2e8f0;background:#f8fafc;flex-shrink:0;display:flex;align-items:center;gap:8px;">📊 ${group.name}<span style="font-size:11px;font-weight:400;color:#64748b;">— 共检测 ${allTabsWithResult.length} 个页面，发现问题 ${allIssues.length} 个</span></div><div style="flex:1;overflow-y:auto;display:flex;flex-direction:column;gap:12px;padding:16px 20px;"><div style="background:#fff;border-radius:8px;border:1px solid #e2e8f0;padding:12px;flex-shrink:0;"><div style="font-size:12px;font-weight:600;color:#334155;margin-bottom:8px;">📊 不同板块对比</div><div id="groupCompareChart" style="padding:4px 0;"></div></div><div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;"><div style="background:#fff;border-radius:8px;padding:14px;border:1px solid #e2e8f0;text-align:center;"><div style="font-size:28px;font-weight:700;color:#ef4444;">${p0}</div><div style="font-size:11px;color:#64748b;margin-top:4px;">P0 严重问题</div></div><div style="background:#fff;border-radius:8px;padding:14px;border:1px solid #e2e8f0;text-align:center;"><div style="font-size:28px;font-weight:700;color:#f59e0b;">${p1}</div><div style="font-size:11px;color:#64748b;margin-top:4px;">P1 主要问题</div></div><div style="background:#fff;border-radius:8px;padding:14px;border:1px solid #e2e8f0;text-align:center;"><div style="font-size:28px;font-weight:700;color:#3b82f6;">${p2}</div><div style="font-size:11px;color:#64748b;margin-top:4px;">P2 次要问题</div></div><div style="background:#fff;border-radius:8px;padding:14px;border:1px solid #e2e8f0;text-align:center;"><div style="font-size:28px;font-weight:700;color:#22c55e;">${allTabsWithResult.length}</div><div style="font-size:11px;color:#64748b;margin-top:4px;">已检测页面</div></div></div><div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;"><div style="background:#fff;border-radius:8px;border:1px solid #e2e8f0;padding:8px;"><div style="font-size:11px;font-weight:600;color:#334155;margin-bottom:4px;">问题类别分布</div><canvas id="dashboardPieChart" width="600" height="300" style="width:300px;height:150px;max-width:100%;"></canvas></div><div style="background:#fff;border-radius:8px;border:1px solid #e2e8f0;padding:8px;"><div style="font-size:11px;font-weight:600;color:#334155;margin-bottom:4px;">优先级分布</div><canvas id="dashboardBarChart" width="600" height="300" style="width:300px;height:150px;max-width:100%;"></canvas></div></div></div>`;
+
+  setTimeout(() => {
     const pieC = document.getElementById('dashboardPieChart');
     if (pieC) {
-      const ctx = pieC.getContext('2d'); ctx.clearRect(0,0,400,200); const entries = Object.entries(catMap);
-      if(entries.length === 0) { ctx.font='14px Roboto'; ctx.fillText('暂无数据', 150, 100); }
+      const dpr = window.devicePixelRatio || 1, pw = 300, ph = 150; pieC.width = pw * dpr; pieC.height = ph * dpr; pieC.style.width = pw + 'px'; pieC.style.height = ph + 'px';
+      const ctx = pieC.getContext('2d'); ctx.scale(dpr, dpr); ctx.clearRect(0,0,pw,ph); const entries = Object.entries(catMap);
+      if (entries.length === 0) { ctx.fillStyle = '#94a3b8'; ctx.font = '11px sans-serif'; ctx.textAlign = 'center'; ctx.fillText('暂无数据', pw/2, ph/2); }
       else {
-        let start = 0; const total = p0 + p1 + p2; const colors = {'文字问题':'#1A73E8', 'position':'#F29900', 'color':'#D93025', 'size':'#A142F4', 'container':'#12B5CB', 'image':'#34A853'};
-        entries.forEach((entry, idx) => {
-            const cat = entry[0]; const val = entry[1]; const slice = (val/total) * 2 * Math.PI; ctx.beginPath(); ctx.moveTo(100,100); ctx.arc(100,100, 80, start, start+slice); ctx.fillStyle = colors[cat] || '#80868B'; ctx.fill(); ctx.fillRect(220, 30 + idx*25, 12, 12); ctx.fillStyle='#3C4043'; ctx.font='14px Roboto'; ctx.fillText(cat+' ('+val+')', 240, 42 + idx*25); start += slice;
-        });
+        const total = entries.reduce((s, [,v]) => s+v, 0); const cx = 60, cy = 75, r = 50, innerR = 28; let startAngle = -Math.PI/2;
+        for (const [cat, count] of entries) { const slice = (count / total) * Math.PI * 2; const endAngle = startAngle + slice; ctx.beginPath(); ctx.arc(cx, cy, r, startAngle, endAngle); ctx.arc(cx, cy, innerR, endAngle, startAngle, true); ctx.closePath(); ctx.fillStyle = catColors[cat] || '#94a3b8'; ctx.fill(); startAngle = endAngle; }
+        ctx.fillStyle = '#334155'; ctx.font = 'bold 13px sans-serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText(total, cx, cy - 3); ctx.fillStyle = '#64748b'; ctx.font = '8px sans-serif'; ctx.fillText('问题数', cx, cy + 10);
+        let ly = 6; for (const [cat, count] of entries) { const pct = Math.round(count / total * 100); ctx.fillStyle = catColors[cat] || '#94a3b8'; ctx.fillRect(130, ly, 8, 8); ctx.fillStyle = '#334155'; ctx.font = '9px sans-serif'; ctx.textAlign = 'left'; ctx.textBaseline = 'top'; ctx.fillText((catNames[cat]||cat) + ' ' + count + '(' + pct + '%)', 142, ly); ly += 18; }
       }
     }
     const barC = document.getElementById('dashboardBarChart');
     if (barC) {
-      const ctx = barC.getContext('2d'); ctx.clearRect(0,0,400,200); const max = Math.max(p0, p1, p2, 1);
-      ctx.fillStyle='#FCE8E6'; ctx.fillRect(60, 160 - (p0/max)*120, 60, (p0/max)*120); ctx.fillStyle='#C5221F'; ctx.fillText(`P0: ${p0}`, 75, 150 - (p0/max)*120);
-      ctx.fillStyle='#FEF7E0'; ctx.fillRect(160, 160 - (p1/max)*120, 60, (p1/max)*120); ctx.fillStyle='#B06000'; ctx.fillText(`P1: ${p1}`, 175, 150 - (p1/max)*120);
-      ctx.fillStyle='#E8F0FE'; ctx.fillRect(260, 160 - (p2/max)*120, 60, (p2/max)*120); ctx.fillStyle='#1A73E8'; ctx.fillText(`P2: ${p2}`, 275, 150 - (p2/max)*120);
-      ctx.beginPath(); ctx.moveTo(40,160); ctx.lineTo(360,160); ctx.stroke();
+      const bpr = window.devicePixelRatio || 1, bw = 300, bh = 150; barC.width = bw * bpr; barC.height = bh * bpr; barC.style.width = bw + 'px'; barC.style.height = bh + 'px';
+      const bctx = barC.getContext('2d'); bctx.scale(bpr, bpr); bctx.clearRect(0,0,bw,bh);
+      const priData = [{label:'P0',count:p0,color:'#ef4444',grad:['#ef4444','#dc2626']}, {label:'P1',count:p1,color:'#f59e0b',grad:['#f59e0b','#d97706']}, {label:'P2',count:p2,color:'#3b82f6',grad:['#60a5fa','#3b82f6']}];
+      const maxVal = Math.max(p0,p1,p2,1); const barW = 36, barGap = 24, baseY = 130, startX = 60; bctx.strokeStyle = '#f1f5f9'; bctx.lineWidth = 1;
+      for (let gv = 0; gv <= 4; gv++) { const gy = baseY - (gv / 4) * 90; bctx.beginPath(); bctx.moveTo(30, gy); bctx.lineTo(280, gy); bctx.stroke(); bctx.fillStyle = '#cbd5e1'; bctx.font = '8px sans-serif'; bctx.textAlign = 'right'; bctx.textBaseline = 'middle'; bctx.fillText(Math.round(maxVal * gv / 4), 26, gy); }
+      for (let i = 0; i < priData.length; i++) { const d = priData[i]; const bx = startX + i * (barW + barGap); const barHeight = Math.max(2, (d.count / maxVal) * 90); const by = baseY - barHeight; const grad = bctx.createLinearGradient(bx, by, bx, baseY); grad.addColorStop(0, d.grad[0]); grad.addColorStop(1, d.grad[1]); bctx.fillStyle = grad; bctx.fillRect(bx, by, barW, barHeight); bctx.fillStyle = '#334155'; bctx.font = 'bold 12px sans-serif'; bctx.textAlign = 'center'; bctx.textBaseline = 'bottom'; bctx.fillText(d.count, bx + barW/2, by - 4); bctx.fillStyle = '#64748b'; bctx.font = '9px sans-serif'; bctx.textBaseline = 'top'; bctx.fillText(d.label, bx + barW/2, baseY + 2); }
+      bctx.strokeStyle = '#e2e8f0'; bctx.lineWidth = 1; bctx.beginPath(); bctx.moveTo(30, baseY); bctx.lineTo(280, baseY); bctx.stroke();
     }
-    renderDevDashboardStats(); renderAllPagesImagesTable(allTabsWithResult);
-  }, 100);
+  }, 50);
 }
 
-function renderDevDashboardStats() {
-  const el = document.getElementById('devStatsSection'); if (!el) return; const devMap = {};
-  tabs.forEach(t => {
-    if (t.id === 'dashboard' || t.isGroup || !t.developer || !t.result) return;
-    const dev = t.developer; const issues = (t.result.issues || []).filter(i => !i.closed);
-    let p0c = 0, p1c = 0; issues.forEach(is => { if (is.priority === 'P0') p0c++; if (is.priority === 'P1') p1c++; });
-    const score = Math.round(Math.max(0, 100 - issues.length * 5 - p0c * 10 - p1c * 5));
-    if (!devMap[dev]) devMap[dev] = { name: dev, items: [], totalIssues: 0, totalP0: 0, totalP1: 0, scores: [] };
-    devMap[dev].items.push({ tabName: t.name, score: score, issues: issues.length, p0: p0c, p1: p1c }); devMap[dev].totalIssues += issues.length; devMap[dev].totalP0 += p0c; devMap[dev].totalP1 += p1c; devMap[dev].scores.push(score);
-  });
-  const list = Object.values(devMap); if (!list.length) { el.innerHTML = '<div style="color:#80868B;font-size:13px;padding:24px;text-align:center;">暂无责任人统计数据，请在子页面指定责任人。</div>'; return; }
-  list.forEach(d => { let sum = 0; d.scores.forEach(s => sum += s); d.avgScore = Math.round(sum / d.scores.length); }); list.sort((a,b) => b.avgScore - a.avgScore);
-  let html = '<table class="group-table" style="box-shadow:none;"><thead><tr><th>研发负责人</th><th>开发页面数</th><th>平均还原分</th><th>P0 问题</th><th>P1 问题</th><th>缺陷总数</th></tr></thead><tbody>';
-  list.forEach(d => {
-    const c = d.avgScore >= 90 ? '#137333' : d.avgScore >= 70 ? '#B06000' : '#C5221F';
-    html += `<tr><td style="font-weight:500;">${d.name}</td><td>${d.items.length}</td><td style="font-size:16px; font-weight:700; color:${c};">${d.avgScore}</td><td style="color:#C5221F;">${d.totalP0}</td><td style="color:#B06000;">${d.totalP1}</td><td>${d.totalIssues}</td></tr>`;
-  });
-  html += '</tbody></table>'; el.innerHTML = html;
-}
-
-function renderAllPagesImagesTable(allPages) {
-  const el = document.getElementById('allPagesImagesSection'); if (!el) return;
-  if (!allPages.length) { el.innerHTML = '<div style="color:#80868B;font-size:13px;padding:24px;text-align:center;">暂无检测完毕的页面。</div>'; return; }
-  let html = '<table class="group-table" style="box-shadow:none;"><thead><tr><th style="width: 200px;">页面名称</th><th>🎨 设计稿</th><th>🛠 还原稿</th><th>🔥 热力图</th><th style="width: 80px;">⭐ 评分</th><th style="width: 100px;">⚠️ 问题</th></tr></thead><tbody>';
-  allPages.forEach(ct => {
-    const issues = (ct.result ? ct.result.issues : []).filter(i => !i.closed);
-    let p0 = 0, p1 = 0; issues.forEach(i => { if (i.priority === 'P0') p0++; if (i.priority === 'P1') p1++; });
-    const score = ct.result ? Math.round(Math.max(0, 100 - issues.length * 5 - p0 * 10 - p1 * 5)) : '-';
-    let scColor = '#3C4043'; if(score !== '-') scColor = score >= 90 ? '#137333' : score >= 70 ? '#B06000' : '#C5221F';
-    const thumb = (src, label) => src ? `<div class="thumb-box" onclick="event.stopPropagation();openModal('${src}')"><img src="${src}"></div>` : `<div class="thumb-box"><span class="empty">${label}</span></div>`;
-    html += `<tr><td><div class="page-name" onclick="activateTab('${ct.id}')"><span style="font-size:16px;">📄</span> ${ct.name}</div></td><td>${thumb(ct.designImg, '未上传')}</td><td>${thumb(ct.devImg, '未上传')}</td><td>${thumb(ct.result ? ct.result.diffOverlay : null, '未生成')}</td><td style="font-size:16px; font-weight:700; color:${scColor};">${score}</td><td>${issues.length > 0 ? `<div style="display:flex;flex-direction:column;gap:4px;"><span style="color:#C5221F;font-size:12px;font-weight:500;">P0: ${p0}</span><span style="color:#B06000;font-size:12px;font-weight:500;">P1: ${p1}</span></div>` : '<span style="color:#9AA0A6;">无</span>'}</td></tr>`;
-  });
-  html += '</tbody></table>'; el.innerHTML = html;
-}
-
-// ===== 视图渲染：板块主页汇总 =====
 function renderGroupMain(group) {
-  const main = document.getElementById('mainArea'); const children = []; group.children.forEach(cid => { const t = tabs.get(cid); if (t) children.push(t); });
-  let html = '<div class="upload-bar" style="justify-content: space-between;"><div style="font-size: 18px; font-weight: 500; font-family: \'Google Sans\', sans-serif;">📁 ' + group.name + ' <span>板块汇总</span></div><button class="detect-btn" onclick="addChildTab(\'' + group.id + '\')">+ 新增子页面</button></div><div class="dashboard-wrap">';
-  if (children.length === 0) { html += '<div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:300px;color:#80868B;"><div style="font-size:48px;margin-bottom:16px;">📁</div><div style="font-size:16px;">当前板块为空，请添加子页面</div></div></div>'; main.innerHTML = html; return; }
-  html += '<table class="group-table"><thead><tr><th style="width: 200px;">子页面名称</th><th>🎨 设计稿</th><th>🛠 还原稿</th><th>🔥 热力图</th><th style="width: 80px;">⭐ 评分</th><th style="width: 100px;">⚠️ 问题</th></tr></thead><tbody>';
-  children.forEach(ct => {
-    const issues = (ct.result ? ct.result.issues : []).filter(i => !i.closed);
-    let p0 = 0, p1 = 0; issues.forEach(i => { if (i.priority === 'P0') p0++; if (i.priority === 'P1') p1++; });
-    const score = ct.result ? Math.round(Math.max(0, 100 - issues.length * 5 - p0 * 10 - p1 * 5)) : '-';
-    let scColor = '#3C4043'; if(score !== '-') scColor = score >= 90 ? '#137333' : score >= 70 ? '#B06000' : '#C5221F';
-    const thumb = (src, label) => src ? `<div class="thumb-box" onclick="event.stopPropagation();openModal('${src}')"><img src="${src}"></div>` : `<div class="thumb-box"><span class="empty">${label}</span></div>`;
-    html += `<tr><td><div class="page-name" onclick="activateTab('${ct.id}')"><span style="font-size:16px;">📄</span> ${ct.name}</div></td><td>${thumb(ct.designImg, '未上传')}</td><td>${thumb(ct.devImg, '未上传')}</td><td>${thumb(ct.result ? ct.result.diffOverlay : null, '未生成')}</td><td style="font-size:16px; font-weight:700; color:${scColor};">${score}</td><td>${issues.length > 0 ? `<div style="display:flex;flex-direction:column;gap:4px;"><span style="color:#C5221F;font-size:12px;font-weight:500;">P0: ${p0}</span><span style="color:#B06000;font-size:12px;font-weight:500;">P1: ${p1}</span></div>` : '<span style="color:#9AA0A6;">无</span>'}</td></tr>`;
-  });
-  html += '</tbody></table></div>'; main.innerHTML = html;
+  const main = document.getElementById('mainArea'); const children = group.children.map(cid => tabs.get(cid)).filter(t => t);
+  let totals = { P0: 0, P1: 0, P2: 0, P3: 0 }; let totalIssues = 0;
+  for (const ct of children) { if (!ct.result || !ct.result.issues) continue; for (const is of ct.result.issues) { if (totals[is.priority] !== undefined) totals[is.priority]++; totalIssues++; } }
+  let html = '<div style="display:flex;align-items:stretch;gap:8px;padding:8px 16px;border-bottom:1px solid #e2e8f0;background:#f8fafc;flex-shrink:0;flex-wrap:wrap;min-height:38px;"><div style="display:flex;align-items:center;gap:6px;padding-right:12px;border-right:1px solid #e2e8f0;"><span style="font-size:13px;font-weight:600;color:#334155;">📁 ' + group.name + '</span><span style="font-size:11px;color:#94a3b8;">还原度概览</span></div>';
+  if (totalIssues > 0) { const ds = [['P0','严重','#ef4444'],['P1','高','#f97316'],['P2','中','#eab308']]; for (const [p, lbl, clr] of ds) { if (totals[p] > 0) html += '<div style="display:flex;align-items:center;gap:4px;background:#fff;border-radius:6px;padding:4px 10px;border:1px solid #e2e8f0;"><span style="font-size:15px;font-weight:700;color:' + clr + ';">' + totals[p] + '</span><span style="font-size:10px;color:#94a3b8;">' + lbl + '</span></div>'; } }
+  html += '<div style="flex:1;"></div><button class="detect-btn" onclick="addChildTab(\'' + group.id + '\')" style="background:#3b82f6;font-size:11px;padding:3px 10px;">+ 新建子页面</button></div>';
+  if (children.length === 0) { html += '<div style="display:flex;flex-direction:column;align-items:center;justify-content:center;flex:1;color:#94a3b8;gap:12px;"><div style="font-size:40px;">📁</div><div style="font-size:14px;">此板块还没有子页面</div></div>'; main.innerHTML = html; return; }
+  html += '<div style="overflow-y:auto;flex:1;padding:4px 12px;"><div style="display:grid;grid-template-columns:140px 1fr 1fr 1fr 60px 60px;gap:1px;background:#e2e8f0;position:sticky;top:0;z-index:2;"><div style="background:#f1f5f9;padding:4px 8px;font-size:10px;font-weight:600;color:#475569;">页面</div><div style="background:#f1f5f9;padding:4px 8px;font-size:10px;font-weight:600;color:#475569;text-align:center;">🎨 设计稿</div><div style="background:#f1f5f9;padding:4px 8px;font-size:10px;font-weight:600;color:#475569;text-align:center;">🛠 还原稿</div><div style="background:#f1f5f9;padding:4px 8px;font-size:10px;font-weight:600;color:#475569;text-align:center;">🔥 差异热力图</div><div style="background:#f1f5f9;padding:4px 8px;font-size:10px;font-weight:600;color:#475569;text-align:center;">⭐ 评分</div><div style="background:#f1f5f9;padding:4px 8px;font-size:10px;font-weight:600;color:#475569;text-align:center;">⚠️ 问题</div></div>';
+  for (const ct of children) {
+    const issues = ct.result ? ct.result.issues : []; const p0 = issues.filter(i => i.priority === 'P0').length; const p1 = issues.filter(i => i.priority === 'P1').length; const score = ct.result ? Math.round(Math.max(0, 100 - issues.length * 5 - p0 * 10 - p1 * 5)) : '-'; const sc = score >= 90 ? '#22c55e' : score >= 70 ? '#f59e0b' : '#ef4444'; const bg = ct.id === activeTabId ? '#f0f9ff' : '#fff';
+    const thumbWithUpload = (src, key) => src ? `<div style="position:relative;height:200px;display:flex;align-items:center;justify-content:center;overflow:hidden;background:#fff;"><img src="${src}" style="height:200px;width:100%;object-fit:contain;cursor:pointer;" onclick="event.stopPropagation();openModal('${src}')"></div>` : '<div style="height:200px;background:#f8fafc;display:flex;align-items:center;justify-content:center;font-size:11px;color:#94a3b8;">未上传</div>';
+    const thumb = (src, label) => !src ? `<div style="background:#f8fafc;height:200px;display:flex;align-items:center;justify-content:center;font-size:12px;color:#cbd5e1;">${label}</div>` : `<img src="${src}" style="height:200px;width:100%;object-fit:contain;cursor:pointer;" onclick="event.stopPropagation();openModal('${src}')">`;
+    html += `<div style="display:grid;grid-template-columns:140px 1fr 1fr 1fr 60px 60px;gap:1px;background:#e2e8f0;margin-top:1px;"><div style="background:${bg};padding:4px 8px;display:flex;align-items:center;gap:6px;"><span style="font-size:11px;font-weight:500;color:#334155;cursor:pointer;" onclick="activateTab('${ct.id}')">${ct.name}</span></div><div style="background:${bg};padding:2px;">${thumbWithUpload(ct.designImg,'designImg')}</div><div style="background:${bg};padding:2px;">${thumbWithUpload(ct.devImg,'devImg')}</div><div style="background:${bg};padding:2px;display:flex;align-items:center;justify-content:center;overflow:hidden;height:200px;">${thumb(ct.result&&ct.result.diffOverlay?ct.result.diffOverlay:null,'未检测')}</div><div style="background:${bg};display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:${sc};">${score!=='-'?score:'-'}</div><div style="background:${bg};display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:9px;line-height:1.4;">${issues.length>0 ? `<span style="color:#ef4444;">P0:${p0}</span><span style="color:#f59e0b;">P1:${p1}</span><span style="color:#64748b;">共${issues.length}</span>` : '<span style="color:#94a3b8;">-</span>'}</div></div>`;
+  }
+  html += '</div>'; main.innerHTML = html;
 }
 
-// ===== 离线及云端底层架构 =====
-const DB_NAME = 'VisionGuardDB'; const DB_VERSION = 5; const STORE_NAME = 'tabs'; const CONFIG_KEY = 'appConfig';
-function openDB() { return new Promise((resolve, reject) => { const req = indexedDB.open(DB_NAME, DB_VERSION); req.onupgradeneeded = e => { const db = e.target.result; if (e.oldVersion > 0 && e.oldVersion < DB_VERSION) { if (db.objectStoreNames.contains(STORE_NAME)) db.deleteObjectStore(STORE_NAME); } if (!db.objectStoreNames.contains(STORE_NAME)) db.createObjectStore(STORE_NAME, { keyPath: 'id' }); }; req.onsuccess = e => resolve(e.target.result); }); }
-async function loadDevPool() { try { const db = await openDB(); const tx = db.transaction(STORE_NAME, 'readonly'); const store = tx.objectStore(STORE_NAME); const cfg = await new Promise((resolve) => { const req = store.get(CONFIG_KEY); req.onsuccess = () => resolve(req.result); }); if (cfg && cfg.devPool) devPool = cfg.devPool; } catch(e) {} }
-async function saveDevPool() { try { const db = await openDB(); const tx = db.transaction(STORE_NAME, 'readwrite'); const store = tx.objectStore(STORE_NAME); store.put({ id: CONFIG_KEY, devPool: devPool }); } catch(e) {} }
-async function saveTabs() { try { const db = await openDB(); const tx = db.transaction(STORE_NAME, 'readwrite'); const store = tx.objectStore(STORE_NAME); store.clear(); tabs.forEach(tab => { if(tab.id !== 'dashboard') store.put({ id: tab.id, name: tab.name, isGroup: tab.isGroup, children: tab.children, designImg: tab.designImg, devImg: tab.devImg, result: tab.result, overlayOpacity: tab.overlayOpacity, developer: tab.developer || '' }); }); } catch(e) {} }
-async function loadTabs() { try { const db = await openDB(); const tx = db.transaction(STORE_NAME, 'readonly'); const store = tx.objectStore(STORE_NAME); const all = await new Promise((resolve) => { const req = store.getAll(); req.onsuccess = () => resolve(req.result); }); if (!all || all.length === 0) return false; tabs.clear(); let maxId = 0; for (let i=0; i<all.length; i++) { const rec = all[i]; if (rec.id === 'dashboard' || rec.name === '数据看板') continue; tabs.set(rec.id, rec); const num = parseInt(rec.id.replace('tab_', ''), 10); if (num > maxId) maxId = num; } tabIdCounter = maxId + 1; return true; } catch(e) { return false; } }
-function autoSave() { setTimeout(saveTabs, 100); autoCloudify(); }
+// ===== 离线及云协作加载器 =====
+const DATA_NAME = 'vg527c';
+let cloudConfig = JSON.parse(localStorage.getItem('vgCloudConfig')) || { cloudName: 'dxm3bwnzi', apiKey: '713313811327755', apiSecret: 'QIBVvLSSePJW5-1UVYECknvBLBQ' };
+
+function openCloudSettings() {
+    document.getElementById('cfgCloudName').value = cloudConfig.cloudName; document.getElementById('cfgApiKey').value = cloudConfig.apiKey; document.getElementById('cfgApiSecret').value = cloudConfig.apiSecret; document.getElementById('settingsModal').classList.add('open');
+}
+function closeCloudSettings() { document.getElementById('settingsModal').classList.remove('open'); }
+function saveCloudSettings() {
+    cloudConfig.cloudName = document.getElementById('cfgCloudName').value.trim(); cloudConfig.apiKey = document.getElementById('cfgApiKey').value.trim(); cloudConfig.apiSecret = document.getElementById('cfgApiSecret').value.trim(); localStorage.setItem('vgCloudConfig', JSON.stringify(cloudConfig)); closeCloudSettings(); location.reload();
+}
 
 async function manualCloudPush() {
-  updateCloudUI('☁️ 后台同步中...', 'syncing');
+  updateCloudUI('☁️ 正在推送...', 'syncing');
   try {
     const data = {}; tabs.forEach((tab, id) => { if (id !== 'dashboard') data[id] = { id: id, name: tab.name, isGroup: tab.isGroup, children: tab.children, designImg: tab.designImg, devImg: tab.devImg, result: tab.result, developer: tab.developer || '' }; });
-    const json = JSON.stringify({ tabs: data, devPool: devPool }); 
-    const sizeMB = (json.length / (1024 * 1024)).toFixed(2);
-    if (sizeMB > 9.8) { alert('⚠️ 数据体积过大（' + sizeMB + 'MB），请分批存储。'); updateCloudUI('☁️ 同步超限', 'err'); return; }
-    const timestamp = Math.floor(Date.now() / 1000); const signStr = 'public_id=' + cloudConfig.dataName + '&timestamp=' + timestamp + cloudConfig.apiSecret; const sig = await sha1Hex(signStr);
-    const formData = new FormData(); formData.append('file', new Blob([json], { type: 'application/json' }), 'data.json'); formData.append('api_key', cloudConfig.apiKey); formData.append('timestamp', timestamp + ''); formData.append('signature', sig); formData.append('public_id', cloudConfig.dataName); formData.append('resource_type', 'raw');
+    const json = JSON.stringify({ tabs: data, devPool: devPool }); const timestamp = Math.floor(Date.now() / 1000); const signStr = 'public_id=' + DATA_NAME + '&timestamp=' + timestamp + cloudConfig.apiSecret; const sig = await sha1Hex(signStr);
+    const formData = new FormData(); formData.append('file', new Blob([json], { type: 'application/json' }), 'data.json'); formData.append('api_key', cloudConfig.apiKey); formData.append('timestamp', timestamp + ''); formData.append('signature', sig); formData.append('public_id', DATA_NAME); formData.append('resource_type', 'raw');
     const res = await fetch(`https://api.cloudinary.com/v1_1/${cloudConfig.cloudName}/raw/upload`, { method: 'POST', body: formData });
-    if (!res.ok) updateCloudUI('☁️ 推送失败', 'err'); else updateCloudUI('✅ 云端已同步', 'ok');
+    if (!res.ok) updateCloudUI('☁️ 同步挂起', 'err'); else updateCloudUI('✅ 云端已同步', 'ok');
   } catch(e) { updateCloudUI('☁️ 本地模式', 'ok'); }
 }
 
 async function cloudifyLoad() {
   try {
-    const res = await fetch(`https://res.cloudinary.com/${cloudConfig.cloudName}/raw/upload/${cloudConfig.dataName}.json?_t=${Date.now()}`);
+    const res = await fetch(`https://res.cloudinary.com/${cloudConfig.cloudName}/raw/upload/${DATA_NAME}.json?_t=${Date.now()}`);
     if (res.status === 404) return '404'; if (!res.ok) return 'error';
     const remoteObj = await res.json(); if (!remoteObj || typeof remoteObj !== 'object') return 'error';
-    let remote = remoteObj;
-    if (remoteObj && remoteObj.tabs) {
-        remote = remoteObj.tabs;
-        if (remoteObj.devPool && Array.isArray(remoteObj.devPool)) { devPool = remoteObj.devPool; saveDevPool(); }
-    }
+    let remote = remoteObj; if (remoteObj && remoteObj.tabs) { remote = remoteObj.tabs; if (remoteObj.devPool && Array.isArray(remoteObj.devPool)) { devPool = remoteObj.devPool; saveDevPool(); } }
     tabs.clear(); let maxId = 0; const ids = Object.keys(remote);
     for(let i=0; i<ids.length; i++) {
       const id = ids[i]; const rec = remote[id]; if (id === 'dashboard' || rec.name === '数据看板') continue;
@@ -504,22 +634,26 @@ async function cloudifyLoad() {
 async function silentCloudPull() {
   updateCloudUI('☁️ 挂载云端进度...', 'syncing'); const status = await cloudifyLoad();
   if (!tabs.has('dashboard')) tabs.set('dashboard', { id: 'dashboard', name: '数据看板', isGroup: true, children: [] });
-  if (status === 'success') { saveTabs(); renderTabList(); renderMain(activeTabId); updateCloudUI('✅ 团队进度已挂载', 'ok'); } 
+  if (status === 'success') { saveTabs(); renderTabList(); renderMain(activeTabId); updateCloudUI('✅ 协作同步完成', 'ok'); } 
   else if (status === '404') { updateCloudUI('☁️ 创建新云端仓...', 'syncing'); await manualCloudPush(); } 
   else { updateCloudUI('☁️ 本地独立工作模式', 'ok'); }
 }
 async function manualCloudPull() { await silentCloudPull(); }
 function sha1Hex(str) { return crypto.subtle.digest('SHA-1', new TextEncoder().encode(str)).then(buf => Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('')); }
 
-// ===== 极速首屏高可用引导程序 =====
+// ===== Init 引导程序 =====
 let tabIdCounter = 1;
 (async function init() {
   await loadDevPool(); let localRestored = await loadTabs();
   if (!tabs.has('dashboard')) tabs.set('dashboard', { id: 'dashboard', name: '数据看板', isGroup: true, children: [] });
   if (localRestored) { activeTabId = 'dashboard'; renderTabList(); renderMain('dashboard'); } 
-  else { activeTabId = 'dashboard'; const defaultGroupId = addTab('UI还原检测 1.0', {isGroup: true}); addChildTab(defaultGroupId); }
+  else { activeTabId = 'dashboard'; const defaultGroupId = addTab('默认走查模块', {isGroup: true}); addChildTab(defaultGroupId); }
+  
+  // 渲染完毕瞬间释放主线程，在后台静默拉取云端，彻底杜绝开屏死机
   silentCloudPull();
 })();
 </script>
+
+<div class="modal-overlay" id="settingsModal" style="z-index:2000; align-items:center; justify-content:center;"><div style="background:#FFF; width:420px; border-radius:8px; box-shadow:0 12px 24px rgba(0,0,0,0.2); overflow:hidden; cursor:default;"><div style="padding:16px 24px; border-bottom:1px solid #DADCE0; font-size:16px; font-weight:500; font-family:'Google Sans',sans-serif; display:flex; justify-content:space-between; align-items:center;"><span>配置 Cloudinary 云端协作网络</span><span style="cursor:pointer; color:#5F6368;" onclick="closeCloudSettings()">✕</span></div><div style="padding:24px; display:flex; flex-direction:column; gap:16px;"><div style="display:flex; flex-direction:column; gap:6px;"><label style="font-size:12px;font-weight:500;color:#5F6368;">Cloud Name</label><input type="text" id="cfgCloudName" style="padding:10px;border:1px solid #DADCE0;border-radius:4px;font-family:monospace;outline:none;"></div><div style="display:flex; flex-direction:column; gap:6px;"><label style="font-size:12px;font-weight:500;color:#5F6368;">API Key</label><input type="text" id="cfgApiKey" style="padding:10px;border:1px solid #DADCE0;border-radius:4px;font-family:monospace;outline:none;"></div><div style="display:flex; flex-direction:column; gap:6px;"><label style="font-size:12px;font-weight:500;color:#5F6368;">API Secret</label><input type="password" id="cfgApiSecret" style="padding:10px;border:1px solid #DADCE0;border-radius:4px;font-family:monospace;outline:none;"></div></div><div style="padding:16px 24px; border-top:1px solid #DADCE0; display:flex; justify-content:flex-end; gap:12px; background:#F8F9FA;"><button onclick="closeCloudSettings()" style="padding:8px 24px;border:none;background:transparent;cursor:pointer;color:#5F6368;">取消</button><button onclick="saveCloudSettings()" style="padding:8px 24px;border:none;background:#1A73E8;color:#fff;border-radius:4px;cursor:pointer;">保存并重载</button></div></div></div>
 </body>
 </html>
