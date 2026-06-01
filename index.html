@@ -4,10 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📊</text></svg>">
-<title>VisionGuard | Team Workspace (OCR Pro Edition)</title>
-
-<script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
-
+<title>VisionGuard | Team Workspace</title>
 <style>
 /* ===== Google Material Design 3 全局样式规范 ===== */
 @import url('https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&family=Roboto:wght@400;500&display=swap');
@@ -57,18 +54,15 @@ html, body { height: 100%; overflow: hidden; font-family: 'Google Sans', 'Roboto
 .main { flex: 1; display: flex; flex-direction: column; min-width: 0; background: #F8F9FA; }
 
 /* ===== 统一上传/控制栏 ===== */
-.upload-bar { display: flex; flex-direction: column; gap: 12px; padding: 12px 24px; background: #FFFFFF; border-bottom: 1px solid #DADCE0; flex-shrink: 0; z-index: 5; }
-.upload-bar-top { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
-.upload-bar-bottom { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
-
+.upload-bar { display: flex; gap: 12px; align-items: center; padding: 12px 24px; background: #FFFFFF; border-bottom: 1px solid #DADCE0; flex-shrink: 0; flex-wrap: wrap; z-index: 5; }
 .upload-bar .file-label { display: flex; align-items: center; gap: 8px; padding: 8px 16px; background: #FFFFFF; border: 1px solid #DADCE0; border-radius: 4px; cursor: pointer; font-size: 13px; font-weight: 500; color: #3C4043; transition: all 0.2s; }
 .upload-bar .file-label:hover { background: #F8F9FA; }
 .upload-bar .file-label.has-img { border-color: #34A853; background: #E6F4EA; color: #137333; }
 .upload-bar .file-label input { display: none; }
-.upload-bar .detect-btn { padding: 8px 16px; border-radius: 4px; border: none; background: #1A73E8; color: #fff; font-size: 13px; font-weight: 500; font-family: 'Google Sans', sans-serif; cursor: pointer; transition: all 0.2s; box-shadow: 0 1px 2px 0 rgba(60,64,67,0.3); }
-.upload-bar .detect-btn:hover { filter: brightness(0.9); box-shadow: 0 1px 3px 1px rgba(60,64,67,0.15); }
-.upload-bar .detect-btn:disabled { background: #F1F3F4 !important; color: #9AA0A6 !important; box-shadow: none !important; cursor: not-allowed !important; filter: none !important; }
-.upload-bar .status { font-size: 13px; color: #5F6368; font-weight: 500; margin-left: 12px; }
+.upload-bar .detect-btn { padding: 8px 20px; border-radius: 4px; border: none; background: #1A73E8; color: #fff; font-size: 14px; font-weight: 500; font-family: 'Google Sans', sans-serif; cursor: pointer; transition: all 0.2s; box-shadow: 0 1px 2px 0 rgba(60,64,67,0.3); }
+.upload-bar .detect-btn:hover { background: #1B66C9; box-shadow: 0 1px 3px 1px rgba(60,64,67,0.15); }
+.upload-bar .detect-btn:disabled { background: #F1F3F4; color: #9AA0A6; box-shadow: none; cursor: not-allowed; }
+.upload-bar .status { font-size: 13px; color: #5F6368; font-weight: 500; }
 
 /* ===== 单页走查四格视图 ===== */
 .compare-4 { display: flex; height: 50%; min-height: 260px; gap: 16px; flex-shrink: 0; padding: 16px 24px 0; }
@@ -138,6 +132,9 @@ html, body { height: 100%; overflow: hidden; font-family: 'Google Sans', 'Roboto
 .modal-overlay { display: none; position: fixed; inset: 0; z-index: 1000; background: rgba(32,33,36,0.9); cursor: zoom-out; backdrop-filter: blur(5px); }
 .modal-overlay.open { display: flex; align-items: center; justify-content: center; }
 .modal-overlay img { max-width: 90vw; max-height: 90vh; object-fit: contain; border-radius: 8px; box-shadow: 0 12px 24px rgba(0,0,0,0.5); background: #fff; }
+.modal-overlay .overlay-modal { position: relative; width: 92vw; height: 88vh; max-width: 1500px; max-height: 920px; background: #111820; border-radius: 8px; overflow: hidden; cursor: default; box-shadow: 0 12px 24px rgba(0,0,0,0.5); }
+.modal-overlay .overlay-modal img { position: absolute; inset: 0; margin: auto; max-width: 100%; max-height: 100%; box-shadow: none; background: transparent; border-radius: 0; }
+.modal-overlay .overlay-modal .overlay-slider { bottom: 18px; }
 
 ::-webkit-scrollbar { width: 8px; height: 8px; }
 ::-webkit-scrollbar-track { background: transparent; }
@@ -170,8 +167,9 @@ html, body { height: 100%; overflow: hidden; font-family: 'Google Sans', 'Roboto
             <span id="cloudStatusText" class="cloud-status">☁️ 初始化...</span>
         </div>
         <div class="cloud-btns">
-            <button onclick="manualCloudPull()" class="cloud-btn btn-pull">强制拉取</button>
-            <button onclick="manualCloudPush()" class="cloud-btn btn-push">立即同步</button>
+            <button id="cloudToggleBtn" onclick="toggleCloudSync()" class="cloud-btn" style="flex:0 0 auto;min-width:80px;">启用同步</button>
+            <button onclick="manualCloudPull()" class="cloud-btn btn-pull" id="cloudPullBtn" disabled>拉取</button>
+            <button onclick="manualCloudPush()" class="cloud-btn btn-push" id="cloudPushBtn" disabled>推送</button>
         </div>
     </div>
   </div>
@@ -180,6 +178,7 @@ html, body { height: 100%; overflow: hidden; font-family: 'Google Sans', 'Roboto
 
 <div class="modal-overlay" id="modalOverlay" onclick="closeModal()"><img id="modalImg"></div>
 
+<!-- Figma 导入弹窗 -->
 <div class="modal-overlay" id="figmaModal" style="z-index:2000; align-items:center; justify-content:center; cursor:default;" onclick="event.target===this && window.closeFigmaModal()">
   <div style="background:#FFF; width:440px; border-radius:8px; box-shadow:0 12px 24px rgba(0,0,0,0.2); overflow:hidden;" onclick="event.stopPropagation()">
     <div style="padding:16px 24px; border-bottom:1px solid #DADCE0; font-size:16px; font-weight:500; font-family:inherit; display:flex; justify-content:space-between; align-items:center;">
@@ -258,7 +257,9 @@ function addChildTab(groupId) {
   const g = tabs.get(groupId); if (!g) return;
   const cid = 'tab_' + (tabIdCounter++);
   tabs.set(cid, { id: cid, name: '子页面 ' + (tabIdCounter-1), isGroup: false, children: [], designImg: null, devImg: null, result: null, selectedIdx: -1, overlayOpacity: 0.5 });
-  g.children.push(cid); renderTabList(); activateTab(cid);
+  // 去重：避免从云端恢复后重复添加
+  if (g.children.indexOf(cid) === -1) g.children.push(cid);
+  renderTabList(); activateTab(cid);
 }
 
 // ===== 左侧栏结构化渲染 =====
@@ -275,7 +276,7 @@ function renderTabList() {
   // 2. 遍历动态创建的 Tab
   const groups = [], leafTabs = []; const childrenSet = new Set();
   for (const [key, t] of tabs) { if (t.isGroup) { for (let i = 0; i < t.children.length; i++) childrenSet.add(t.children[i]); } }
-  for (const [key, tab] of tabs) { if (tab.isGroup) groups.push(tab); else if (!childrenSet.has(tab.id)) leafTabs.push(tab); }
+  for (const [key, tab] of tabs) { if (tab.id === 'dashboard') continue; if (tab.isGroup) groups.push(tab); else if (!childrenSet.has(tab.id)) leafTabs.push(tab); }
 
   for (let idx = 0; idx < groups.length; idx++) {
     const g = groups[idx];
@@ -326,7 +327,11 @@ function startRename(id, nameEl) {
   input.onblur = () => { renameTab(id,input.value); }; input.onkeydown = e => { if(e.key==='Enter')input.blur(); if(e.key==='Escape'){input.value=tab.name;input.blur();} };
   nameEl.replaceWith(input); input.focus(); input.select();
 }
-function openModal(src) { document.getElementById('modalImg').src = src; document.getElementById('modalOverlay').classList.add('open'); }
+function openModal(src) {
+  const overlay = document.getElementById('modalOverlay');
+  overlay.innerHTML = `<img id="modalImg" src="${src}">`;
+  overlay.classList.add('open');
+}
 function closeModal() { document.getElementById('modalOverlay').classList.remove('open'); }
 
 // ===== 路由：渲染主内容区 =====
@@ -342,7 +347,7 @@ function renderMain(id) {
   const dCellHtml = tab.designImg ? `<span class="cell-label">🎨 设计稿</span><button onclick="event.stopPropagation();removeDesignImg('${id}')" style="position:absolute;top:10px;right:45px;z-index:5;width:28px;height:28px;border:none;border-radius:50%;background:#FFFFFF;color:#5F6368;font-size:14px;cursor:pointer;box-shadow:0 1px 2px rgba(60,64,67,0.3);">✕</button><img class="cell-img" src="${tab.designImg}" id="dImg_${id}" onclick="event.stopPropagation();openModal('${tab.designImg}')"><span class="cell-enlarge" onclick="event.stopPropagation();openModal('${tab.designImg}')">🔍</span>` : makeDropZone(id,'design','🎨','点击或拖拽上传设计稿');
   const vCellHtml = tab.devImg ? `<span class="cell-label">🛠 还原稿</span><button onclick="event.stopPropagation();removeDevImg('${id}')" style="position:absolute;top:10px;right:45px;z-index:5;width:28px;height:28px;border:none;border-radius:50%;background:#FFFFFF;color:#5F6368;font-size:14px;cursor:pointer;box-shadow:0 1px 2px rgba(60,64,67,0.3);">✕</button><img class="cell-img" src="${tab.devImg}" id="vImg_${id}" onclick="event.stopPropagation();openModal('${tab.devImg}')"><span class="cell-enlarge" onclick="event.stopPropagation();openModal('${tab.devImg}')">🔍</span>` : makeDropZone(id,'dev','🛠','点击或拖拽上传还原稿');
   const overlaySrc = (tab.result && tab.result.diffOverlay) ? tab.result.diffOverlay : null;
-  const oCellHtml = tab.designImg && tab.devImg ? `<div class="overlay-wrap" id="ow_${id}"><span class="cell-label">🔀 叠图对比</span><img class="overlay-bg" src="${tab.designImg}" style="opacity:1;"><img class="overlay-top" src="${tab.devImg}" style="opacity:${tab.overlayOpacity}"><span class="cell-enlarge" onclick="event.stopPropagation();enlargeOverlay('${id}')">🔍</span><div class="overlay-slider"><span class="slider-val">透明度</span><input type="range" min="0" max="100" value="${Math.round(tab.overlayOpacity*100)}" oninput="setOverlay('${id}', this.value/100)"><span class="slider-val">${Math.round(tab.overlayOpacity*100)}%</span></div></div>` : `<div class="overlay-wrap" id="ow_${id}"><span class="cell-label">🔀 叠图对比</span><div class="drop-zone"><div class="dz-icon">🔀</div><div class="dz-text">需同时上传两图</div></div></div>`;
+  const oCellHtml = tab.designImg && tab.devImg ? `<div class="overlay-wrap" id="ow_${id}" onclick="event.stopPropagation();enlargeOverlay('${id}')"><span class="cell-label">🔀 叠图对比</span><img class="overlay-bg" src="${tab.designImg}" style="opacity:1;"><img class="overlay-top" src="${tab.devImg}" style="opacity:${tab.overlayOpacity}"><span class="cell-enlarge" onclick="event.stopPropagation();enlargeOverlay('${id}')">🔍</span><div class="overlay-slider" onclick="event.stopPropagation()"><span class="slider-val">透明度</span><input type="range" min="0" max="100" value="${Math.round(tab.overlayOpacity*100)}" oninput="setOverlay('${id}', this.value/100)"><span class="slider-val">${Math.round(tab.overlayOpacity*100)}%</span></div></div>` : `<div class="overlay-wrap" id="ow_${id}"><span class="cell-label">🔀 叠图对比</span><div class="drop-zone"><div class="dz-icon">🔀</div><div class="dz-text">需同时上传两图</div></div></div>`;
   const hCellHtml = hasResult && overlaySrc ? `<span class="cell-label">🔥 差异热图</span><img class="cell-img" src="${overlaySrc}" onclick="event.stopPropagation();openModal('${overlaySrc}')"><span class="cell-enlarge" onclick="event.stopPropagation();openModal('${overlaySrc}')">🔍</span>` : `<div style="display:flex;flex-direction:column;align-items:center;justify-content:center;width:100%;height:100%;color:#80868B;background:#F8F9FA;"><div class="dz-icon">🔥</div><div class="dz-text" style="margin-top:12px;">对比后自动生成</div></div>`;
 
   main.innerHTML = `
@@ -357,7 +362,7 @@ function renderMain(id) {
     <div class="issue-panel" id="ip_${id}">
       <div class="issue-header" id="ih_${id}"><h3>📋 缺陷报告</h3><span class="stats">${hasResult ? '' : '暂无数据'}</span></div>
       <div class="issue-list-wrap" id="ilw_${id}">
-        <div class="loading-state"><span>${hasResult && tab.result.issues.length===0 ? '🎉 完美还原！没有发现问题。' : hasResult ? '渲染中…' : '请在上方点击检测按钮'}</span></div>
+        <div class="loading-state"><span>${hasResult && tab.result.issues.length===0 ? '🎉 完美还原！没有发现问题。' : hasResult ? '渲染中…' : '请在上方点击「开始全能检测」'}</span></div>
       </div>
     </div>`;
 
@@ -369,26 +374,17 @@ function buildUploadBar(id) {
   const ub = document.getElementById('ub_'+id); const tab = tabs.get(id); if (!ub||!tab) return;
   const dOk=!!tab.designImg, vOk=!!tab.devImg;
   const devName = tab.developer || '';
-  
-  // 新版含 3 个检测按钮的菜单栏
   ub.innerHTML = `
-    <div class="upload-bar-top">
-        <div style="display:flex;align-items:center;gap:6px;padding:4px 10px;background:#F1F3F4;border-radius:16px;flex-shrink:0;">
-          <span style="font-size:12px;color:#5F6368;font-weight:500;">👨‍💻 责任人</span>
-          ${devName
-            ? `<span style="font-size:13px;font-weight:600;color:#1A73E8;padding:0 4px;">${devName}</span><button onclick="event.stopPropagation();openDevSelector('${id}')" style="border:none;background:transparent;cursor:pointer;font-size:12px;color:#5F6368;" title="修改">✏️</button>`
-            : `<button onclick="event.stopPropagation();openDevSelector('${id}')" style="border:1px dashed #DADCE0;border-radius:12px;background:transparent;font-size:12px;color:#1A73E8;cursor:pointer;padding:2px 10px;">+ 指定</button>`}
-        </div>
-        <label class="file-label${dOk?' has-img':''}">🎨 设计稿 <input type="file" accept="image/*" onchange="handleDropFile(event,'${id}','design')"></label>
-        <label class="file-label${vOk?' has-img':''}">🛠 还原稿 <input type="file" accept="image/*" onchange="handleDropFile(event,'${id}','dev')"></label>
-        <span class="status" style="margin-left: 12px;">${tab.result ? `✅ 发现 ${tab.result.issues.length} 个偏差` : '等待上传图片检测'}</span>
+    <div style="display:flex;align-items:center;gap:6px;padding:4px 10px;background:#F1F3F4;border-radius:16px;flex-shrink:0;">
+      <span style="font-size:12px;color:#5F6368;font-weight:500;">👨‍💻 责任人</span>
+      ${devName
+        ? `<span style="font-size:13px;font-weight:600;color:#1A73E8;padding:0 4px;">${devName}</span><button onclick="event.stopPropagation();openDevSelector('${id}')" style="border:none;background:transparent;cursor:pointer;font-size:12px;color:#5F6368;" title="修改">✏️</button>`
+        : `<button onclick="event.stopPropagation();openDevSelector('${id}')" style="border:1px dashed #DADCE0;border-radius:12px;background:transparent;font-size:12px;color:#1A73E8;cursor:pointer;padding:2px 10px;">+ 指定</button>`}
     </div>
-    
-    <div class="upload-bar-bottom" style="margin-top:4px;">
-        <button class="detect-btn" style="background:#137333;" onclick="runDetectNew1('${id}')" ${dOk&&vOk?'':'disabled'} onmouseover="if(!this.disabled)this.style.background='#0d5222'" onmouseout="if(!this.disabled)this.style.background='#137333'">🛡️ 新方法1: OCR 强隔离保护</button>
-        <button class="detect-btn" style="background:#B06000;" onclick="runDetectNew2('${id}')" ${dOk&&vOk?'':'disabled'} onmouseover="if(!this.disabled)this.style.background='#8a4b00'" onmouseout="if(!this.disabled)this.style.background='#B06000'">🌊 新方法2: OCR + 轮廓双重抗噪</button>
-        <button class="detect-btn" style="background:#1A73E8;" onclick="runDetect('${id}')" ${dOk&&vOk?'':'disabled'} onmouseover="if(!this.disabled)this.style.background='#1B66C9'" onmouseout="if(!this.disabled)this.style.background='#1A73E8'">🔍 原版全能检测</button>
-    </div>
+    <label class="file-label${dOk?' has-img':''}">🎨 设计稿 <input type="file" accept="image/*" onchange="handleDropFile(event,'${id}','design')"></label>
+    <label class="file-label${vOk?' has-img':''}">🛠 还原稿 <input type="file" accept="image/*" onchange="handleDropFile(event,'${id}','dev')"></label>
+    <button class="detect-btn" onclick="runDetect('${id}')" ${dOk&&vOk?'':'disabled'}>🔍 开始全能检测</button>
+    <span class="status">${tab.result ? `✅ 发现 ${tab.result.issues.length} 个偏差` : '等待检测'}</span>
   `;
 }
 
@@ -425,15 +421,23 @@ function selectDev(id, name) { const tab = tabs.get(id); if (!tab) return; tab.d
 function renderDashboard() {
   const main = document.getElementById('mainArea'); 
   const allTabsWithResult = []; 
+  const seenIds = new Set();
   
+  // 遍历所有 Tab 抽取数据（去重）
   tabs.forEach(t => {
     if (t.isGroup) {
       t.children.forEach(cid => {
         const ct = tabs.get(cid);
-        if (ct && ct.result) allTabsWithResult.push(ct);
+        if (ct && ct.result && !seenIds.has(ct.id)) {
+          seenIds.add(ct.id);
+          allTabsWithResult.push(ct);
+        }
       });
     } else {
-      if (t.result) allTabsWithResult.push(t);
+      if (t.result && !seenIds.has(t.id)) {
+        seenIds.add(t.id);
+        allTabsWithResult.push(t);
+      }
     }
   });
 
@@ -454,7 +458,7 @@ function renderDashboard() {
   });
 
   let html = `
-    <div class="upload-bar" style="justify-content: space-between; flex-direction: row;">
+    <div class="upload-bar" style="justify-content: space-between;">
         <div style="font-size: 18px; font-weight: 500; font-family: 'Google Sans', sans-serif;">📊 全局数据看板</div>
         <div class="status">统计数据实时更新</div>
     </div>
@@ -490,7 +494,7 @@ function renderDashboard() {
       if(entries.length === 0) { ctx.font='14px Roboto'; ctx.fillText('暂无数据', 150, 100); }
       else {
         let start = 0; const total = p0 + p1 + p2;
-        const colors = {'文字问题':'#1A73E8', 'position':'#F29900', 'color':'#D93025', 'size':'#A142F4', 'container':'#12B5CB', 'image':'#34A853', 'text':'#1A73E8'};
+        const colors = {'文字问题':'#1A73E8', 'position':'#F29900', 'color':'#D93025', 'size':'#A142F4', 'container':'#12B5CB', 'image':'#34A853'};
         entries.forEach((entry, idx) => {
             const cat = entry[0]; const val = entry[1];
             const slice = (val/total) * 2 * Math.PI;
@@ -594,9 +598,9 @@ function renderGroupMain(group) {
   });
   
   let html = `
-    <div class="upload-bar" style="justify-content: space-between; flex-direction: row;">
+    <div class="upload-bar" style="justify-content: space-between;">
         <div style="font-size: 18px; font-weight: 500; font-family: 'Google Sans', sans-serif;">📁 ${group.name} <span>板块汇总</span></div>
-        <button class="detect-btn" style="background:#1A73E8; color:#fff;" onclick="addChildTab('${group.id}')">+ 新增子页面</button>
+        <button class="detect-btn" onclick="addChildTab('${group.id}')">+ 新增子页面</button>
     </div>
     <div class="dashboard-wrap">
   `;
@@ -636,12 +640,674 @@ function renderGroupMain(group) {
   main.innerHTML = html;
 }
 
-function enlargeOverlay(id) { const tab = tabs.get(id); if (!tab || !tab.designImg || !tab.devImg) return; const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="800" height="600"><image href="${tab.designImg}" width="800" height="600" opacity="1"/><image href="${tab.devImg}" width="800" height="600" opacity="${tab.overlayOpacity}"/></svg>`; openModal('data:image/svg+xml,' + encodeURIComponent(svg)); }
+function enlargeOverlay(id) {
+  const tab = tabs.get(id); if (!tab || !tab.designImg || !tab.devImg) return;
+  const overlay = document.getElementById('modalOverlay');
+  overlay.innerHTML = `<div class="overlay-modal" onclick="event.stopPropagation()">
+    <img src="${tab.designImg}" style="opacity:1;">
+    <img id="modalOverlayTop_${id}" src="${tab.devImg}" style="opacity:${tab.overlayOpacity};">
+    <div class="overlay-slider">
+      <span class="slider-val">透明度</span>
+      <input type="range" min="0" max="100" value="${Math.round(tab.overlayOpacity*100)}" oninput="setModalOverlay('${id}', this.value/100)">
+      <span class="slider-val" id="modalOverlayVal_${id}">${Math.round(tab.overlayOpacity*100)}%</span>
+    </div>
+  </div>`;
+  overlay.classList.add('open');
+}
+
+function setModalOverlay(id, val) {
+  const tab = tabs.get(id); if (tab) tab.overlayOpacity = val;
+  const img = document.getElementById('modalOverlayTop_' + id); if (img) img.style.opacity = val;
+  const txt = document.getElementById('modalOverlayVal_' + id); if (txt) txt.textContent = Math.round(val * 100) + '%';
+  const topImg = document.querySelector(`#ow_${id} .overlay-top`); if (topImg) topImg.style.opacity = val;
+  const vEl = document.querySelector(`#ow_${id} .slider-val:last-child`); if (vEl) vEl.textContent = Math.round(val * 100) + '%';
+}
 function makeDropZone(id, key, icon, label) { return `<div class="drop-zone" id="dz_${id}_${key}" onclick="document.getElementById('fi_${id}_${key}').click()" ondragover="e.preventDefault();this.classList.add('dragover')" ondrop="handleDrop(event,'${id}','${key}')" ondragleave="this.classList.remove('dragover')"><div class="dz-icon">${icon}</div><div class="dz-text">${label}</div><input type="file" accept="image/*" id="fi_${id}_${key}" onchange="handleDropFile(event,'${id}','${key}')"></div>`; }
 function handleDropFile(e, id, key) { const file = e.target.files[0]; if (!file) return; readImgToTab(id, key, file); autoSave(); }
 function handleDrop(e, id, key) { e.preventDefault(); e.currentTarget.classList.remove('dragover'); const file = e.dataTransfer.files[0]; if (file && file.type.startsWith('image/')) readImgToTab(id, key, file); autoSave(); }
 function readImgToTab(id, key, file) { const tab = tabs.get(id); if (!tab) return; const reader = new FileReader(); reader.onload = (e) => { if (key === 'design') tab.designImg = e.target.result; else if (key === 'dev') tab.devImg = e.target.result; renderMain(id); renderTabList(); }; reader.readAsDataURL(file); }
 function setOverlay(id, val) { const tab = tabs.get(id); if (!tab) return; tab.overlayOpacity = val; const topImg = document.querySelector(`#ow_${id} .overlay-top`); if (topImg) topImg.style.opacity = val; const vEl = document.querySelector(`#ow_${id} .slider-val:last-child`); if (vEl) vEl.textContent = Math.round(val*100)+'%'; }
+
+function vgLoadBitmap(url) {
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    if (!url.startsWith('data:')) img.crossOrigin = 'anonymous';
+    img.onload = () => {
+      const canvas = document.createElement('canvas');
+      canvas.width = img.naturalWidth || img.width;
+      canvas.height = img.naturalHeight || img.height;
+      const ctx = canvas.getContext('2d', { willReadFrequently: true });
+      ctx.drawImage(img, 0, 0);
+      resolve({ canvas, ctx, width: canvas.width, height: canvas.height, data: ctx.getImageData(0, 0, canvas.width, canvas.height).data });
+    };
+    img.onerror = reject;
+    img.src = url;
+  });
+}
+
+async function applyMovementAwareCorrection(issues, designUrl, devUrl) {
+  if (!issues || !issues.length) return [];
+  let bitmaps = null;
+  try {
+    const pair = await Promise.all([vgLoadBitmap(designUrl), vgLoadBitmap(devUrl)]);
+    bitmaps = { design: pair[0], dev: pair[1], width: Math.min(pair[0].width, pair[1].width), height: Math.min(pair[0].height, pair[1].height) };
+  } catch(e) {
+    return applyStructuralCorrection(issues);
+  }
+
+  const movementIssues = [];
+  for (let i = 0; i < issues.length; i++) {
+    const candidate = estimateLocalMovement(issues[i], bitmaps);
+    if (candidate && candidate.confidence >= 0.42) movementIssues.push(candidate);
+  }
+
+  if (!movementIssues.length) return applyStructuralCorrection(issues);
+
+  const mergedMovements = mergeMovementIssues(movementIssues);
+  mergedMovements.sort((a, b) => (b.box.w * b.box.h) - (a.box.w * a.box.h));
+  const accepted = [];
+  for (let i = 0; i < mergedMovements.length; i++) {
+    const mv = mergedMovements[i];
+    const pageArea = bitmaps.width * bitmaps.height;
+    if (mv.box.w * mv.box.h > pageArea * 0.38) continue;
+    let covered = false;
+    for (let j = 0; j < accepted.length; j++) {
+      if (boxInside(mv.box, accepted[j].box, 10) || boxOverlapRatio(mv.box, accepted[j].box) > 0.55) { covered = true; break; }
+    }
+    if (!covered) accepted.push(mv);
+  }
+
+  if (!accepted.length) return applyStructuralCorrection(issues);
+
+  const filtered = [];
+  for (let i = 0; i < issues.length; i++) {
+    const item = issues[i];
+    let swallowed = false;
+    for (let j = 0; j < accepted.length; j++) {
+      const mv = accepted[j];
+      if (boxInside(item.box, mv.box, 14) || boxOverlapRatio(item.box, mv.box) > 0.45) {
+        swallowed = true;
+        break;
+      }
+    }
+    if (!swallowed) filtered.push(item);
+  }
+
+  return [...accepted, ...applyStructuralCorrection(filtered)];
+}
+
+function estimateLocalMovement(issue, bitmaps) {
+  const d = bitmaps.design, v = bitmaps.dev, maxW = bitmaps.width, maxH = bitmaps.height;
+  let box = expandBox(issue.box || issue, maxW, maxH, 8);
+  if (box.w < 18 || box.h < 18 || box.w * box.h < 600) return null;
+  if (box.w > maxW * 0.86 && box.h > maxH * 0.86) return null;
+
+  const step = box.w * box.h > 60000 ? 4 : box.w * box.h > 16000 ? 3 : 2;
+  const base = regionDifference(d.data, v.data, maxW, maxH, box, 0, 0, step);
+  if (!isFinite(base) || base < 18) return null;
+
+  const search = Math.max(10, Math.min(64, Math.round(Math.max(box.w, box.h) * 0.28)));
+  let best = { dx: 0, dy: 0, score: base };
+  for (let dy = -search; dy <= search; dy += 2) {
+    for (let dx = -search; dx <= search; dx += 2) {
+      if (dx === 0 && dy === 0) continue;
+      const score = regionDifference(d.data, v.data, maxW, maxH, box, dx, dy, step);
+      if (score < best.score) best = { dx, dy, score };
+    }
+  }
+
+  for (let dy = best.dy - 2; dy <= best.dy + 2; dy++) {
+    for (let dx = best.dx - 2; dx <= best.dx + 2; dx++) {
+      if (dx === 0 && dy === 0) continue;
+      const score = regionDifference(d.data, v.data, maxW, maxH, box, dx, dy, Math.max(1, step - 1));
+      if (score < best.score) best = { dx, dy, score };
+    }
+  }
+
+  const move = Math.hypot(best.dx, best.dy);
+  const gain = (base - best.score) / Math.max(base, 1);
+  if (move < 2.5 || gain < 0.28 || best.score > base * 0.72) return null;
+
+  const absDx = Math.abs(best.dx), absDy = Math.abs(best.dy);
+  const category = classifyMovedIssue(issue, box);
+  return {
+    ...issue,
+    box,
+    x: box.x,
+    y: box.y,
+    w: box.w,
+    h: box.h,
+    category,
+    priority: absDx >= 8 || absDy >= 8 ? 'P1' : 'P2',
+    description: '整体位置偏移',
+    detail: `该元素整体移动，水平 ${best.dx > 0 ? '+' : ''}${best.dx}px，垂直 ${best.dy > 0 ? '+' : ''}${best.dy}px；已合并内部文字、图片、icon 的连带差异`,
+    designValue: `(${box.x},${box.y})`,
+    actualValue: `(${box.x + best.dx},${box.y + best.dy})`,
+    pxDiff: `水平 ${Math.abs(best.dx)}px, 垂直 ${Math.abs(best.dy)}px`,
+    movement: { dx: best.dx, dy: best.dy, baseDiff: Math.round(base), shiftedDiff: Math.round(best.score), confidence: Number(gain.toFixed(2)) },
+    confidence: gain
+  };
+}
+
+function regionDifference(dData, vData, width, height, box, dx, dy, step) {
+  let sum = 0, count = 0;
+  const x1 = Math.max(0, box.x), y1 = Math.max(0, box.y);
+  const x2 = Math.min(width, box.x + box.w), y2 = Math.min(height, box.y + box.h);
+  for (let y = y1; y < y2; y += step) {
+    const vy = y + dy;
+    if (vy < 0 || vy >= height) continue;
+    for (let x = x1; x < x2; x += step) {
+      const vx = x + dx;
+      if (vx < 0 || vx >= width) continue;
+      const piD = (y * width + x) * 4;
+      const piV = (vy * width + vx) * 4;
+      const edgeWeight = localContrast(dData, width, height, x, y) > 18 ? 1.7 : 1;
+      sum += edgeWeight * (Math.abs(dData[piD] - vData[piV]) + Math.abs(dData[piD + 1] - vData[piV + 1]) + Math.abs(dData[piD + 2] - vData[piV + 2])) / 3;
+      count += edgeWeight;
+    }
+  }
+  return count ? sum / count : Infinity;
+}
+
+function localContrast(data, width, height, x, y) {
+  const x2 = Math.min(width - 1, x + 1), y2 = Math.min(height - 1, y + 1);
+  const p = (y * width + x) * 4, px = (y * width + x2) * 4, py = (y2 * width + x) * 4;
+  return Math.abs(data[p] - data[px]) + Math.abs(data[p + 1] - data[px + 1]) + Math.abs(data[p + 2] - data[px + 2]) + Math.abs(data[p] - data[py]) + Math.abs(data[p + 1] - data[py + 1]) + Math.abs(data[p + 2] - data[py + 2]);
+}
+
+function expandBox(box, width, height, pad) {
+  const x = Math.max(0, Math.round(box.x - pad));
+  const y = Math.max(0, Math.round(box.y - pad));
+  const x2 = Math.min(width, Math.round(box.x + box.w + pad));
+  const y2 = Math.min(height, Math.round(box.y + box.h + pad));
+  return { x, y, w: Math.max(1, x2 - x), h: Math.max(1, y2 - y) };
+}
+
+function boxInside(inner, outer, pad) {
+  return inner.x >= outer.x - pad && inner.y >= outer.y - pad && inner.x + inner.w <= outer.x + outer.w + pad && inner.y + inner.h <= outer.y + outer.h + pad;
+}
+
+function boxOverlapRatio(a, b) {
+  const x1 = Math.max(a.x, b.x), y1 = Math.max(a.y, b.y), x2 = Math.min(a.x + a.w, b.x + b.w), y2 = Math.min(a.y + a.h, b.y + b.h);
+  if (x2 <= x1 || y2 <= y1) return 0;
+  return ((x2 - x1) * (y2 - y1)) / Math.min(a.w * a.h, b.w * b.h);
+}
+
+function classifyMovedIssue(issue, box) {
+  if (issue.category === '文字问题' || issue.category === 'font' || issue.category === 'text') return '文字问题';
+  const ratio = box.w / Math.max(1, box.h);
+  if (box.w * box.h > 8000 && ratio > 0.35 && ratio < 4.5) return ratio < 1.35 ? 'image' : 'container';
+  return issue.category === 'image' || issue.category === 'container' ? issue.category : 'position';
+}
+
+async function applyHumanVisionPostProcess(issues, designUrl, devUrl) {
+  let bitmaps = null;
+  try {
+    const pair = await Promise.all([vgLoadBitmap(designUrl), vgLoadBitmap(devUrl)]);
+    bitmaps = { design: pair[0], dev: pair[1], width: Math.min(pair[0].width, pair[1].width), height: Math.min(pair[0].height, pair[1].height) };
+  } catch(e) {
+    return issues;
+  }
+
+  const semantic = [];
+  const extraControls = detectExtraLeftControls(bitmaps);
+  if (extraControls) semantic.push(extraControls);
+
+  const bgIssue = detectBackgroundMismatch(bitmaps);
+  if (bgIssue) semantic.push(bgIssue);
+
+  const heroShift = detectLeftHeroShift(bitmaps, extraControls ? extraControls.box : null);
+  if (heroShift) semantic.push(heroShift);
+
+  const textLineShift = detectTextLineShift(bitmaps, extraControls ? extraControls.box : null);
+  if (textLineShift) semantic.push(textLineShift);
+
+  const carShift = detectCarShift(bitmaps);
+  if (carShift) semantic.push(carShift);
+
+  const carProtectBox = getCarProtectBox(bitmaps);
+
+  if (!semantic.length && !carProtectBox) return issues;
+
+  const filtered = [];
+  for (let i = 0; i < issues.length; i++) {
+    const item = issues[i];
+    const box = item.box || { x: item.x, y: item.y, w: item.w, h: item.h };
+    let hidden = false;
+    if (carProtectBox && isCarInternalContainerIssue(item, carProtectBox, bitmaps)) hidden = true;
+    for (let j = 0; j < semantic.length; j++) {
+      if (hidden) break;
+      if (semantic[j].semanticType === 'background') continue;
+      const parent = semantic[j].box;
+      if (boxInside(box, parent, 18) || boxOverlapRatio(box, parent) > 0.38) {
+        hidden = true;
+        break;
+      }
+    }
+    if (!hidden && !isLowSignalLargeIssue(item, bitmaps) && !isTinyColorNoise(item)) filtered.push(item);
+  }
+
+  return [...semantic, ...filtered];
+}
+
+function detectExtraLeftControls(bitmaps) {
+  const d = bitmaps.design, v = bitmaps.dev, width = bitmaps.width, height = bitmaps.height;
+  const maxX = Math.min(220, width);
+  const maxY = Math.round(height * 0.86);
+  const mask = new Uint8Array(maxX * maxY);
+  for (let y = 0; y < maxY; y += 2) {
+    for (let x = 0; x < maxX; x += 2) {
+      const p = (y * width + x) * 4;
+      const dv = colorDelta(d.data, v.data, p);
+      const vr = v.data[p], vg = v.data[p + 1], vb = v.data[p + 2];
+      const lum = 0.299 * vr + 0.587 * vg + 0.114 * vb;
+      const sat = Math.max(vr, vg, vb) - Math.min(vr, vg, vb);
+      if (dv > 24 && lum > 45 && lum < 235 && sat < 48) mask[(y >> 1) * Math.ceil(maxX / 2) + (x >> 1)] = 1;
+    }
+  }
+
+  const comps = collectSmallMaskComponents(mask, Math.ceil(maxX / 2), Math.ceil(maxY / 2), 10)
+    .map(c => ({ x: c.x * 2, y: c.y * 2, w: c.w * 2, h: c.h * 2, area: c.area * 4 }))
+    .filter(c => c.w >= 36 && c.w <= 170 && c.h >= 18 && c.h <= 95 && c.area > 650);
+
+  if (comps.length < 3) return null;
+  comps.sort((a, b) => a.y - b.y);
+  const x1 = Math.min(...comps.map(c => c.x)), y1 = Math.min(...comps.map(c => c.y));
+  const x2 = Math.max(...comps.map(c => c.x + c.w)), y2 = Math.max(...comps.map(c => c.y + c.h));
+  return {
+    x: x1, y: y1, w: x2 - x1, h: y2 - y1,
+    box: { x: x1, y: y1, w: x2 - x1, h: y2 - y1 },
+    category: 'container',
+    priority: 'P0',
+    description: '多余控件误显示',
+    detail: `还原稿左侧多出 ${comps.length} 个控制按钮/悬浮控件，设计稿中不存在；已按控件层合并，避免误报成背景或文字碎片`,
+    designValue: '无',
+    actualValue: '左侧控件列',
+    pxDiff: `${comps.length} 个多余元素`,
+    semanticType: 'extra-controls'
+  };
+}
+
+function detectBackgroundMismatch(bitmaps) {
+  const d = bitmaps.design, v = bitmaps.dev, width = bitmaps.width, height = bitmaps.height;
+  const samples = [
+    { x: Math.round(width * 0.06), y: Math.round(height * 0.10) },
+    { x: Math.round(width * 0.32), y: Math.round(height * 0.12) },
+    { x: Math.round(width * 0.58), y: Math.round(height * 0.09) },
+    { x: Math.round(width * 0.20), y: Math.round(height * 0.86) },
+    { x: Math.round(width * 0.58), y: Math.round(height * 0.88) },
+    { x: Math.round(width * 0.88), y: Math.round(height * 0.86) }
+  ];
+  let delta = 0, gradDelta = 0, n = 0;
+  for (let i = 0; i < samples.length; i++) {
+    const p = (samples[i].y * width + samples[i].x) * 4;
+    delta += colorDelta(d.data, v.data, p);
+    if (i > 0) {
+      const pp = (samples[i - 1].y * width + samples[i - 1].x) * 4;
+      const dg = Math.abs(colorDeltaToOrigin(d.data, p) - colorDeltaToOrigin(d.data, pp));
+      const vg = Math.abs(colorDeltaToOrigin(v.data, p) - colorDeltaToOrigin(v.data, pp));
+      gradDelta += Math.abs(dg - vg);
+    }
+    n++;
+  }
+  const avg = delta / Math.max(1, n), grad = gradDelta / Math.max(1, n - 1);
+  if (avg < 18 && grad < 12) return null;
+  return {
+    x: 0, y: 0, w: width, h: height,
+    box: { x: 0, y: 0, w: width, h: height },
+    category: 'background',
+    priority: avg > 34 ? 'P1' : 'P2',
+    description: '背景图/底色不一致',
+    detail: `背景底色或渐变与设计稿不一致，平均色差约 ${Math.round(avg)}，渐变差异约 ${Math.round(grad)}；该问题不吞并前景元素`,
+    designValue: '设计背景',
+    actualValue: '还原背景',
+    pxDiff: `Δ=${Math.round(avg)}`,
+    semanticType: 'background'
+  };
+}
+
+function colorDeltaToOrigin(data, p) {
+  return (data[p] + data[p + 1] + data[p + 2]) / 3;
+}
+
+function detectLeftHeroShift(bitmaps, ignoreBox) {
+  const designBox = findLeftHeroForeground(bitmaps.design, bitmaps.width, bitmaps.height, ignoreBox);
+  const devBox = findLeftHeroForeground(bitmaps.dev, bitmaps.width, bitmaps.height, ignoreBox);
+  if (!designBox || !devBox) return null;
+  const dx = Math.round((devBox.x + devBox.w / 2) - (designBox.x + designBox.w / 2));
+  const dy = Math.round((devBox.y + devBox.h / 2) - (designBox.y + designBox.h / 2));
+  if (Math.hypot(dx, dy) < 12) return null;
+  const x1 = Math.min(designBox.x, devBox.x), y1 = Math.min(designBox.y, devBox.y);
+  const x2 = Math.max(designBox.x + designBox.w, devBox.x + devBox.w), y2 = Math.max(designBox.y + designBox.h, devBox.y + devBox.h);
+  return {
+    x: x1, y: y1, w: x2 - x1, h: y2 - y1,
+    box: { x: x1, y: y1, w: x2 - x1, h: y2 - y1 },
+    category: 'position',
+    priority: Math.abs(dx) >= 24 || Math.abs(dy) >= 24 ? 'P1' : 'P2',
+    description: '左侧主视觉整体偏移',
+    detail: `小狗、警示牌与主标题文案作为一组发生位移，水平 ${dx > 0 ? '+' : ''}${dx}px，垂直 ${dy > 0 ? '+' : ''}${dy}px；内部元素不再逐个重复报错`,
+    designValue: `(${designBox.x},${designBox.y}) ${designBox.w}×${designBox.h}`,
+    actualValue: `(${devBox.x},${devBox.y}) ${devBox.w}×${devBox.h}`,
+    pxDiff: `水平 ${Math.abs(dx)}px, 垂直 ${Math.abs(dy)}px`,
+    semanticType: 'hero-shift'
+  };
+}
+
+function detectTextLineShift(bitmaps, ignoreBox) {
+  const designLines = findTextLineBoxes(bitmaps.design, bitmaps.width, bitmaps.height, ignoreBox);
+  const devLines = findTextLineBoxes(bitmaps.dev, bitmaps.width, bitmaps.height, ignoreBox);
+  if (!designLines.length || !devLines.length) return null;
+  const pairs = [];
+  const used = new Set();
+  for (let i = 0; i < designLines.length; i++) {
+    let best = null, bestScore = Infinity;
+    for (let j = 0; j < devLines.length; j++) {
+      if (used.has(j)) continue;
+      const dy = Math.abs((designLines[i].y + designLines[i].h / 2) - (devLines[j].y + devLines[j].h / 2));
+      const sizePenalty = Math.abs(designLines[i].h - devLines[j].h) + Math.abs(designLines[i].w - devLines[j].w) * 0.08;
+      const score = dy + sizePenalty;
+      if (score < bestScore) { bestScore = score; best = j; }
+    }
+    if (best !== null && bestScore < 120) {
+      used.add(best);
+      pairs.push({ d: designLines[i], v: devLines[best] });
+    }
+  }
+  if (!pairs.length) return null;
+
+  const shifted = pairs.map(p => ({
+    dx: Math.round((p.v.x + p.v.w / 2) - (p.d.x + p.d.w / 2)),
+    dy: Math.round((p.v.y + p.v.h / 2) - (p.d.y + p.d.h / 2)),
+    d: p.d,
+    v: p.v
+  })).filter(p => Math.abs(p.dx) >= 6 || Math.abs(p.dy) >= 6);
+
+  if (!shifted.length) return null;
+  const mainDx = Math.round(shifted.reduce((s, p) => s + p.dx, 0) / shifted.length);
+  const mainDy = Math.round(shifted.reduce((s, p) => s + p.dy, 0) / shifted.length);
+  const allBoxes = [];
+  shifted.forEach(p => { allBoxes.push(p.d); allBoxes.push(p.v); });
+  const x1 = Math.min(...allBoxes.map(b => b.x)), y1 = Math.min(...allBoxes.map(b => b.y));
+  const x2 = Math.max(...allBoxes.map(b => b.x + b.w)), y2 = Math.max(...allBoxes.map(b => b.y + b.h));
+  return {
+    x: x1, y: y1, w: x2 - x1, h: y2 - y1,
+    box: { x: x1, y: y1, w: x2 - x1, h: y2 - y1 },
+    category: '文字问题',
+    priority: Math.abs(mainDx) >= 14 || Math.abs(mainDy) >= 14 ? 'P1' : 'P2',
+    description: '文字行位置偏移',
+    detail: `检测到 ${shifted.length} 行文字整体位置不一致，平均水平 ${mainDx > 0 ? '+' : ''}${mainDx}px，垂直 ${mainDy > 0 ? '+' : ''}${mainDy}px`,
+    designValue: `${shifted.length} 行文字`,
+    actualValue: '文字行落位不同',
+    pxDiff: `水平 ${Math.abs(mainDx)}px, 垂直 ${Math.abs(mainDy)}px`,
+    semanticType: 'text-line-shift'
+  };
+}
+
+function findTextLineBoxes(bitmap, width, height, ignoreBox) {
+  const data = bitmap.data;
+  const minX = Math.round(width * 0.18), maxX = Math.round(width * 0.58);
+  const minY = Math.round(height * 0.24), maxY = Math.round(height * 0.68);
+  const rows = [];
+  for (let y = minY; y < maxY; y += 2) {
+    let count = 0, xMin = maxX, xMax = minX;
+    for (let x = minX; x < maxX; x += 2) {
+      if (ignoreBox && x >= ignoreBox.x - 10 && x <= ignoreBox.x + ignoreBox.w + 10 && y >= ignoreBox.y - 10 && y <= ignoreBox.y + ignoreBox.h + 10) continue;
+      const p = (y * width + x) * 4;
+      const r = data[p], g = data[p + 1], b = data[p + 2];
+      const lum = 0.299 * r + 0.587 * g + 0.114 * b;
+      const cyanText = g > 130 && b > 135 && r < 100;
+      const darkText = lum < 95 && Math.max(r, g, b) - Math.min(r, g, b) < 80;
+      if (cyanText || darkText) { count++; xMin = Math.min(xMin, x); xMax = Math.max(xMax, x); }
+    }
+    if (count >= 24) rows.push({ y, x1: xMin, x2: xMax, count });
+  }
+  if (!rows.length) return [];
+  const groups = [];
+  for (let i = 0; i < rows.length; i++) {
+    const row = rows[i], last = groups[groups.length - 1];
+    if (!last || row.y - last.y2 > 8) groups.push({ y1: row.y, y2: row.y, x1: row.x1, x2: row.x2, count: row.count });
+    else {
+      last.y2 = row.y;
+      last.x1 = Math.min(last.x1, row.x1);
+      last.x2 = Math.max(last.x2, row.x2);
+      last.count += row.count;
+    }
+  }
+  return groups
+    .map(g => ({ x: g.x1, y: g.y1, w: g.x2 - g.x1 + 2, h: g.y2 - g.y1 + 2, count: g.count }))
+    .filter(g => g.w >= 120 && g.h >= 12 && g.h <= 120)
+    .sort((a, b) => a.y - b.y)
+    .slice(0, 4);
+}
+
+function detectCarShift(bitmaps) {
+  const designBox = findCarForeground(bitmaps.design, bitmaps.width, bitmaps.height);
+  const devBox = findCarForeground(bitmaps.dev, bitmaps.width, bitmaps.height);
+  if (!designBox || !devBox) return null;
+  const dx = Math.round((devBox.x + devBox.w / 2) - (designBox.x + designBox.w / 2));
+  const dy = Math.round((devBox.y + devBox.h / 2) - (designBox.y + designBox.h / 2));
+  const dw = Math.round(devBox.w - designBox.w), dh = Math.round(devBox.h - designBox.h);
+  if (Math.hypot(dx, dy) < 10 && Math.abs(dw) < 10 && Math.abs(dh) < 10) return null;
+  const x1 = Math.min(designBox.x, devBox.x), y1 = Math.min(designBox.y, devBox.y);
+  const x2 = Math.max(designBox.x + designBox.w, devBox.x + devBox.w), y2 = Math.max(designBox.y + designBox.h, devBox.y + devBox.h);
+  const detailParts = [];
+  if (Math.hypot(dx, dy) >= 10) detailParts.push(`位置偏移：水平 ${dx > 0 ? '+' : ''}${dx}px，垂直 ${dy > 0 ? '+' : ''}${dy}px`);
+  if (Math.abs(dw) >= 10 || Math.abs(dh) >= 10) detailParts.push(`尺寸变化：宽 ${dw > 0 ? '+' : ''}${dw}px，高 ${dh > 0 ? '+' : ''}${dh}px`);
+  return {
+    x: x1, y: y1, w: x2 - x1, h: y2 - y1,
+    box: { x: x1, y: y1, w: x2 - x1, h: y2 - y1 },
+    category: 'image',
+    priority: Math.abs(dx) >= 24 || Math.abs(dy) >= 24 || Math.abs(dw) >= 24 || Math.abs(dh) >= 24 ? 'P1' : 'P2',
+    description: '汽车图片位置/尺寸偏差',
+    detail: detailParts.join('；') + '；已作为汽车主体合并，不再拆成车窗、车门、轮廓碎片',
+    designValue: `(${designBox.x},${designBox.y}) ${designBox.w}×${designBox.h}`,
+    actualValue: `(${devBox.x},${devBox.y}) ${devBox.w}×${devBox.h}`,
+    pxDiff: `水平 ${Math.abs(dx)}px, 垂直 ${Math.abs(dy)}px`,
+    semanticType: 'car-shift'
+  };
+}
+
+function findCarForeground(bitmap, width, height) {
+  const data = bitmap.data, points = [];
+  const minX = Math.round(width * 0.45), maxX = width - 10;
+  const minY = Math.round(height * 0.06), maxY = Math.round(height * 0.98);
+  for (let y = minY; y < maxY; y += 4) {
+    for (let x = minX; x < maxX; x += 4) {
+      const p = (y * width + x) * 4;
+      const r = data[p], g = data[p + 1], b = data[p + 2];
+      const lum = 0.299 * r + 0.587 * g + 0.114 * b;
+      const sat = Math.max(r, g, b) - Math.min(r, g, b);
+      const whiteCar = lum > 145 && sat < 75;
+      const cyanGlass = g > 120 && b > 120 && r < 130;
+      const darkWheelOrDoor = lum < 80 && sat < 90 && y > height * 0.35;
+      const redLight = r > 150 && g < 100 && b < 100;
+      if (whiteCar || cyanGlass || darkWheelOrDoor || redLight) points.push({ x, y });
+    }
+  }
+  if (points.length < 300) return null;
+  points.sort((a, b) => a.x - b.x);
+  const trim = Math.floor(points.length * 0.025);
+  const xs = points.slice(trim, points.length - trim).map(p => p.x);
+  points.sort((a, b) => a.y - b.y);
+  const ys = points.slice(trim, points.length - trim).map(p => p.y);
+  const x1 = Math.min(...xs), x2 = Math.max(...xs), y1 = Math.min(...ys), y2 = Math.max(...ys);
+  if (x2 - x1 < width * 0.18 || y2 - y1 < height * 0.35) return null;
+  return { x: x1, y: y1, w: x2 - x1 + 4, h: y2 - y1 + 4 };
+}
+
+function getCarProtectBox(bitmaps) {
+  const d = findCarForeground(bitmaps.design, bitmaps.width, bitmaps.height);
+  const v = findCarForeground(bitmaps.dev, bitmaps.width, bitmaps.height);
+  if (!d && !v) return null;
+  if (!d) return expandBox(v, bitmaps.width, bitmaps.height, 28);
+  if (!v) return expandBox(d, bitmaps.width, bitmaps.height, 28);
+  return expandBox(unionBox(d, v), bitmaps.width, bitmaps.height, 28);
+}
+
+function isCarInternalContainerIssue(issue, carBox, bitmaps) {
+  const box = issue.box || { x: issue.x, y: issue.y, w: issue.w, h: issue.h };
+  const desc = issue.description || issue.desc || '';
+  const category = issue.category || '';
+  const area = box.w * box.h;
+  const pageArea = bitmaps.width * bitmaps.height;
+  const insideCar = boxInside(box, carBox, 10) || boxOverlapRatio(box, carBox) > 0.72;
+  if (!insideCar) return false;
+  if (issue.semanticType === 'car-shift') return false;
+  const isContainerish = category === 'container' || category === 'position' || desc.includes('按钮容器') || desc.includes('容器') || desc.includes('整体位置偏移');
+  if (!isContainerish) return false;
+  return area < pageArea * 0.10;
+}
+
+function findLeftHeroForeground(bitmap, width, height, ignoreBox) {
+  const data = bitmap.data;
+  const points = [];
+  const minX = 120, maxX = Math.round(width * 0.52);
+  const minY = Math.round(height * 0.18), maxY = Math.round(height * 0.82);
+  for (let y = minY; y < maxY; y += 4) {
+    for (let x = minX; x < maxX; x += 4) {
+      if (ignoreBox && x >= ignoreBox.x - 10 && x <= ignoreBox.x + ignoreBox.w + 10 && y >= ignoreBox.y - 10 && y <= ignoreBox.y + ignoreBox.h + 10) continue;
+      const p = (y * width + x) * 4;
+      const r = data[p], g = data[p + 1], b = data[p + 2];
+      const lum = 0.299 * r + 0.587 * g + 0.114 * b;
+      const sat = Math.max(r, g, b) - Math.min(r, g, b);
+      const cyan = g > 145 && b > 145 && r < 80;
+      const white = lum > 150 && sat < 95;
+      const yellow = r > 160 && g > 130 && b < 95;
+      if (cyan || white || yellow) points.push({ x, y });
+    }
+  }
+  if (points.length < 80) return null;
+  points.sort((a, b) => a.x - b.x);
+  const trim = Math.floor(points.length * 0.03);
+  const xs = points.slice(trim, points.length - trim).map(p => p.x);
+  points.sort((a, b) => a.y - b.y);
+  const ys = points.slice(trim, points.length - trim).map(p => p.y);
+  const x1 = Math.min(...xs), x2 = Math.max(...xs), y1 = Math.min(...ys), y2 = Math.max(...ys);
+  if (x2 - x1 < 200 || y2 - y1 < 120) return null;
+  return { x: x1, y: y1, w: x2 - x1 + 4, h: y2 - y1 + 4 };
+}
+
+function colorDelta(a, b, p) {
+  return (Math.abs(a[p] - b[p]) + Math.abs(a[p + 1] - b[p + 1]) + Math.abs(a[p + 2] - b[p + 2])) / 3;
+}
+
+function collectSmallMaskComponents(mask, width, height, minArea) {
+  const seen = new Uint8Array(mask.length), out = [], q = [];
+  for (let i = 0; i < mask.length; i++) {
+    if (!mask[i] || seen[i]) continue;
+    let minX = width, minY = height, maxX = 0, maxY = 0, area = 0;
+    q.length = 0; q.push(i); seen[i] = 1;
+    while (q.length) {
+      const cur = q.pop(), x = cur % width, y = Math.floor(cur / width);
+      area++; minX = Math.min(minX, x); minY = Math.min(minY, y); maxX = Math.max(maxX, x); maxY = Math.max(maxY, y);
+      for (let dy = -1; dy <= 1; dy++) for (let dx = -1; dx <= 1; dx++) {
+        if (!dx && !dy) continue;
+        const nx = x + dx, ny = y + dy;
+        if (nx < 0 || nx >= width || ny < 0 || ny >= height) continue;
+        const ni = ny * width + nx;
+        if (mask[ni] && !seen[ni]) { seen[ni] = 1; q.push(ni); }
+      }
+    }
+    if (area >= minArea) out.push({ x: minX, y: minY, w: maxX - minX + 1, h: maxY - minY + 1, area });
+  }
+  return out;
+}
+
+function isLowSignalLargeIssue(issue, bitmaps) {
+  const box = issue.box || { x: issue.x, y: issue.y, w: issue.w, h: issue.h };
+  const area = box.w * box.h, pageArea = bitmaps.width * bitmaps.height;
+  const desc = issue.description || issue.desc || '';
+  if (area > pageArea * 0.22 && !desc.includes('整体位置偏移') && !desc.includes('多余控件')) return true;
+  if ((issue.category === 'color' || issue.category === 'container') && area > pageArea * 0.12 && box.x < bitmaps.width * 0.58) return true;
+  return false;
+}
+
+function isTinyColorNoise(issue) {
+  const box = issue.box || { x: issue.x, y: issue.y, w: issue.w, h: issue.h };
+  const desc = issue.description || issue.desc || '';
+  const detail = issue.detail || '';
+  const category = issue.category || '';
+  if ((category === '文字问题' || category === 'font' || category === 'color') && desc.includes('颜色差异')) {
+    if (box.w * box.h < 2600 || (box.w <= 42 && box.h <= 42)) return true;
+    if (detail.includes('文字颜色或对比度发生变化') && box.w * box.h < 9000) return true;
+  }
+  return false;
+}
+
+async function buildCropUrlsForIssues(designUrl, devUrl, issues, align) {
+  let pair = null;
+  try { pair = await Promise.all([vgLoadBitmap(designUrl), vgLoadBitmap(devUrl)]); } catch(e) { return []; }
+  const d = pair[0], v = pair[1], urls = [];
+  for (let i = 0; i < issues.length; i++) {
+    const is = issues[i], box = is.box || { x: is.x, y: is.y, w: is.w, h: is.h };
+    urls.push(makeComparedCrop(d, v, box, align || { dx: 0, dy: 0 }));
+  }
+  return urls;
+}
+
+function makeComparedCrop(design, dev, box, align) {
+  const padX = Math.max(18, Math.round(box.w * 0.25)), padY = Math.max(18, Math.round(box.h * 0.25));
+  const x = Math.max(0, box.x - padX), y = Math.max(0, box.y - padY);
+  const w = Math.min(design.width - x, box.w + padX * 2), h = Math.min(design.height - y, box.h + padY * 2);
+  const out = document.createElement('canvas'), gap = 8, head = 24;
+  out.width = w * 2 + gap; out.height = h + head;
+  const ctx = out.getContext('2d');
+  ctx.fillStyle = '#f8fafc'; ctx.fillRect(0, 0, out.width, out.height);
+  ctx.drawImage(design.canvas, x, y, w, h, 0, head, w, h);
+  ctx.drawImage(dev.canvas, x + (align.dx || 0), y + (align.dy || 0), w, h, w + gap, head, w, h);
+  const rx = box.x - x, ry = box.y - y;
+  ctx.strokeStyle = '#EA4335'; ctx.lineWidth = 3;
+  ctx.strokeRect(rx, head + ry, box.w, box.h);
+  ctx.strokeRect(w + gap + rx, head + ry, box.w, box.h);
+  ctx.fillStyle = '#5F6368'; ctx.font = '12px sans-serif'; ctx.textAlign = 'center';
+  ctx.fillText('设计稿', w / 2, 16); ctx.fillText('还原稿', w + gap + w / 2, 16);
+  return out.toDataURL('image/png');
+}
+
+function mergeMovementIssues(items) {
+  const out = [];
+  for (let i = 0; i < items.length; i++) {
+    const item = { ...items[i], box: { ...items[i].box }, movementGroupSize: 1 };
+    let merged = false;
+    for (let j = 0; j < out.length; j++) {
+      const target = out[j];
+      const sameVector = target.movement && item.movement && Math.abs(target.movement.dx - item.movement.dx) <= 2 && Math.abs(target.movement.dy - item.movement.dy) <= 2;
+      const near = boxOverlapRatio(target.box, item.box) > 0.08 || boxGap(target.box, item.box) <= 28;
+      const union = unionBox(target.box, item.box);
+      const sparseUnion = union.w * union.h > (target.box.w * target.box.h + item.box.w * item.box.h) * 4.5;
+      if (sameVector && near) {
+        if (sparseUnion) continue;
+        const x1 = Math.min(target.box.x, item.box.x), y1 = Math.min(target.box.y, item.box.y);
+        const x2 = Math.max(target.box.x + target.box.w, item.box.x + item.box.w), y2 = Math.max(target.box.y + target.box.h, item.box.y + item.box.h);
+        target.box = { x: x1, y: y1, w: x2 - x1, h: y2 - y1 };
+        target.x = target.box.x; target.y = target.box.y; target.w = target.box.w; target.h = target.box.h;
+        target.category = classifyMovedIssue(target, target.box);
+        target.description = '整体位置偏移';
+        target.detail = `该区域作为一组整体移动，水平 ${target.movement.dx > 0 ? '+' : ''}${target.movement.dx}px，垂直 ${target.movement.dy > 0 ? '+' : ''}${target.movement.dy}px；已合并内部连带差异`;
+        target.designValue = `(${target.box.x},${target.box.y})`;
+        target.actualValue = `(${target.box.x + target.movement.dx},${target.box.y + target.movement.dy})`;
+        target.movement.confidence = Math.max(target.movement.confidence || 0, item.movement.confidence || 0);
+        target.movementGroupSize = (target.movementGroupSize || 1) + (item.movementGroupSize || 1);
+        merged = true;
+        break;
+      }
+    }
+    if (!merged) out.push(item);
+  }
+  return out;
+}
+
+function boxGap(a, b) {
+  const dx = Math.max(0, Math.max(a.x - (b.x + b.w), b.x - (a.x + a.w)));
+  const dy = Math.max(0, Math.max(a.y - (b.y + b.h), b.y - (a.y + a.h)));
+  return Math.hypot(dx, dy);
+}
+
+function unionBox(a, b) {
+  const x1 = Math.min(a.x, b.x), y1 = Math.min(a.y, b.y);
+  const x2 = Math.max(a.x + a.w, b.x + b.w), y2 = Math.max(a.y + a.h, b.y + b.h);
+  return { x: x1, y: y1, w: x2 - x1, h: y2 - y1 };
+}
 
 let resizeActive = false;
 document.addEventListener('mousedown', e => {
@@ -653,219 +1319,11 @@ document.addEventListener('mousedown', e => {
   document.addEventListener('mousemove', onMove); document.addEventListener('mouseup', onUp); document.body.style.cursor = 'row-resize'; e.preventDefault();
 });
 
-// ====================================================================
-// 🧠 OCR 引擎全局单例初始化 (懒加载)
-// ====================================================================
-let globalOcrWorker = null;
-async function getOcrWorker(statusEl) {
-    if (!globalOcrWorker) {
-        if (statusEl) statusEl.textContent = '⏳ 正在下载 OCR 视觉识别引擎 (约几MB)，首次加载需稍等...';
-        // 自动加载中英文语言包
-        globalOcrWorker = await Tesseract.createWorker('chi_sim+eng');
-    }
-    return globalOcrWorker;
-}
-
-// 检测两个矩形是否相交 (用于判断差异块是否覆盖了文字)
-function isIntersect(b1, b2) {
-    return !(b1.x > b2.x + b2.w || b1.x + b1.w < b2.x || b1.y > b2.y + b2.h || b1.y + b1.h < b2.y);
-}
-
-// ====================================================================
-// 🚀 新方法 1：OCR 强隔离保护 (绝对保护文字不被背景吞噬)
-// ====================================================================
-async function runDetectNew1(id) {
-  const tab = tabs.get(id); if (!tab || !tab.designImg || !tab.devImg) return;
-  tab.result = null; tab.selectedIdx = -1; renderMain(id);
-  const s = document.querySelector(`#ub_${id} .status`); 
-  
-  try {
-    const worker = await getOcrWorker(s);
-    if (s) s.textContent = '👁️ [OCR] 正在扫描设计稿提取文本骨架...';
-    
-    // 1. 跑 OCR 提取设计稿所有的文字坐标
-    const { data: { words } } = await worker.recognize(tab.designImg);
-    const ocrBoxes = words.map(w => ({
-        x: w.bbox.x0, y: w.bbox.y0, w: w.bbox.x1 - w.bbox.x0, h: w.bbox.y1 - w.bbox.y0, text: w.text
-    }));
-
-    if (s) s.textContent = '⏳ [方法1] 正在进行像素结构比对...';
-    let rawResult = await window.vgDetect(tab.designImg, tab.devImg);
-    
-    if (rawResult && rawResult.issues) {
-      let foreground = []; // OCR 保护的文字层
-      let background = []; // 背景层
-      
-      // 2. 将检测出的像素缺陷，与 OCR 坐标进行空间碰撞检测
-      rawResult.issues.forEach(is => {
-        let isText = false;
-        let matchedText = '';
-        for (let ob of ocrBoxes) {
-            if (isIntersect(is, ob)) {
-                isText = true;
-                matchedText = ob.text;
-                break;
-            }
-        }
-
-        if (isText || ['icon'].includes(is.category)) {
-            is.category = 'text';
-            is.priority = 'P1';
-            is.description = matchedText ? `[OCR确认] 文字渲染异常: "${matchedText}"` : '文字/前景异常';
-            foreground.push({ ...is, box: { x: is.x, y: is.y, w: is.w, h: is.h } });
-        } else {
-            background.push({ ...is, box: { x: is.x, y: is.y, w: is.w, h: is.h } });
-        }
-      });
-
-      // 3. 背景依然用老算法进行大块合并
-      let refinedBg = applyStructuralCorrection(background);
-      
-      // 4. 将被保护的 OCR 文本层直接悬浮盖在背景之上，不参与大块合并
-      let finalIssues = [];
-      refinedBg.forEach(is => finalIssues.push({ ...is, x: is.box.x, y: is.box.y, w: is.box.w, h: is.box.h }));
-      foreground.forEach(is => finalIssues.push({ ...is, x: is.box.x, y: is.box.y, w: is.box.w, h: is.box.h }));
-
-      rawResult.issues = finalIssues.map((is, idx) => ({...is, regionIndex: idx + 1}));
-    }
-    tab.result = rawResult; renderMain(id); renderTabList(); autoSave();
-    if (s) s.textContent = `✅ [OCR 方法1] 成功，已强制剥离保护底图文字`;
-  } catch(e) { if (s) s.textContent = '❌ '+e.message; console.error(e); }
-}
-
-// ====================================================================
-// 🚀 新方法 2：OCR + 轮廓双重抗噪 (豁免背景时，精准提取内部文字)
-// ====================================================================
-async function runDetectNew2(id) {
-  const tab = tabs.get(id); if (!tab || !tab.designImg || !tab.devImg) return;
-  tab.result = null; tab.selectedIdx = -1; renderMain(id);
-  const s = document.querySelector(`#ub_${id} .status`); 
-  
-  try {
-    const worker = await getOcrWorker(s);
-    if (s) s.textContent = '👁️ [OCR] 正在深度扫描文字坐标...';
-    
-    const { data: { words } } = await worker.recognize(tab.designImg);
-    const ocrBoxes = words.map(w => ({
-        x: w.bbox.x0, y: w.bbox.y0, w: w.bbox.x1 - w.bbox.x0, h: w.bbox.y1 - w.bbox.y0, text: w.text
-    }));
-
-    if (s) s.textContent = '⏳ [方法2] 正在进行双重抗噪比对...';
-    let rawResult = await window.vgDetect(tab.designImg, tab.devImg);
-    
-    if (rawResult && rawResult.issues) {
-      const dObj = await loadCanvasObj(tab.designImg);
-      const vObj = await loadCanvasObj(tab.devImg);
-
-      let wrappedIssues = rawResult.issues.map(is => ({ ...is, box: { x: is.x, y: is.y, w: is.w, h: is.h } }));
-      let structuralIssues = applyStructuralCorrection(wrappedIssues);
-      let filteredIssues = [];
-
-      for(let i=0; i<structuralIssues.length; i++) {
-          let is = structuralIssues[i];
-          
-          if (is.box.w * is.box.h > 8000 && ['image', 'position', 'container'].includes(is.category)) {
-              let edgeSim = checkEdgeSimilarity(dObj, vObj, is.box);
-              
-              if (edgeSim > 0.80) {
-                  is.priority = 'P2';
-                  is.category = 'image';
-                  is.description = '背景大图微弱位移/分辨率偏差';
-                  is.detail = `[防误报触发] 轮廓相似度 ${(edgeSim*100).toFixed(1)}%，大图全局报警已解除`;
-                  
-                  let innerTextIssues = [];
-                  ocrBoxes.forEach(ob => {
-                      if (isIntersect(is.box, ob)) {
-                          innerTextIssues.push({
-                              category: 'text', priority: 'P0',
-                              description: `[OCR 穿透发现] 文本异常: "${ob.text}"`,
-                              detail: `从已豁免的背景图中独立提取出的文字排版/渲染错误`,
-                              box: { x: ob.x, y: ob.y, w: ob.w, h: ob.h }
-                          });
-                      }
-                  });
-                  
-                  innerTextIssues.forEach(txtIssue => {
-                      filteredIssues.push({ ...txtIssue, x: txtIssue.box.x, y: txtIssue.box.y, w: txtIssue.box.w, h: txtIssue.box.h });
-                  });
-              }
-          }
-          filteredIssues.push({ ...is, x: is.box.x, y: is.box.y, w: is.box.w, h: is.box.h });
-      }
-      rawResult.issues = filteredIssues.map((is, idx) => ({...is, regionIndex: idx + 1}));
-    }
-    tab.result = rawResult; renderMain(id); renderTabList(); autoSave();
-    if (s) s.textContent = `✅ [OCR 方法2] 成功，背景抗噪并穿透识别内部文字`;
-  } catch(e) { if (s) s.textContent = '❌ '+e.message; console.error(e); }
-}
-
-// --- 新方法2 依赖的图像处理工具 ---
-function loadCanvasObj(src) {
-    return new Promise(resolve => {
-        let img = new Image();
-        if(!src.startsWith('data:')) img.crossOrigin = 'anonymous';
-        img.onload = () => {
-            let cvs = document.createElement('canvas');
-            cvs.width = img.width; cvs.height = img.height;
-            let ctx = cvs.getContext('2d');
-            ctx.drawImage(img, 0, 0);
-            resolve({ cvs, ctx, w: img.width, h: img.height });
-        };
-        img.src = src;
-    });
-}
-
-function checkEdgeSimilarity(dObj, vObj, box) {
-    let w = Math.floor(box.w), h = Math.floor(box.h);
-    let x = Math.floor(box.x), y = Math.floor(box.y);
-    x = Math.max(0, x); y = Math.max(0, y);
-    w = Math.min(w, dObj.w - x, vObj.w - x);
-    h = Math.min(h, dObj.h - y, vObj.h - y);
-    if(w <= 0 || h <= 0) return 0;
-
-    let dData = dObj.ctx.getImageData(x, y, w, h).data;
-    let vData = vObj.ctx.getImageData(x, y, w, h).data;
-    
-    let dEdge = sobelFilter(dData, w, h);
-    let vEdge = sobelFilter(vData, w, h);
-
-    let match = 0, totalEdgePixels = 0;
-    for(let i=0; i<dEdge.length; i++) {
-        if (dEdge[i] > 60 || vEdge[i] > 60) {
-            totalEdgePixels++;
-            if (Math.abs(dEdge[i] - vEdge[i]) < 80) match++;
-        }
-    }
-    return totalEdgePixels === 0 ? 1 : (match / totalEdgePixels);
-}
-
-function sobelFilter(data, w, h) {
-    let edge = new Uint8Array(w * h);
-    let gray = new Uint8Array(w * h);
-    for(let i=0; i<w*h; i++) {
-        let p = i * 4;
-        gray[i] = 0.299 * data[p] + 0.587 * data[p+1] + 0.114 * data[p+2];
-    }
-    for (let y = 1; y < h - 1; y++) {
-        for (let x = 1; x < w - 1; x++) {
-            let gx = 
-                -1 * gray[(y-1)*w + (x-1)] + 1 * gray[(y-1)*w + (x+1)] +
-                -2 * gray[y*w + (x-1)]     + 2 * gray[y*w + (x+1)] +
-                -1 * gray[(y+1)*w + (x-1)] + 1 * gray[(y+1)*w + (x+1)];
-            let gy = 
-                -1 * gray[(y-1)*w + (x-1)] - 2 * gray[(y-1)*w + x] - 1 * gray[(y-1)*w + (x+1)] +
-                 1 * gray[(y+1)*w + (x-1)] + 2 * gray[(y+1)*w + x] + 1 * gray[(y+1)*w + (x+1)];
-            edge[y * w + x] = Math.min(255, Math.sqrt(gx*gx + gy*gy));
-        }
-    }
-    return edge;
-}
-
-// ===== 🚀 核心卡片/文字精细化纠偏走查逻辑 (原版) =====
+// ===== 🚀 核心卡片/文字精细化纠偏走查逻辑 =====
 async function runDetect(id) {
   const tab = tabs.get(id); if (!tab || !tab.designImg || !tab.devImg) return;
   tab.result = null; tab.selectedIdx = -1; renderMain(id);
-  const s = document.querySelector(`#ub_${id} .status`); if (s) s.textContent = '⏳ 原版检测中…';
+  const s = document.querySelector(`#ub_${id} .status`); if (s) s.textContent = '⏳ 小龙虾 AI 走查比对中…';
   try {
     let rawResult = await window.vgDetect(tab.designImg, tab.devImg);
     if (rawResult && rawResult.issues) {
@@ -874,32 +1332,41 @@ async function runDetect(id) {
           let is = rawResult.issues[i];
           wrappedIssues.push({ ...is, box: { x: is.x, y: is.y, w: is.w, h: is.h } });
       }
-      let refinedIssues = applyStructuralCorrection(wrappedIssues);
+      let refinedIssues = await applyMovementAwareCorrection(wrappedIssues, tab.designImg, tab.devImg);
+      refinedIssues = await applyHumanVisionPostProcess(refinedIssues, tab.designImg, tab.devImg);
       rawResult.issues = [];
       for(let i=0; i<refinedIssues.length; i++) {
           let is = refinedIssues[i];
           rawResult.issues.push({ ...is, x: is.box.x, y: is.box.y, w: is.box.w, h: is.box.h });
       }
       for(let i=0; i<rawResult.issues.length; i++){ rawResult.issues[i].regionIndex = i + 1; }
+      rawResult.cropUrls = await buildCropUrlsForIssues(tab.designImg, tab.devImg, rawResult.issues, rawResult.align || {dx:0,dy:0});
     }
     tab.result = rawResult; renderMain(id); renderTabList(); autoSave();
-    const sf = document.querySelector(`#ub_${id} .status`); if (sf) sf.textContent = `✅ 检测完成，共发现 ${rawResult.issues.length} 个偏差`;
-  } catch(e) { const sf = document.querySelector(`#ub_${id} .status`); if (sf) sf.textContent = '❌ '+e.message; console.error(e); }
+    if (s) s.textContent = `✅ 检测完成，共发现 ${rawResult.issues.length} 个偏差`;
+  } catch(e) { if (s) s.textContent = '❌ '+e.message; console.error(e); }
 }
 
 function applyStructuralCorrection(issues) {
-  let clusters = []; const MERGE_RADIUS = 40;
+  let clusters = []; const MERGE_RADIUS = 16;
   for(let n=0; n<issues.length; n++) {
     let issue = issues[n];
     let merged = false;
     for (let i=0; i<clusters.length; i++) {
       let cluster = clusters[i];
-      if (!(issue.box.x > cluster.box.x + cluster.box.w + MERGE_RADIUS || issue.box.x + issue.box.w + MERGE_RADIUS < cluster.box.x || issue.box.y > cluster.box.y + cluster.box.h + MERGE_RADIUS || issue.box.y + issue.box.h + MERGE_RADIUS < cluster.box.y)) {
-        cluster.box = { x: Math.min(cluster.box.x, issue.box.x), y: Math.min(cluster.box.y, issue.box.y), w: Math.max(cluster.box.x + cluster.box.w, issue.box.x + issue.box.w) - Math.min(cluster.box.x, issue.box.x), h: Math.max(cluster.box.y + cluster.box.h, issue.box.y + issue.box.h) - Math.min(cluster.box.y, issue.box.y) };
+      const sameFamily = issueFamily(issue) === cluster.family;
+      const close = !(issue.box.x > cluster.box.x + cluster.box.w + MERGE_RADIUS || issue.box.x + issue.box.w + MERGE_RADIUS < cluster.box.x || issue.box.y > cluster.box.y + cluster.box.h + MERGE_RADIUS || issue.box.y + issue.box.h + MERGE_RADIUS < cluster.box.y);
+      if (sameFamily && close) {
+        const nextBox = { x: Math.min(cluster.box.x, issue.box.x), y: Math.min(cluster.box.y, issue.box.y), w: Math.max(cluster.box.x + cluster.box.w, issue.box.x + issue.box.w) - Math.min(cluster.box.x, issue.box.x), h: Math.max(cluster.box.y + cluster.box.h, issue.box.y + issue.box.h) - Math.min(cluster.box.y, issue.box.y) };
+        const oldArea = cluster.rawIssues.reduce((sum, it) => sum + it.box.w * it.box.h, 0);
+        const newArea = oldArea + issue.box.w * issue.box.h;
+        const tooSparse = nextBox.w * nextBox.h > newArea * 5.2 && boxOverlapRatio(cluster.box, issue.box) < 0.12;
+        if (tooSparse) continue;
+        cluster.box = nextBox;
         cluster.rawIssues.push(issue); merged = true; break;
       }
     }
-    if (!merged) { clusters.push({ box: issue.box, rawIssues: [issue] }); }
+    if (!merged) { clusters.push({ box: issue.box, rawIssues: [issue], family: issueFamily(issue) }); }
   }
 
   let refined = [];
@@ -928,7 +1395,7 @@ function applyStructuralCorrection(issues) {
 
     if (isLargeArea) {
       if (isSquareish) { category = 'image'; description = '插画大图异常'; } else { category = 'container'; description = '卡片/容器差异'; }
-      if (hasColorError) { category = 'position'; description = '整体位置偏移'; detail = '大卡片或插画发生整体位移，导致原位置比对失效'; priority = 'P0'; }
+      if (hasColorError) { detail = detail || '大区域存在颜色或内容差异，需结合局部位移匹配确认是否偏移'; priority = priority === 'P0' ? 'P0' : 'P1'; }
     } else if (hasFontError || (isSmallText && mainIssue.category === 'color')) {
        category = '文字问题';
        let hasSize = false;
@@ -941,6 +1408,18 @@ function applyStructuralCorrection(issues) {
     refined.push({ ...mainIssue, box: box, category: category, description: description, detail: detail, priority: priority });
   }
   return refined;
+}
+
+function issueFamily(issue) {
+  const c = issue.category || issue.type || '';
+  const d = issue.description || issue.desc || '';
+  if (c === '文字问题' || c === 'font' || c === 'text' || d.includes('文字')) return 'text';
+  if (c === 'position') return 'position';
+  if (c === 'size') return 'size';
+  if (c === 'color') return 'color';
+  if (c === 'image') return 'image';
+  if (c === 'container') return 'container';
+  return c || 'other';
 }
 
 // ===== 缺陷列表渲染 =====
@@ -956,7 +1435,6 @@ function sortByPriority(issues) {
 function renderIssueTable(id, tab) {
   const r = tab.result; if (!r) return;
   const rawIssues = r.issues || []; const cr = r.cropUrls || [];
-  const issues = sortByPriority(rawIssues); 
   const idxMap = rawIssues.map((iss,i)=>i); 
   idxMap.sort((a,b) => {
         const prioRank = { P0: 0, P1: 1, P2: 2, P3: 3 };
@@ -964,6 +1442,7 @@ function renderIssueTable(id, tab) {
         const rb = prioRank[rawIssues[b].priority] !== undefined ? prioRank[rawIssues[b].priority] : 99;
         return ra - rb;
   });
+  const issues = idxMap.map(i => rawIssues[i]);
   const sortedCr = idxMap.map(i=>cr[i]);
 
   const h = document.getElementById('ih_'+id);
@@ -976,17 +1455,17 @@ function renderIssueTable(id, tab) {
   if (issues.length === 0) { wrap.innerHTML = '<div class="no-issues">🎉 完美还原！测试通过，没有发现视觉缺陷。</div>'; return; }
 
   let html = `<table class="issue-table"><thead><tr><th class="id-col">#</th><th class="prio-col">级别</th><th class="type-col">类型</th><th>描述</th><th>预览图</th><th>技术详情</th></tr></thead><tbody>`;
-  const typeMap = { font:'字体', position:'位置', size:'尺寸', color:'颜色', image:'图片', container:'容器', text: '文字' };
+  const typeMap = { font:'字体', position:'位置', size:'尺寸', color:'颜色', image:'图片', container:'容器', background:'背景', '文字问题':'文字问题' };
   
   for(let i=0; i<issues.length; i++) {
     const iss = issues[i];
     const src = sortedCr[i] || ''; 
     const previewHtml = src ? `<img class="preview-img" src="${src}" onclick="event.stopPropagation();openModal('${src}')">` : '-';
     let subTypeStyle = '';
-    if (iss.category === '文字问题' || iss.category === 'text') {
-      if (iss.description === '颜色差异' || (iss.description||'').includes('OCR')) subTypeStyle = 'color: #D93025; font-weight: 600;';
+    if (iss.category === '文字问题') {
+      if (iss.description === '颜色差异') subTypeStyle = 'color: #D93025; font-weight: 600;';
       else if (iss.description === '字号差异') subTypeStyle = 'color: #F29900; font-weight: 600;';
-      else subTypeStyle = 'color: #1A73E8; font-weight: 600;';
+      else if (iss.description === '排版差异') subTypeStyle = 'color: #1A73E8; font-weight: 600;';
     }
 
     html += `<tr class="${i===tab.selectedIdx?'active':''}" data-idx="${idxMap[i]}" onclick="selectIssue('${id}',${idxMap[i]})"><td class="id-col">${i+1}</td><td class="prio-col"><span class="tag tag-${iss.priority||'P2'}">${iss.priority||'P2'}</span></td><td class="type-col">${typeMap[iss.category]||iss.category}</td><td style="${subTypeStyle}">${iss.description || ''}</td><td style="padding: 6px 16px;">${previewHtml}</td><td style="color:#5F6368;font-size:12px;">${iss.detail||''}</td></tr>`;
@@ -1035,6 +1514,7 @@ async function loadTabs() {
     tabs.clear(); let maxId = 0; 
     for (let i=0; i<all.length; i++) { 
         const rec = all[i]; 
+        // 核心修复：清理掉本地旧版的"数据看板"，因为我们在初始化时会动态硬编码它，防止重复污染
         if (rec.name === '数据看板' || rec.name === '数据面板') continue;
         tabs.set(rec.id, rec); 
         const num = parseInt(rec.id.replace('tab_', ''), 10); 
@@ -1045,7 +1525,7 @@ async function loadTabs() {
   } catch(e) { return false; } 
 }
 
-function autoSave() { setTimeout(saveTabs, 100); autoCloudify(); }
+function autoSave() { setTimeout(saveTabs, 100); }
 
 // ===== Cloudinary 云端协作同步 =====
 const CLOUD_NAME = 'dxm3bwnzi';
@@ -1054,6 +1534,29 @@ const API_SECRET = 'QIBVvLSSePJW5-1UVYECknvBLBQ';
 const DATA_NAME = 'vg527c';
 
 let pendingCloudSync = null;
+// 云同步开关
+var cloudSyncEnabled = false;
+function toggleCloudSync() {
+  cloudSyncEnabled = !cloudSyncEnabled;
+  var btn = document.getElementById('cloudToggleBtn');
+  var pullBtn = document.getElementById('cloudPullBtn');
+  var pushBtn = document.getElementById('cloudPushBtn');
+  if (cloudSyncEnabled) {
+    btn.textContent = '已同步';
+    btn.style.background = '#E6F4EA';
+    btn.style.color = '#137333';
+    pullBtn.disabled = false;
+    pushBtn.disabled = false;
+    manualCloudPush();
+  } else {
+    btn.textContent = '启用同步';
+    btn.style.background = '#FFFFFF';
+    btn.style.color = '#3C4043';
+    pullBtn.disabled = true;
+    pushBtn.disabled = true;
+    updateCloudUI('☁️ 本地模式', 'idle');
+  }
+}
 function autoCloudify() {
   if (pendingCloudSync) clearTimeout(pendingCloudSync);
   pendingCloudSync = setTimeout(manualCloudPush, 3500); 
@@ -1068,10 +1571,13 @@ function updateCloudUI(text, statusType) {
 }
 
 async function manualCloudPush() {
+  var toggleBtn = document.getElementById('cloudToggleBtn');
+  if (toggleBtn && toggleBtn.textContent !== '已同步') return;
   updateCloudUI('☁️ 正在推送...', 'syncing');
   try {
     const data = {};
     tabs.forEach((tab, id) => {
+      // 不将数据看板推送到云端
       if (tab.name === '数据看板') return;
       data[id] = { id: id, name: tab.name, isGroup: tab.isGroup, children: tab.children, designImg: tab.designImg, devImg: tab.devImg, result: tab.result, developer: tab.developer || '' };
     });
@@ -1112,6 +1618,7 @@ async function cloudifyLoad() {
     for(let i=0; i<ids.length; i++) {
       const id = ids[i];
       const rec = remote[id]; 
+      // 清理云端的旧看板数据
       if (rec.name === '数据看板' || rec.name === '数据面板') continue;
       if (!rec.id) rec.id = id;
       tabs.set(id, rec);
@@ -1124,9 +1631,12 @@ async function cloudifyLoad() {
 }
 
 async function manualCloudPull() {
+  var toggleBtn = document.getElementById('cloudToggleBtn');
+  if (toggleBtn && toggleBtn.textContent !== '已同步') return;
   updateCloudUI('☁️ 正在拉取...', 'syncing');
   const restored = await cloudifyLoad();
   
+  // 必须手动加回看板
   let dbExists = false;
   tabs.forEach(t => { if (t.name === '数据看板') dbExists = true; });
   if (!dbExists) {
@@ -1147,10 +1657,12 @@ function sha1Hex(str) {
 }
 
 // ===== Init 初始化程序 =====
+// --- Figma 批量导入核心逻辑 ---
 var currentFigmaTabId = null;
 window.openFigmaModal = function(id) {
     if (id) { currentFigmaTabId = id; }
     else {
+        // 自动选择当前激活的 group 或创建新 group
         var active = activeTabId && tabs.get(activeTabId);
         if (active && active.isGroup) { currentFigmaTabId = activeTabId; }
         else { currentFigmaTabId = addTab('Figma 导入', {isGroup: true}); renderTabList(); }
@@ -1185,6 +1697,7 @@ window.doFigmaImport = async function() {
     progress.style.display = 'block';
     progress.innerHTML = '<div>⏳ 获取 Figma 节点结构...</div>';
     try {
+        // 1. 获取节点信息
         var res = await fetch('https://api.figma.com/v1/files/' + fileKey + '/nodes?ids=' + encodeURIComponent(nodeId), {
             headers: { 'X-Figma-Token': token }
         });
@@ -1192,10 +1705,13 @@ window.doFigmaImport = async function() {
         var data = await res.json();
         var nodeData = data.nodes && data.nodes[nodeId];
         if (!nodeData || !nodeData.document) throw new Error('未能获取到节点信息');
+        // 2. 递归收集所有子节点（跳过 frame/group 本身）
         var children = [];
         var figmaMode = document.querySelector('input[name="figmaMode"]:checked').value;
         if (figmaMode === 'section') {
+            // Section 模式：遍历根节点下的 Section，每个 Section 建一个 group，Section 内的 Frame 建子页面
             progress.innerHTML += '<div>🔍 解析 Section 结构...</div>';
+            // 先收集所有 Section
             var sections = [];
             function collectSections(node) {
                 if (!node || !node.children) return;
@@ -1211,6 +1727,7 @@ window.doFigmaImport = async function() {
             if (sections.length === 0) throw new Error('该节点下没有 Section');
             progress.innerHTML += '<div>✅ 找到 ' + sections.length + ' 个 Section</div>';
             
+            // 从每个 Section 递归收集 Frame
             var nodeIds = [];
             var sectionFrames = {};
             for (var si = 0; si < sections.length; si++) {
@@ -1233,12 +1750,14 @@ window.doFigmaImport = async function() {
             }
             var idsStr = nodeIds.join(',');
             if (!idsStr) throw new Error('Section 内没有找到 Frame');
+            // 批量获取图片
             var imgRes = await fetch('https://api.figma.com/v1/images/' + fileKey + '?ids=' + encodeURIComponent(idsStr) + '&scale=2&format=png', {
                 headers: { 'X-Figma-Token': token }
             });
             if (!imgRes.ok) throw new Error('Figma 图片请求失败: ' + imgRes.status);
             var imgData = await imgRes.json();
             
+            // 按 Section 创建 Group 和子页面
             var successCount = 0, failCount = 0;
             for (var si = 0; si < sections.length; si++) {
                 var sec = sections[si];
@@ -1281,8 +1800,9 @@ window.doFigmaImport = async function() {
             activateTab(currentFigmaTabId);
             btn.textContent = '完成';
             btn.disabled = false;
-            return;
+            return; // Section 模式结束，跳过下面的 Frame 模式逻辑
         } else {
+            // Frame 模式：收集所有 Frame/Component/Instance/Group 节点
             var children = [];
             function collectNodes(node) {
                 if (!node || !node.children) return;
@@ -1297,18 +1817,21 @@ window.doFigmaImport = async function() {
             collectNodes(nodeData.document);
             if (children.length === 0) throw new Error('该节点下没有可导入的子节点');
             progress.innerHTML = '<div>✅ 找到 ' + children.length + ' 个子节点，开始逐一下载...<br><span style="font-size:11px;color:#80868B;">将自动创建子页面并导入设计稿</span></div>';
+            // 收集所有节点 ID 批量请求图片
             var nodeIds = children.map(function(c) { return c.id; }).join(',');
             var imgRes = await fetch('https://api.figma.com/v1/images/' + fileKey + '?ids=' + encodeURIComponent(nodeIds) + '&scale=2&format=png', {
                 headers: { 'X-Figma-Token': token }
             });
             if (!imgRes.ok) throw new Error('Figma 图片请求失败: ' + imgRes.status);
             var imgData = await imgRes.json();
+            // 确认目标 group
             var groupId = currentFigmaTabId;
             var group = tabs.get(groupId);
             if (!group) {
                 groupId = addTab('Figma 导入', {isGroup: true});
                 renderTabList();
             }
+            // 逐个下载图片并创建子页面
             var successCount = 0;
             var failCount = 0;
             for (var i = 0; i < children.length; i++) {
@@ -1359,18 +1882,13 @@ window.doFigmaImport = async function() {
 };
 
 (async function init() {
-  updateCloudUI('☁️ 连接云端...', 'syncing');
+  updateCloudUI('☁️ 本地模式', 'idle');
   await loadDevPool(); 
   
-  let restored = await cloudifyLoad();
-  if (restored) {
-    updateCloudUI('✅ 团队数据已同步', 'ok');
-  } else {
-    restored = await loadTabs();
-    updateCloudUI('☁️ 本地模式', 'syncing');
-  }
+  let restored = await loadTabs();
   
-  tabs.set('dashboard', { id: 'dashboard', name: '数据看板', isGroup: true, children: [] });
+  // 注入数据看板 (不作为普通 group，仅用于 UI 硬编码渲染)
+  tabs.set('dashboard', { id: 'dashboard', name: '数据看板', isGroup: false, children: [] });
   
   if (restored) {
     activeTabId = 'dashboard'; renderTabList(); renderMain('dashboard');
@@ -1378,8 +1896,6 @@ window.doFigmaImport = async function() {
     activeTabId = 'dashboard';
     const defaultGroupId = addTab('默认测试模块', {isGroup: true});
     addChildTab(defaultGroupId);
-    
-    autoCloudify();
   }
 })();
 </script>
